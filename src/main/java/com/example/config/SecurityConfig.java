@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/login", "/register", "/forgot-password", "/css/**", "/images/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/vendor/**").hasRole("VENDOR")
                         .requestMatchers("/user/**").hasAnyRole("STUDENT", "ADMIN")
                         .anyRequest().authenticated() 
                 )
@@ -37,6 +38,9 @@ public class SecurityConfig {
                             for (var authority : authorities) {
                                 if (authority.getAuthority().equals("ROLE_ADMIN")) {
                                     redirectUrl = "/admin/dashboard";
+                                    break;
+                                } else if (authority.getAuthority().equals("ROLE_VENDOR")) {
+                                    redirectUrl = "/vendor/dashboard";
                                     break;
                                 }
                             }

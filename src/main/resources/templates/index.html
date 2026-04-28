@@ -11,10 +11,112 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+    <style>
+        /* Force Chatbot Visibility */
+        .chatbot-float {
+            position: fixed !important;
+            width: 60px !important;
+            height: 60px !important;
+            bottom: 115px !important;
+            right: 40px !important;
+            background-color: #ff6b35 !important;
+            color: #fff !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+            z-index: 99999 !important;
+            cursor: pointer !important;
+        }
+        .chat-window {
+            position: fixed !important;
+            bottom: 185px !important;
+            right: 40px !important;
+            width: 350px !important;
+            height: 450px !important;
+            background: white !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+            z-index: 100000 !important;
+            display: none;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+        }
+        .chat-window.active { display: flex !important; }
+        .chat-header { background: #ff6b35 !important; color: white !important; padding: 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
+        .chat-body { flex: 1 !important; padding: 15px !important; overflow-y: auto !important; background: #fdf2e9 !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
+        .chat-footer { padding: 15px !important; background: white !important; display: flex !important; gap: 10px !important; border-top: 1px solid #eee !important; }
+        .msg-vendor { background: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-start !important; max-width: 80% !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; color: #333 !important; }
+        .msg-user { background: #ff6b35 !important; color: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-end !important; max-width: 80% !important; }
+        .chat-input { flex: 1 !important; border: 1px solid #ddd !important; border-radius: 10px !important; padding: 8px 12px !important; }
+
+        /* Feature Card Watercolor Background */
+        .feature-card-new {
+            background-image: url('/images/box_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 40px 30px;
+            border-radius: 30px;
+            height: 100%;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+
+        .feature-card-new:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(237, 18, 117, 0.15);
+        }
+
+        .feature-card-new::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85); /* Light overlay for readability */
+            z-index: 1;
+        }
+
+        .feature-card-new > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-number {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(0,0,0,0.03);
+            line-height: 1;
+        }
+
+        .icon-box-feat {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ff6b35;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+    </style>
 </head>
 
 <body>
@@ -49,7 +151,7 @@
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Diploma Programs <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
-                                <li><a href="#" class="submenu-item">Diploma in Fashion Designing</a></li>
+                                <li><a th:href="@{/user/course/2}" class="submenu-item">Diploma in Fashion Designing</a></li>
                                 <li><a href="#" class="submenu-item">Diploma in Nail Technology</a></li>
                                 <li><a href="#" class="submenu-item">Diploma in Apparel Technology</a></li>
                                 <li><a href="#" class="submenu-item">Diploma in Hair Styling & Hair Design</a></li>
@@ -90,6 +192,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="has-dropdown" id="admissionsDropdown">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-1" onclick="toggleDropdown(event)">Admissions <i class="fa-solid fa-chevron-down small" style="font-size: 0.6rem;"></i></a>
+                    <ul class="dropdown-menu-custom">
+                        <li><a th:href="@{/scholarship}" class="dropdown-item-custom">Scholarship</a></li>
+                        <li><a th:href="@{/faq}" class="dropdown-item-custom">FAQ</a></li>
+                        <li><a th:href="@{/faculty}" class="dropdown-item-custom">Meet our Faculty</a></li>
+                    </ul>
+                </li>
                 <li><a th:href="@{/gallery}">Gallery</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -100,8 +210,6 @@
             </ul>
         </div>
         <div class="nav-right">
-            <a href="#" class="btn-outline">Admissions</a>
-            <a href="#" class="btn-solid">Apply Now</a>
             <!-- User Login Trigger (Only shown if NOT logged in) -->
             <a href="javascript:void(0)" style="color: #fff;" data-bs-toggle="modal" data-bs-target="#loginModal" sec:authorize="!isAuthenticated()">
                 <i class="fa-regular fa-circle-user fa-xl"></i>
@@ -327,81 +435,27 @@
             <p class="text-center text-muted mb-5">Professional accreditation for your creative journey</p>
 
             <div class="row g-4">
-                <!-- Course 1 -->
-                <div class="col-lg-3 col-md-6">
+                <!-- Dynamic Course Cards -->
+                <div class="col-lg-3 col-md-6" th:each="course : ${courses}">
                     <div class="elite-course-card">
                         <div class="course-img-wrapper">
-                            <span class="course-tag">ATELIER</span>
-                            <img th:src="@{/images/makeup_bridal.png}" alt="Makeup">
-                            <div class="course-duration">6 Months</div>
+                            <span class="course-tag" th:text="${course.category}">CATEGORY</span>
+                            <img th:src="${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}" th:alt="${course.title}">
+                            <div class="course-duration" th:text="${course.duration}">Duration</div>
                         </div>
                         <div class="course-info p-4 text-center">
-                            <h5 class="fw-bold mb-2">Makeup Artistry</h5>
-                            <p class="small text-muted mb-4">Master bridal, editorial, and SFX makeup techniques with
-                                industry tools.</p>
+                            <h5 class="fw-bold mb-2" th:text="${course.title}">Course Title</h5>
+                            <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 100)}">Short description of the program.</p>
                             <div class="d-flex flex-column align-items-center">
                                 <span class="price-hint mb-2">Enrolling Now</span>
-                                <a th:href="@{/gallery}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
+                                <a th:href="@{/user/course/{id}(id=${course.id})}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Course 2 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="elite-course-card">
-                        <div class="course-img-wrapper">
-                            <span class="course-tag">STYLING</span>
-                            <img th:src="@{/images/theme_styling.png}" alt="Fashion">
-                            <div class="course-duration">4 Months</div>
-                        </div>
-                        <div class="course-info p-4 text-center">
-                            <h5 class="fw-bold mb-2">Fashion Styling</h5>
-                            <p class="small text-muted mb-4">Learn professional styling for international models and
-                                luxury brands.</p>
-                            <div class="d-flex flex-column align-items-center">
-                                <span class="price-hint mb-2">Enrolling Now</span>
-                                <a th:href="@{/gallery}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Course 3 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="elite-course-card">
-                        <div class="course-img-wrapper">
-                            <span class="course-tag">RUNWAY</span>
-                            <img th:src="@{/images/catwalk_theme.jpg}" alt="Catwalk">
-                            <div class="course-duration">3 Months</div>
-                        </div>
-                        <div class="course-info p-4 text-center">
-                            <h5 class="fw-bold mb-2">Catwalk Training</h5>
-                            <p class="small text-muted mb-4">Perfect your walk and stage presence on the global runway
-                                circuits.</p>
-                            <div class="d-flex flex-column align-items-center">
-                                <span class="price-hint mb-2">Enrolling Now</span>
-                                <a th:href="@{/gallery}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Course 4 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="elite-course-card">
-                        <div class="course-img-wrapper">
-                            <span class="course-tag">ARTISTRY</span>
-                            <img th:src="@{/images/hair.png}" alt="Hair Styling">
-                            <div class="course-duration">4 Months</div>
-                        </div>
-                        <div class="course-info p-4 text-center">
-                            <h5 class="fw-bold mb-2">Hair Styling</h5>
-                            <p class="small text-muted mb-4">Advanced hairstyling for high-fashion events and commercial
-                                media.</p>
-                            <div class="d-flex flex-column align-items-center">
-                                <span class="price-hint mb-2">Enrolling Now</span>
-                                <a th:href="@{/gallery}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Message if no courses -->
+                <div class="col-12 text-center py-5" th:if="${courses.empty}">
+                    <p class="text-muted">No programs available at the moment. Please check back later!</p>
                 </div>
             </div>
         </div>
@@ -465,87 +519,128 @@
         </div>
     </section>
 
-    <!-- 5. Testimonials Section -->
-    <section id="testimonials" class="py-5 bg-light-pink section-reveal">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-5 section-title">Student Stories</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-9">
-                    <div id="testimonialCarousel" class="carousel slide testimonial-carousel" data-bs-ride="carousel">
-                        <!-- Indicators -->
-                        <div class="carousel-indicators" style="bottom: -50px;">
-                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
-                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
-                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="3"></button>
-                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="4"></button>
-                        </div>
-
-                        <div class="carousel-inner">
-                            <!-- Story 1 -->
-                            <div class="carousel-item active">
-                                <div class="testimonial-card p-5 bg-white rounded-4 shadow-sm border-theme-soft text-center">
-                                    <div class="quote-icon mb-4"><i class="fa-solid fa-quote-left fa-3x opacity-25 text-theme"></i></div>
-                                    <p class="fs-5 fst-italic mb-4">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
-                                    <div class="student-meta">
-                                        <h6 class="fw-bold text-theme mb-1">Sophia Evans</h6>
-                                        <small class="text-muted text-uppercase letter-spacing-1">Makeup Artistry Alumna</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Story 2 -->
-                            <div class="carousel-item">
-                                <div class="testimonial-card p-5 bg-white rounded-4 shadow-sm border-theme-soft text-center">
-                                    <div class="quote-icon mb-4"><i class="fa-solid fa-quote-left fa-3x opacity-25 text-theme"></i></div>
-                                    <p class="fs-5 fst-italic mb-4">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
-                                    <div class="student-meta">
-                                        <h6 class="fw-bold text-theme mb-1">Marcus Chen</h6>
-                                        <small class="text-muted text-uppercase letter-spacing-1">Fashion Styling Graduate</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Story 3 -->
-                            <div class="carousel-item">
-                                <div class="testimonial-card p-5 bg-white rounded-4 shadow-sm border-theme-soft text-center">
-                                    <div class="quote-icon mb-4"><i class="fa-solid fa-quote-left fa-3x opacity-25 text-theme"></i></div>
-                                    <p class="fs-5 fst-italic mb-4">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
-                                    <div class="student-meta">
-                                        <h6 class="fw-bold text-theme mb-1">Elena Rodriguez</h6>
-                                        <small class="text-muted text-uppercase letter-spacing-1">Catwalk & Stage Presence</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Story 4 -->
-                            <div class="carousel-item">
-                                <div class="testimonial-card p-5 bg-white rounded-4 shadow-sm border-theme-soft text-center">
-                                    <div class="quote-icon mb-4"><i class="fa-solid fa-quote-left fa-3x opacity-25 text-theme"></i></div>
-                                    <p class="fs-5 fst-italic mb-4">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
-                                    <div class="student-meta">
-                                        <h6 class="fw-bold text-theme mb-1">David Kim</h6>
-                                        <small class="text-muted text-uppercase letter-spacing-1">Advanced Hair Artistry</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Story 5 -->
-                            <div class="carousel-item">
-                                <div class="testimonial-card p-5 bg-white rounded-4 shadow-sm border-theme-soft text-center">
-                                    <div class="quote-icon mb-4"><i class="fa-solid fa-quote-left fa-3x opacity-25 text-theme"></i></div>
-                                    <p class="fs-5 fst-italic mb-4">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
-                                    <div class="student-meta">
-                                        <h6 class="fw-bold text-theme mb-1">Amina Jalloh</h6>
-                                        <small class="text-muted text-uppercase letter-spacing-1">Haute Couture Apprentice</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Controls -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                        </button>
+    <!-- 5. Student Stories (Infinite Slider) -->
+    <section id="testimonials" class="reviews-slider-container">
+        <div class="container mb-5">
+            <h2 class="text-center fw-bold mb-2 section-title">Student Stories</h2>
+            <p class="text-center text-muted">Real journeys of our creative icons in the making</p>
+        </div>
+        
+        <div class="reviews-track">
+            <!-- Story 1 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Sophia+E&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Sophia Evans</span>
+                        <span class="reviewer-role">Makeup Artistry Alumna</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 2 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Marcus+C&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Marcus Chen</span>
+                        <span class="reviewer-role">Fashion Styling Graduate</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 3 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Elena Rodriguez</span>
+                        <span class="reviewer-role">Catwalk & Stage Presence</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 4 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=David+K&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">David Kim</span>
+                        <span class="reviewer-role">Advanced Hair Artistry</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 5 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Amina+J&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Amina Jalloh</span>
+                        <span class="reviewer-role">Haute Couture Apprentice</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Duplicates for seamless loop -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Sophia+E&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Sophia Evans</span>
+                        <span class="reviewer-role">Makeup Artistry Alumna</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Marcus+C&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Marcus Chen</span>
+                        <span class="reviewer-role">Fashion Styling Graduate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Elena Rodriguez</span>
+                        <span class="reviewer-role">Catwalk & Stage Presence</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=David+K&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">David Kim</span>
+                        <span class="reviewer-role">Advanced Hair Artistry</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Amina+J&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Amina Jalloh</span>
+                        <span class="reviewer-role">Haute Couture Apprentice</span>
                     </div>
                 </div>
             </div>
@@ -648,9 +743,9 @@
                     <ul class="list-unstyled footer-links">
                         <li><a href="#">Makeup Artistry</a></li>
                         <li><a href="#">Fashion Styling</a></li>
-                        <li><a href="#">Catwalk Training</a></li>
+                        <li><a href="#">Beauty Training</a></li>
                         <li><a href="#">Hair Styling</a></li>
-                        <li><a href="#">Luxury Retail</a></li>
+                        <li><a href="#">Shoe Training</a></li>
                     </ul>
                 </div>
 
@@ -712,15 +807,21 @@
         function toggleDropdown(event) {
             event.preventDefault();
             event.stopPropagation();
-            document.getElementById('programsDropdown').classList.toggle('show');
+            const parent = event.currentTarget.closest('.has-dropdown');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.has-dropdown').forEach(el => {
+                if(el !== parent) el.classList.remove('show');
+            });
+
+            if(parent) parent.classList.toggle('show');
         }
 
         // Close dropdown when clicking outside
         window.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('programsDropdown');
-            if (dropdown && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
+            document.querySelectorAll('.has-dropdown').forEach(el => {
+                if(!el.contains(e.target)) el.classList.remove('show');
+            });
         });
 
         function toggleMobileMenu() {
@@ -736,6 +837,80 @@
             }
         });
     </script>
+    <!-- Floating Chatbot Button -->
+    <div class="chatbot-float" onclick="toggleChat()" style="background-color: #ff6b35;">
+        <i class="fa-solid fa-comment-dots fa fa-comment text-white"></i>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-white" style="width: 10px; height: 10px;"></div>
+                <span class="fw-bold">Vendor Support</span>
+            </div>
+            <i class="fa-solid fa-xmark cursor-pointer" onclick="toggleChat()"></i>
+        </div>
+        <div id="chatBody" class="chat-body">
+            <div class="message msg-vendor">
+                Hello! Welcome to The Fashion Institute. How can I help you connect with our master vendors or learn about our programs?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+            <button class="btn btn-theme-solid p-2 rounded-circle" style="width: 40px; height: 40px;" onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('active');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const body = document.getElementById('chatBody');
+            if (input.value.trim() === '') return;
+
+            // User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message msg-user';
+            userMsg.innerText = input.value;
+            body.appendChild(userMsg);
+
+            const text = input.value.toLowerCase();
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            // Simulated Vendor Response
+            setTimeout(() => {
+                const vendorMsg = document.createElement('div');
+                vendorMsg.className = 'message msg-vendor';
+                
+                if (text.includes('enroll') || text.includes('admission')) {
+                    vendorMsg.innerText = "Admissions are currently open! You can apply directly through the 'Apply Now' button or chat with a specific mentor here.";
+                } else if (text.includes('price') || text.includes('fee')) {
+                    vendorMsg.innerText = "Our courses offer premium value with flexible payment plans. Which program are you interested in?";
+                } else {
+                    vendorMsg.innerText = "Thank you for reaching out! A representative from our vendor atelier will be with you shortly.";
+                }
+                
+                body.appendChild(vendorMsg);
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+        }
+
+        document.getElementById('chatInput')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send?phone=919999999999&text=Hello, I have an inquiry about the Fashion Institute programs." class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp fab fa-whatsapp"></i>
+    </a>
 </body>
 
 </html>

@@ -28,6 +28,21 @@ public class User {
 
     private String role; // STUDENT, ADMIN, INSTRUCTOR
 
+    private String resetToken;
+    private java.time.LocalDateTime resetTokenExpiry;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_enrolled_courses",
+               joinColumns = @JoinColumn(name = "user_id"),
+               inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private java.util.List<Course> enrolledCourses = new java.util.ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_wishlist_courses",
+               joinColumns = @JoinColumn(name = "user_id"),
+               inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private java.util.List<Course> wishlistCourses = new java.util.ArrayList<>();
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -45,4 +60,14 @@ public class User {
     public void setGender(String gender) { this.gender = gender; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public java.util.List<Course> getEnrolledCourses() { return enrolledCourses; }
+    public void setEnrolledCourses(java.util.List<Course> enrolledCourses) { this.enrolledCourses = enrolledCourses; }
+    public String getResetToken() { return resetToken; }
+    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
+    public java.time.LocalDateTime getResetTokenExpiry() { return resetTokenExpiry; }
+    public void setResetTokenExpiry(java.time.LocalDateTime resetTokenExpiry) { this.resetTokenExpiry = resetTokenExpiry; }
+
+    public java.util.List<Course> getWishlistCourses() { return wishlistCourses; }
+    public void setWishlistCourses(java.util.List<Course> wishlistCourses) { this.wishlistCourses = wishlistCourses; }
 }

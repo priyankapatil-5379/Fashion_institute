@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Messages | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <span class="text-theme">F</span> INSTITUTE
+            </div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a th:href="@{/vendor/courses}"><i class="fa-solid fa-book-open"></i> My Courses</a></li>
+                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> Students</a></li>
+                <li><a th:href="@{/vendor/messages}" class="active"><i class="fa-solid fa-comments"></i> Messages</a></li>
+                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                <li class="mt-5">
+                    <form th:action="@{/logout}" method="post" id="logoutForm">
+                        <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-content p-0">
+            <div class="d-flex" style="height: 100vh;">
+                <!-- Chat Sidebar -->
+                <div class="bg-white border-end" style="width: 350px;">
+                    <div class="p-4 border-bottom">
+                        <h4 class="fw-bold mb-0">Student Chats</h4>
+                    </div>
+                    <div class="p-3" id="studentList">
+                        <!-- Contacts will load here -->
+                    </div>
+                </div>
+
+                <!-- Chat Body -->
+                <div class="flex-grow-1 d-flex flex-column bg-light-pink">
+                    <div id="chatHeader" class="p-3 bg-white border-bottom d-flex align-items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=Student&background=random" id="headerImg" class="rounded-circle" style="width: 40px; height: 40px;">
+                        <h6 class="fw-bold mb-0" id="headerName">Select a Student</h6>
+                    </div>
+                    
+                    <div id="vendorChatBody" class="flex-grow-1 p-4 overflow-y-auto d-flex flex-column gap-3">
+                        <div class="text-center text-muted my-auto">
+                            <i class="fa-solid fa-comments fa-3x mb-3"></i>
+                            <h5>Select a conversation to start chatting</h5>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white border-top">
+                        <div class="d-flex gap-3">
+                            <input type="text" id="vendorChatInput" class="form-control custom-input" placeholder="Write a reply...">
+                            <button class="btn btn-gradient-dash px-4" onclick="sendVendorMessage()">Reply <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        let activeStudent = null;
+        const vendorName = "Fashion Guru";
+
+        async function loadContacts() {
+            const response = await fetch(`/api/messages/contacts?user=${vendorName}`);
+            const contacts = await response.json();
+            const list = document.getElementById('studentList');
+            
+            // Only update if list changed to avoid flickering
+            const currentHTML = list.innerHTML;
+            let newHTML = '';
+            
+            contacts.forEach(username => {
+                newHTML += `
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-4 ${activeStudent === username ? 'bg-theme-soft border-theme' : 'bg-light'} cursor-pointer mb-2 shadow-sm" onclick="selectStudent('${username}')">
+                        <img src="https://ui-avatars.com/api/?name=${username}&background=random" class="rounded-circle" style="width: 50px; height: 50px;">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">${username}</div>
+                            <small class="text-muted">Message history available</small>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if(newHTML !== currentHTML) list.innerHTML = newHTML || '<div class="text-center text-muted p-5">No messages yet</div>';
+        }
+
+        async function selectStudent(username) {
+            activeStudent = username;
+            document.getElementById('headerName').innerText = username;
+            document.getElementById('headerImg').src = `https://ui-avatars.com/api/?name=${username}&background=random`;
+            loadContacts(); // Refresh list to show active state
+            loadVendorMessages();
+        }
+
+        async function loadVendorMessages() {
+            if (!activeStudent) return;
+            const response = await fetch(`/api/messages/conversation?user1=${vendorName}&user2=${activeStudent}`);
+            const messages = await response.json();
+            const body = document.getElementById('vendorChatBody');
+            
+            body.innerHTML = '';
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `message ${msg.sender === vendorName ? 'msg-user' : 'msg-vendor'}`;
+                div.style.maxWidth = '70%';
+                div.style.padding = '12px 18px';
+                div.style.borderRadius = '20px';
+                div.style.alignSelf = msg.sender === vendorName ? 'flex-end' : 'flex-start';
+                div.style.background = msg.sender === vendorName ? '#ff6b35' : 'white';
+                div.style.color = msg.sender === vendorName ? 'white' : '#333';
+                div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+                div.innerText = msg.content;
+                body.appendChild(div);
+            });
+            body.scrollTop = body.scrollHeight;
+        }
+
+        async function sendVendorMessage() {
+            const input = document.getElementById('vendorChatInput');
+            if (!input.value.trim() || !activeStudent) return;
+
+            const msg = {
+                sender: vendorName,
+                receiver: activeStudent,
+                content: input.value
+            };
+
+            await fetch('/api/messages/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(msg)
+            });
+
+            input.value = '';
+            loadVendorMessages();
+        }
+
+        window.onload = () => {
+            loadContacts();
+            setInterval(loadContacts, 5000);
+            setInterval(loadVendorMessages, 3000);
+        };
+    </script>
+</body>
+</html>

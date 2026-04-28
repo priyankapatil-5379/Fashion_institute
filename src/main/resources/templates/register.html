@@ -105,11 +105,20 @@
                     </select>
                 </div>
             </div>
-            <div class="mb-4">
-                <label class="form-label small fw-bold">Phone Number</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-transparent">+91</span>
-                    <input type="tel" name="phone" class="form-control" placeholder="9876543210" required>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small fw-bold">Register As</label>
+                    <select name="role" class="form-select" required>
+                        <option value="STUDENT" selected>Student / Learner</option>
+                        <option value="VENDOR">Vendor / Instructor</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small fw-bold">Phone Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent">+91</span>
+                        <input type="tel" name="phone" class="form-control" placeholder="9876543210" required>
+                    </div>
                 </div>
             </div>
             <div class="mb-4 form-check">
