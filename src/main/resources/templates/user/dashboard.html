@@ -3,14 +3,120 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>User Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
-<body style="padding: 50px; text-align: center;">
-    <h1>User Dashboard</h1>
-    <p>Welcome to the Fashion Institute User Portal.</p>
-    <a th:href="@{/}">Back to Home</a>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <span class="text-theme">F</span> INSTITUTE
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-graduation-cap"></i> My Learning</a></li>
+                <li><a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
+                <li><a href="#"><i class="fa-solid fa-certificate"></i> Certificates</a></li>
+                <li><a href="#"><i class="fa-solid fa-message"></i> Messages</a></li>
+                <li class="mt-5"><a th:href="@{/}" class="text-danger"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <div>
+                    <h2 class="fw-bold mb-1">Explore New Trends</h2>
+                    <p class="text-muted small">Pick a new course and start your creative journey today.</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="search-box position-relative d-none d-lg-block">
+                        <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                        <input type="text" class="form-control ps-5 border-0 shadow-sm" style="border-radius: 12px; width: 300px;" placeholder="Search for courses...">
+                    </div>
+                    <button class="btn btn-light rounded-circle shadow-sm"><i class="fa-regular fa-bell"></i></button>
+                    <img src="https://ui-avatars.com/api/?name=Fashion+Student&background=2B1B10&color=fff" class="user-profile-img" alt="Profile">
+                </div>
+            </div>
+
+            <!-- Dashboard Sections -->
+            <div class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Available Courses</h4>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-white btn-sm border shadow-sm px-3">All</button>
+                        <button class="btn btn-white btn-sm border shadow-sm px-3">Couture</button>
+                        <button class="btn btn-white btn-sm border shadow-sm px-3">Styling</button>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Iterating over courses from backend -->
+                    <div class="col-lg-4 col-md-6" th:each="course : ${courses}">
+                        <div class="elite-course-card">
+                            <div class="course-img-wrapper">
+                                <span class="course-tag" th:text="${course.category}">FASHION</span>
+                                <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                <div class="course-duration" th:text="${course.duration}">6 Months</div>
+                            </div>
+                            <div class="course-info p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="fw-bold mb-0" th:text="${course.title}">Course Title</h5>
+                                    <span class="text-theme fw-bold" th:text="${'$' + course.price}">$0</span>
+                                </div>
+                                <p class="small text-muted mb-4" th:text="${course.description}">Learn the latest techniques in the fashion world from industry experts.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="https://ui-avatars.com/api/?name=Instructor&background=random" class="rounded-circle" style="width: 25px; height: 25px;">
+                                        <small class="fw-bold" th:text="${course.instructorName}">Instructor</small>
+                                    </div>
+                                    <a href="#" class="btn btn-gradient-dash btn-sm px-4 rounded-pill">Enroll</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder if no courses -->
+                    <div class="col-12 text-center py-5" th:if="${courses.empty}">
+                        <div class="mb-4"><i class="fa-solid fa-folder-open fa-4x text-light"></i></div>
+                        <h5 class="text-muted">No courses available at the moment.</h5>
+                        <p class="text-muted small">Check back later for new programs!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Continue Learning Section -->
+            <div class="mb-5">
+                <h4 class="fw-bold mb-4">Continue Learning</h4>
+                <div class="stat-card p-4">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="bg-light-pink p-3 rounded-4">
+                                <i class="fa-solid fa-play fa-2x text-theme"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h6 class="fw-bold mb-1">Principles of Sustainable Fashion</h6>
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar bg-theme" style="width: 65%;"></div>
+                            </div>
+                            <small class="text-muted">Lesson 8 of 12 | 65% Completed</small>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-gradient-dash">Resume</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

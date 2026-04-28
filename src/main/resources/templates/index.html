@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -32,21 +32,139 @@
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/about}">About Us</a></li>
-                <li><a href="#courses">Courses</a></li>
+                <li class="has-dropdown" id="programsDropdown">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-1" onclick="toggleDropdown(event)">Programs <i class="fa-solid fa-chevron-down small" style="font-size: 0.6rem;"></i></a>
+                    <ul class="dropdown-menu-custom">
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Courses Offered <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a href="#" class="submenu-item">Fashion Designing</a></li>
+                                <li><a href="#" class="submenu-item">Jewellery Designing</a></li>
+                                <li><a href="#" class="submenu-item">Interior Designing</a></li>
+                                <li><a href="#" class="submenu-item">Photography</a></li>
+                                <li><a href="#" class="submenu-item">Shoe Designing</a></li>
+                                <li><a href="#" class="submenu-item">Beauty and Grooming</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Diploma Programs <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a href="#" class="submenu-item">Diploma in Fashion Designing</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Nail Technology</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Apparel Technology</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Hair Styling & Hair Design</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Textile Designing</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Jewellery Designing</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Boutique Management</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Gemology</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Cosmetology</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Fashion Photography</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Professional Makeup Artistry</a></li>
+                                <li><a href="#" class="submenu-item">Diploma in Shoe Designing</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Undergraduate (UG) <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a href="#" class="submenu-item">Bachelor of Fashion Design</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Hair, Makeup & Prosthetics</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Textile Design</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Jewellery Design</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Apparel Design & Production</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Accessory Design</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Fashion Technology</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Footwear Design</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Cosmetology</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Sustainable Fashion</a></li>
+                                <li><a href="#" class="submenu-item">Bachelor of Beauty & Wellness</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Short Term Courses <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a href="#" class="submenu-item">Embroidery Designing</a></li>
+                                <li><a href="#" class="submenu-item">Crochet Designing</a></li>
+                                <li><a href="#" class="submenu-item">Nail Art Courses</a></li>
+                                <li><a href="#" class="submenu-item">Fabric Painting</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li><a th:href="@{/gallery}">Gallery</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <!-- Dynamic Dashboard Links -->
+                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}" class="fw-bold text-theme">Admin Dashboard</a></li>
+                <li sec:authorize="hasRole('VENDOR')"><a th:href="@{/vendor/dashboard}" class="fw-bold text-theme">Vendor Dashboard</a></li>
+                <li sec:authorize="hasRole('STUDENT')"><a th:href="@{/user/dashboard}" class="fw-bold text-theme">My Dashboard</a></li>
             </ul>
         </div>
         <div class="nav-right">
             <a href="#" class="btn-outline">Admissions</a>
             <a href="#" class="btn-solid">Apply Now</a>
-            <a href="#" style="color: #fff;"><i class="fa-regular fa-circle-user fa-xl"></i></a>
+            <!-- User Login Trigger (Only shown if NOT logged in) -->
+            <a href="javascript:void(0)" style="color: #fff;" data-bs-toggle="modal" data-bs-target="#loginModal" sec:authorize="!isAuthenticated()">
+                <i class="fa-regular fa-circle-user fa-xl"></i>
+            </a>
+            <!-- Logout Link (Only shown if logged in) -->
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="d-inline">
+                <button type="submit" style="background: none; border: none; color: #fff; padding: 0;">
+                    <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+                </button>
+            </form>
             <button class="mobile-toggle" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
         </div>
     </nav>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content auth-modal">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5 pt-2">
+                    <!-- Success Alert -->
+                    <div th:if="${param.registrationSuccess}" class="alert alert-success border-0 rounded-4 mb-4 small">
+                        <i class="fa-solid fa-circle-check me-2"></i> Registration successful! Please login.
+                    </div>
+
+                    <!-- Error Alert -->
+                    <div th:if="${param.error}" class="alert alert-danger border-0 rounded-4 mb-4 small">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i> Invalid username or password.
+                    </div>
+                    
+                    <div class="text-center mb-5">
+                        <h2 class="fw-black mb-2" style="font-family: 'Playfair Display', serif; font-weight: 900;">Welcome Back</h2>
+                        <p class="text-muted small">Access your fashion institute portal</p>
+                    </div>
+                    <form th:action="@{/login}" method="post">
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Username</label>
+                            <input type="text" name="username" class="form-control auth-input" placeholder="Enter username" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Password</label>
+                            <input type="password" name="password" class="form-control auth-input" placeholder="••••••••" required>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 small">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="modalRemember">
+                                <label class="form-check-label" for="modalRemember">Remember me</label>
+                            </div>
+                            <a th:href="@{/forgot-password}" class="text-theme">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn-auth w-100 py-3 mb-4">SIGN IN</button>
+                    </form>
+                    <div class="text-center small">
+                        Don't have an account? <a th:href="@{/register}" class="text-theme fw-bold">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Mobile Menu Drawer -->
     <div class="mobile-menu-drawer" id="mobileMenu">
@@ -56,7 +174,7 @@
             <ul class="drawer-links">
                 <li><a th:href="@{/}" onclick="toggleMobileMenu()">Home</a></li>
                 <li><a th:href="@{/about}" onclick="toggleMobileMenu()">About Us</a></li>
-                <li><a href="#courses" onclick="toggleMobileMenu()">Courses</a></li>
+                <li><a href="#programs" onclick="toggleMobileMenu()">Programs</a></li>
                 <li><a th:href="@{/gallery}" onclick="toggleMobileMenu()">Gallery</a></li>
                 <li><a href="#testimonials" onclick="toggleMobileMenu()">Reviews</a></li>
                 <li><a href="#contact" onclick="toggleMobileMenu()">Contact</a></li>
@@ -565,9 +683,9 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                     <div class="portal-links small">
-                        <a th:href="@{/user/dashboard}" class="me-3">Student Portal</a>
-                        <a th:href="@{/vendor/dashboard}" class="me-3">Vendor Portal</a>
-                        <a th:href="@{/admin/dashboard}">Admin Access</a>
+                        <a th:href="@{/login}" class="me-3">Student Portal</a>
+                        <a th:href="@{/login}" class="me-3">Vendor Portal</a>
+                        <a th:href="@{/login}">Admin Access</a>
                     </div>
                 </div>
             </div>
@@ -591,9 +709,32 @@
 
         document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
 
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('programsDropdown').classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('programsDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
         function toggleMobileMenu() {
             document.getElementById('mobileMenu').classList.toggle('active');
         }
+
+        // Auto-open login modal if 'login=true', 'registrationSuccess=true', or 'error' is in URL
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('login') === 'true' || urlParams.get('registrationSuccess') === 'true' || urlParams.get('error') !== null) {
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            }
+        });
     </script>
 </body>
 
