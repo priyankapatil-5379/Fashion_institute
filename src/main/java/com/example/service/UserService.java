@@ -26,4 +26,8 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
+
+    public long countStudents() {
+        return userRepository.countByRole("STUDENT");
+    }
 }
