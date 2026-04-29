@@ -26,7 +26,7 @@ public class User {
     
     private String gender;
 
-    private String role; // STUDENT, ADMIN, INSTRUCTOR
+    private String role; // STUDENT, VENDOR, INSTRUCTOR
 
     private String resetToken;
     private java.time.LocalDateTime resetTokenExpiry;

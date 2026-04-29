@@ -204,7 +204,6 @@
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <!-- Dynamic Dashboard Links -->
-                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}" class="fw-bold text-theme">Admin Dashboard</a></li>
                 <li sec:authorize="hasRole('VENDOR')"><a th:href="@{/vendor/dashboard}" class="fw-bold text-theme">Vendor Dashboard</a></li>
                 <li sec:authorize="hasRole('STUDENT')"><a th:href="@{/user/dashboard}" class="fw-bold text-theme">My Dashboard</a></li>
             </ul>
@@ -779,8 +778,7 @@
                 <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                     <div class="portal-links small">
                         <a th:href="@{/login}" class="me-3">Student Portal</a>
-                        <a th:href="@{/login}" class="me-3">Vendor Portal</a>
-                        <a th:href="@{/login}">Admin Access</a>
+                        <a th:href="@{/login}">Vendor Portal</a>
                     </div>
                 </div>
             </div>
