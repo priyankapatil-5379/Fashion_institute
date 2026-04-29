@@ -65,6 +65,7 @@
         <ul class="nav-links">
             <li><a th:href="@{/admin/dashboard}" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
             <li><a th:href="@{/admin/students}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a th:href="@{/admin/vendors}"><i class="fas fa-store"></i> Vendors</a></li>
             <li><a th:href="@{/admin/courses}"><i class="fas fa-book-open"></i> Courses</a></li>
             <li><a th:href="@{/admin/applications}"><i class="fas fa-file-signature"></i> Applications</a></li>
             <li><a th:href="@{/admin/events}"><i class="fas fa-calendar-alt"></i> Events</a></li>
@@ -96,22 +97,32 @@
             <div class="stat-card">
                 <h3>Total Students</h3>
                 <div class="value" th:text="${totalStudents}">0</div>
-                <div class="trend up"><i class="fas fa-arrow-up"></i> 12% vs last month</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 12% vs last month</div> -->
+            </div>
+            <div class="stat-card">
+                <h3>Total Vendors</h3>
+                <div class="value" th:text="${totalVendors}">0</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 5% vs last month</div> -->
             </div>
             <div class="stat-card">
                 <h3>Active Courses</h3>
                 <div class="value" th:text="${activeCourses}">0</div>
-                <div class="trend"><i class="fas fa-minus"></i> Stable</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend"><i class="fas fa-minus"></i> Stable</div> -->
             </div>
             <div class="stat-card">
                 <h3>Pending Apps</h3>
                 <div class="value" th:text="${pendingApplications}">0</div>
-                <div class="trend down"><i class="fas fa-arrow-down"></i> 5% vs last week</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend down"><i class="fas fa-arrow-down"></i> 5% vs last week</div> -->
             </div>
             <div class="stat-card">
                 <h3>Revenue</h3>
                 <div class="value" th:text="${totalRevenue}">$0</div>
-                <div class="trend up"><i class="fas fa-arrow-up"></i> 8% growth</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 8% growth</div> -->
             </div>
         </div>
 
@@ -138,7 +149,42 @@
                             <small th:text="${activity.time}">Time</small>
                         </div>
                     </div>
+                    <div th:if="${#lists.isEmpty(recentActivities)}" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <i class="fas fa-history" style="font-size: 2rem; display: block; margin-bottom: 0.5rem; opacity: 0.2;"></i>
+                        No recent activity.
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Course Section -->
+        <div class="panel" style="margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Course Management</h2>
+                <a th:href="@{/admin/courses}" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem;">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="table-container" style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Title</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Instructor</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Duration</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="course : ${courses}" style="border-bottom: 1px solid rgba(0,0,0,0.02);">
+                            <td style="padding: 1rem; font-weight: 500;" th:text="${course.title}">Title</td>
+                            <td style="padding: 1rem; color: var(--text-muted);" th:text="${course.instructorName}">Instructor</td>
+                            <td style="padding: 1rem; color: var(--text-muted);" th:text="${course.duration}">Duration</td>
+                            <td style="padding: 1rem; color: var(--secondary); font-weight: 600;" th:text="${'₹' + course.price}">Price</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(courses)}">
+                            <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-muted);">No courses found.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>

@@ -30,4 +30,16 @@ public class UserService {
     public long countStudents() {
         return userRepository.countByRole("STUDENT");
     }
+
+    public long countVendors() {
+        return userRepository.countByRole("VENDOR");
+    }
+
+    public java.util.List<User> getAllStudents() {
+        return userRepository.findAllByRole("STUDENT");
+    }
+
+    public java.util.List<User> getAllVendors() {
+        return userRepository.findAllByRole("VENDOR");
+    }
 }

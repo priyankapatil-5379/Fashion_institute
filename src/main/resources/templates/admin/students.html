@@ -19,6 +19,7 @@
         <ul class="nav-links">
             <li><a th:href="@{/admin/dashboard}"><i class="fas fa-th-large"></i> Dashboard</a></li>
             <li><a th:href="@{/admin/students}" class="active"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a th:href="@{/admin/vendors}"><i class="fas fa-store"></i> Vendors</a></li>
             <li><a th:href="@{/admin/courses}"><i class="fas fa-book-open"></i> Courses</a></li>
             <li><a th:href="@{/admin/applications}"><i class="fas fa-file-signature"></i> Applications</a></li>
             <li><a th:href="@{/admin/events}"><i class="fas fa-calendar-alt"></i> Events</a></li>
@@ -55,27 +56,25 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>Username</th>
                         <th>Email</th>
-                        <th>Course</th>
-                        <th>Status</th>
+                        <th>Role</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="student : ${students}">
                         <td th:text="${student.id}" style="color: var(--primary); font-weight: 600;">STU000</td>
-                        <td th:text="${student.name}">Student Name</td>
+                        <td th:text="${student.username}">Username</td>
                         <td th:text="${student.email}" style="color: var(--text-muted);">email@example.com</td>
-                        <td th:text="${student.course}">Course Name</td>
-                        <td>
-                            <span th:text="${student.status}" 
-                                  th:classappend="${student.status == 'Active' ? 'badge active' : 'badge inactive'}">Status</span>
-                        </td>
+                        <td th:text="${student.role}">Role</td>
                         <td>
                             <i class="fas fa-edit" style="cursor: pointer; color: var(--text-muted); margin-right: 10px;"></i>
                             <i class="fas fa-trash-alt" style="cursor: pointer; color: #f43f5e;"></i>
                         </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(students)}">
+                        <td colspan="5" style="padding: 2rem; text-align: center; color: var(--text-muted);">No students found.</td>
                     </tr>
                 </tbody>
             </table>

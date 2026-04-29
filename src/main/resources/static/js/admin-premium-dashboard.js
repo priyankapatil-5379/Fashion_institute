@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
             datasets: [{
                 label: 'New Enrollments',
-                data: [65, 78, 110, 85, 145, 190],
+                data: [0, 0, 0, 0, 0, 0],
                 borderColor: '#fa891a',
                 borderWidth: 3,
                 backgroundColor: gradient,
