@@ -27,10 +27,17 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
+<<<<<<< HEAD
                         .requestMatchers("/", "/login", "/register", "/forgot-password", "/css/**", "/images/**", "/js/**", "/vendor/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("STUDENT", "ADMIN")
                         .anyRequest().authenticated()
+=======
+                        .requestMatchers("/", "/login", "/register", "/forgot-password", "/css/**", "/images/**", "/js/**", "/user/course/**", "/user/payment/**").permitAll()
+                        .requestMatchers("/vendor/**").hasRole("VENDOR")
+                        .requestMatchers("/user/**").hasRole("STUDENT")
+                        .anyRequest().authenticated() 
+>>>>>>> 4cc25f987f84f23dba798e5830c6615b40ab091d
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
@@ -39,8 +46,8 @@ public class SecurityConfig {
                             String redirectUrl = "/";
                             var authorities = authentication.getAuthorities();
                             for (var authority : authorities) {
-                                if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                                    redirectUrl = "/admin/dashboard";
+                                if (authority.getAuthority().equals("ROLE_VENDOR")) {
+                                    redirectUrl = "/vendor/dashboard";
                                     break;
                                 }
                             }

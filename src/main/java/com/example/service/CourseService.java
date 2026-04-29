@@ -28,4 +28,8 @@ public class CourseService {
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
     }
+
+    public Course getCourseById(Long id) {
+        return courseRepository.findById(id).orElse(null);
+    }
 }

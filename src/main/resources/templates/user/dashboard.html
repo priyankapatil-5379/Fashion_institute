@@ -8,6 +8,48 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Force Chatbot Visibility */
+        .chatbot-float {
+            position: fixed !important;
+            width: 60px !important;
+            height: 60px !important;
+            bottom: 115px !important;
+            right: 40px !important;
+            background-color: #ff6b35 !important;
+            color: #fff !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+            z-index: 99999 !important;
+            cursor: pointer !important;
+        }
+        .chat-window {
+            position: fixed !important;
+            bottom: 185px !important;
+            right: 40px !important;
+            width: 350px !important;
+            height: 450px !important;
+            background: white !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+            z-index: 100000 !important;
+            display: none;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+        }
+        .chat-window.active { display: flex !important; }
+        .chat-header { background: #ff6b35 !important; color: white !important; padding: 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
+        .chat-body { flex: 1 !important; padding: 15px !important; overflow-y: auto !important; background: #fdf2e9 !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
+        .chat-footer { padding: 15px !important; background: white !important; display: flex !important; gap: 10px !important; border-top: 1px solid #eee !important; }
+        .msg-vendor { background: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-start !important; max-width: 80% !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; color: #333 !important; }
+        .msg-user { background: #ff6b35 !important; color: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-end !important; max-width: 80% !important; }
+        .chat-input { flex: 1 !important; border: 1px solid #ddd !important; border-radius: 10px !important; padding: 8px 12px !important; }
+    </style>
 </head>
 
 <body>
@@ -18,12 +60,20 @@
                 <span class="text-theme">F</span> INSTITUTE
             </div>
             <ul class="sidebar-nav">
-                <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fa-solid fa-graduation-cap"></i> My Learning</a></li>
-                <li><a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
-                <li><a href="#"><i class="fa-solid fa-certificate"></i> Certificates</a></li>
-                <li><a href="#"><i class="fa-solid fa-message"></i> Messages</a></li>
-                <li class="mt-5"><a th:href="@{/}" class="text-danger"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li><a th:href="@{/user/dashboard}" th:classappend="${view == 'dashboard' ? 'active' : ''}"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a th:href="@{/user/my-learning}" th:classappend="${view == 'learning' ? 'active' : ''}"><i class="fa-solid fa-graduation-cap"></i> My Learning</a></li>
+                <li><a th:href="@{/user/wishlist}" th:classappend="${view == 'wishlist' ? 'active' : ''}"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
+                <li><a th:href="@{/user/messages}" th:classappend="${view == 'messages' ? 'active' : ''}">
+                    <i class="fa-solid fa-message"></i> Messages 
+                    <span id="studentMsgBadge" class="badge bg-danger rounded-circle ms-2 d-none" style="font-size: 0.6rem; padding: 0.3em 0.5em;">0</span>
+                </a></li>
+                <li class="mt-5">
+                    <form th:action="@{/logout}" method="post" id="logoutFormStudent">
+                        <a href="javascript:void(0)" onclick="document.getElementById('logoutFormStudent').submit()" class="text-danger">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </form>
+                </li>
             </ul>
         </div>
 
@@ -31,8 +81,8 @@
         <div class="dashboard-content">
             <div class="dashboard-header">
                 <div>
-                    <h2 class="fw-bold mb-1">Explore New Trends</h2>
-                    <p class="text-muted small">Pick a new course and start your creative journey today.</p>
+                    <h2 class="fw-bold mb-1" th:text="${view == 'dashboard' ? 'Explore New Trends' : (view == 'learning' ? 'My Learning' : (view == 'messages' ? 'Messages' : 'My Wishlist'))}">Explore New Trends</h2>
+                    <p class="text-muted small" th:text="${view == 'dashboard' ? 'Pick a new course and start your creative journey today.' : (view == 'learning' ? 'Continue your fashion education journey.' : (view == 'messages' ? 'Direct communication with your instructors.' : 'Your curated list of desired fashion programs.'))}">Pick a new course and start your creative journey today.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <div class="search-box position-relative d-none d-lg-block">
@@ -46,17 +96,69 @@
 
             <!-- Dashboard Sections -->
             <div class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="fw-bold mb-0">Available Courses</h4>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-white btn-sm border shadow-sm px-3">All</button>
-                        <button class="btn btn-white btn-sm border shadow-sm px-3">Couture</button>
-                        <button class="btn btn-white btn-sm border shadow-sm px-3">Styling</button>
+                <!-- Available Courses (Dashboard) -->
+                <div th:if="${view == 'dashboard'}">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0">Available Courses</h4>
+                    </div>
+                    <div class="row g-4 mb-5">
+                        <div class="col-lg-4 col-md-6" th:each="course : ${courses}">
+                            <div class="elite-course-card">
+                                <div class="course-img-wrapper">
+                                    <span class="course-tag" th:text="${course.category}">FASHION</span>
+                                    <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                    <div class="course-duration" th:text="${course.duration}">6 Months</div>
+                                </div>
+                                <div class="course-info p-4">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="fw-bold mb-0" th:text="${course.title}">Course Title</h5>
+                                        <span class="text-theme fw-bold" th:text="${'$' + course.price}">$0</span>
+                                    </div>
+                                    <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 80)}">Learn the latest techniques in the fashion world from industry experts.</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <img src="https://ui-avatars.com/api/?name=Instructor&background=random" class="rounded-circle" style="width: 25px; height: 25px;">
+                                            <small class="fw-bold" th:text="${course.instructorName}">Instructor</small>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-light btn-sm rounded-circle wishlist-btn" th:onclick="'addToWishlist(' + ${course.id} + ')'" title="Add to Wishlist">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </button>
+                                            <a th:href="@{/user/course/{id}(id=${course.id})}" class="btn btn-gradient-dash btn-sm px-4 rounded-pill">Enroll</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- My Wishlist (Dashboard Only) -->
+                    <div th:if="${!wishlist.empty}" class="mt-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold mb-0">My Wishlist <span class="badge bg-theme ms-2" th:text="${wishlist.size()}">0</span></h4>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-4 col-md-6" th:each="course : ${wishlist}">
+                                <div class="elite-course-card" style="border: 1px dashed var(--theme-main);">
+                                    <div class="course-img-wrapper">
+                                        <span class="course-tag" th:text="${course.category}">FASHION</span>
+                                        <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                    </div>
+                                    <div class="course-info p-4">
+                                        <h6 class="fw-bold mb-1 text-truncate" th:text="${course.title}">Course Title</h6>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <span class="text-theme fw-bold small" th:text="${'$' + course.price}">$0</span>
+                                            <a th:href="@{/user/course/{id}(id=${course.id})}" class="btn btn-theme btn-sm px-3 rounded-pill" style="font-size: 0.7rem;">Enroll Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row g-4">
-                    <!-- Iterating over courses from backend -->
+                <!-- Learning / Wishlist Dedicated Views -->
+                <div class="row g-4" th:if="${view == 'learning' || view == 'wishlist'}">
                     <div class="col-lg-4 col-md-6" th:each="course : ${courses}">
                         <div class="elite-course-card">
                             <div class="course-img-wrapper">
@@ -69,18 +171,26 @@
                                     <h5 class="fw-bold mb-0" th:text="${course.title}">Course Title</h5>
                                     <span class="text-theme fw-bold" th:text="${'$' + course.price}">$0</span>
                                 </div>
-                                <p class="small text-muted mb-4" th:text="${course.description}">Learn the latest techniques in the fashion world from industry experts.</p>
+                                <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 80)}">Learn the latest techniques in the fashion world from industry experts.</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center gap-2">
                                         <img src="https://ui-avatars.com/api/?name=Instructor&background=random" class="rounded-circle" style="width: 25px; height: 25px;">
                                         <small class="fw-bold" th:text="${course.instructorName}">Instructor</small>
                                     </div>
-                                    <a href="#" class="btn btn-gradient-dash btn-sm px-4 rounded-pill">Enroll</a>
+                                    <div class="d-flex gap-2">
+                                        <!-- Remove from Wishlist (Only on Wishlist View) -->
+                                        <button th:if="${view == 'wishlist'}" class="btn btn-light btn-sm rounded-circle text-danger" th:onclick="'removeFromWishlist(' + ${course.id} + ')'" title="Remove from Wishlist">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                        
+                                        <a th:href="@{/user/course/{id}(id=${course.id})}" class="btn btn-gradient-dash btn-sm px-4 rounded-pill">
+                                            <span th:text="${view == 'learning' ? 'View' : 'Enroll'}">Enroll</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- Placeholder if no courses -->
                     <div class="col-12 text-center py-5" th:if="${courses.empty}">
                         <div class="mb-4"><i class="fa-solid fa-folder-open fa-4x text-light"></i></div>
@@ -89,34 +199,283 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Continue Learning Section -->
-            <div class="mb-5">
-                <h4 class="fw-bold mb-4">Continue Learning</h4>
-                <div class="stat-card p-4">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <div class="bg-light-pink p-3 rounded-4">
-                                <i class="fa-solid fa-play fa-2x text-theme"></i>
+                <!-- Messages View -->
+                <div class="row g-4" th:if="${view == 'messages'}">
+                    <div class="col-lg-12">
+                        <div class="stat-card p-0 overflow-hidden d-flex" style="height: 600px;">
+                            <!-- Contacts Sidebar -->
+                            <div class="border-end bg-light" style="width: 300px;">
+                                <div class="p-3 border-bottom bg-white">
+                                    <h6 class="fw-bold mb-0">Conversations</h6>
+                                </div>
+                                <div class="p-3 bg-white">
+                                    <div class="d-flex align-items-center gap-3 p-2 rounded-4 bg-light-pink border border-theme">
+                                        <img src="https://ui-avatars.com/api/?name=Fashion+Guru&background=FA891A&color=fff" class="rounded-circle" style="width: 45px; height: 45px;">
+                                        <div>
+                                            <div class="fw-bold small">Fashion Guru</div>
+                                            <small class="text-theme">Active Now</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <h6 class="fw-bold mb-1">Principles of Sustainable Fashion</h6>
-                            <div class="progress mb-2" style="height: 6px;">
-                                <div class="progress-bar bg-theme" style="width: 65%;"></div>
+                            <!-- Chat Area -->
+                            <div class="flex-grow-1 d-flex flex-column bg-white">
+                                <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="https://ui-avatars.com/api/?name=Fashion+Guru&background=FA891A&color=fff" class="rounded-circle" style="width: 40px; height: 40px;">
+                                        <h6 class="fw-bold mb-0">Fashion Guru</h6>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-light btn-sm rounded-circle"><i class="fa-solid fa-phone"></i></button>
+                                        <button class="btn btn-light btn-sm rounded-circle"><i class="fa-solid fa-video"></i></button>
+                                    </div>
+                                </div>
+                                <div id="mainChatBody" class="flex-grow-1 p-4 overflow-y-auto bg-light-pink" style="display: flex; flex-direction: column; gap: 15px;">
+                                    <!-- Messages will load here -->
+                                </div>
+                                <div class="p-3 border-top bg-white">
+                                    <div class="d-flex gap-3">
+                                        <input type="text" id="mainChatInput" class="form-control custom-input" placeholder="Type your message here...">
+                                        <button class="btn btn-gradient-dash px-4" onclick="sendMainMessage()">Send <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                                    </div>
+                                </div>
                             </div>
-                            <small class="text-muted">Lesson 8 of 12 | 65% Completed</small>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-gradient-dash">Resume</button>
                         </div>
                     </div>
                 </div>
+
+                <script th:inline="javascript">
+                    const currentUser = [[${#authentication.name}]];
+                    const vendorUser = "Fashion Guru";
+
+                    async function loadMessages() {
+                        const response = await fetch(`/api/messages/conversation?user1=${currentUser}&user2=${vendorUser}`);
+                        const messages = await response.json();
+                        const body = document.getElementById('mainChatBody');
+                        if(!body) return;
+                        
+                        body.innerHTML = '';
+                        messages.forEach(msg => {
+                            const div = document.createElement('div');
+                            div.className = `message ${msg.sender === currentUser ? 'msg-user' : 'msg-vendor'}`;
+                            div.style.maxWidth = '70%';
+                            div.style.padding = '12px 18px';
+                            div.style.borderRadius = '20px';
+                            div.style.alignSelf = msg.sender === currentUser ? 'flex-end' : 'flex-start';
+                            div.style.background = msg.sender === currentUser ? '#ff6b35' : 'white';
+                            div.style.color = msg.sender === currentUser ? 'white' : '#333';
+                            div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+                            div.innerText = msg.content;
+                            body.appendChild(div);
+                        });
+                        body.scrollTop = body.scrollHeight;
+                    }
+
+                    async function sendMainMessage() {
+                        const input = document.getElementById('mainChatInput');
+                        if (!input.value.trim()) return;
+
+                        const msg = {
+                            sender: currentUser,
+                            receiver: vendorUser,
+                            content: input.value
+                        };
+
+                        await fetch('/api/messages/send', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(msg)
+                        });
+
+                        input.value = '';
+                        loadMessages();
+                    }
+
+                    async function checkUnread() {
+                        const response = await fetch(`/api/messages/unread-count?receiver=${currentUser}`);
+                        const count = await response.json();
+                        const badge = document.getElementById('studentMsgBadge');
+                        if (badge) {
+                            if (count > 0) {
+                                badge.innerText = count;
+                                badge.classList.remove('d-none');
+                            } else {
+                                badge.classList.add('d-none');
+                            }
+                        }
+                    }
+
+                    if ([[${view == 'messages'}]]) {
+                        loadMessages();
+                        setInterval(loadMessages, 3000);
+                    }
+                    
+                    checkUnread();
+                    setInterval(checkUnread, 5000);
+                </script>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div id="wishlistToast" class="toast align-items-center text-white bg-dark border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toastBody" class="toast-body p-3">
+                    <i class="fa-solid fa-circle-check text-success me-2"></i> 
+                    Added to Wishlist Successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function addToWishlist(courseId) {
+            fetch('/user/add-to-wishlist/' + courseId, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.content || ''
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Show Bootstrap Toast
+                const toastEl = document.getElementById('wishlistToast');
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+                
+                // Change heart icon to solid
+                const btn = event.currentTarget;
+                btn.innerHTML = '<i class="fa-solid fa-heart text-danger"></i>';
+                btn.disabled = true;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function removeFromWishlist(courseId) {
+            fetch('/user/remove-from-wishlist/' + courseId, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.content || ''
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Show Toast
+                document.getElementById('toastBody').innerHTML = '<i class="fa-solid fa-trash-can text-danger me-2"></i> Removed from Wishlist Successfully!';
+                const toastEl = document.getElementById('wishlistToast');
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+                
+                // Remove the card from UI
+                const card = event.target.closest('.col-lg-4');
+                if (card) card.remove();
+                else window.location.reload(); // Fallback
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <!-- Floating Chatbot Button -->
+    <div class="chatbot-float" onclick="toggleChat()" style="background-color: #ff6b35;">
+        <i class="fa-solid fa-comment-dots fa fa-comment text-white"></i>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-white" style="width: 10px; height: 10px;"></div>
+                <span class="fw-bold">Vendor Support</span>
+            </div>
+            <i class="fa-solid fa-xmark cursor-pointer" onclick="toggleChat()"></i>
+        </div>
+        <div id="chatBody" class="chat-body">
+            <div class="message msg-vendor">
+                Hello! I am your Fashion Institute assistant. How can I help you connect with our master vendors today?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+            <button class="btn btn-theme-solid p-2 rounded-circle" style="width: 40px; height: 40px;" onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('active');
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const body = document.getElementById('chatBody');
+            if (input.value.trim() === '') return;
+
+            const text = input.value;
+            input.value = '';
+
+            // 1. Send User Message to DB
+            const userMsg = {
+                sender: currentUser,
+                receiver: vendorUser,
+                content: text
+            };
+            await fetch('/api/messages/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userMsg)
+            });
+
+            // 2. Refresh Chat UI
+            if(typeof loadMessages === "function") loadMessages();
+            refreshChatWindow(body);
+
+            // 3. Simulated Vendor Response (Automated for now, but saved to DB)
+            setTimeout(async () => {
+                let responseText = "Thank you for your message! Our vendor team will get back to you shortly.";
+                if (text.toLowerCase().includes('enroll')) responseText = "The vendor is ready to discuss enrollment. Would you like to schedule a virtual tour?";
+                
+                const vendorMsg = {
+                    sender: vendorUser,
+                    receiver: currentUser,
+                    content: responseText
+                };
+                await fetch('/api/messages/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(vendorMsg)
+                });
+                
+                if(typeof loadMessages === "function") loadMessages();
+                refreshChatWindow(body);
+            }, 1000);
+        }
+
+        async function refreshChatWindow(body) {
+            const response = await fetch(`/api/messages/conversation?user1=${currentUser}&user2=${vendorUser}`);
+            const messages = await response.json();
+            body.innerHTML = '';
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `message ${msg.sender === currentUser ? 'msg-user' : 'msg-vendor'}`;
+                div.innerText = msg.content;
+                body.appendChild(div);
+            });
+            body.scrollTop = body.scrollHeight;
+        }
+
+        // Allow 'Enter' key to send message
+        document.getElementById('chatInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send?phone=919999999999&text=Hello, I have an inquiry about the Fashion Institute programs." class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp fab fa-whatsapp"></i>
+    </a>
 </body>
 
 </html>

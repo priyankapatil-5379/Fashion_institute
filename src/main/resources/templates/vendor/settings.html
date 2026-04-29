@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Settings | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <span class="text-theme">F</span> INSTITUTE
+            </div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a th:href="@{/vendor/courses}"><i class="fa-solid fa-book-open"></i> My Courses</a></li>
+                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> Students</a></li>
+                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
+                <li><a th:href="@{/vendor/settings}" class="active"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                <li class="mt-5">
+                    <form th:action="@{/logout}" method="post" id="logoutForm">
+                        <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Account Settings</h2>
+                    <p class="text-muted small">Manage your professional profile and portal preferences.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Settings Forms -->
+                <div class="col-lg-12">
+                    <!-- Profile Section -->
+                    <div class="settings-card">
+                        <h5 class="fw-bold mb-4">Professional Profile</h5>
+                        
+                        <div class="text-center mb-5">
+                            <div class="position-relative d-inline-block">
+                                <div id="profilePreview" class="d-inline-block fw-bold d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem; border-radius: 4px; background: #fdf2e9; color: white; text-shadow: 0 0 2px rgba(0,0,0,0.1); overflow: hidden;">
+                                    FG
+                                </div>
+                                <label for="profileUpload" class="position-absolute bottom-0 end-0 bg-theme text-white rounded-circle d-flex align-items-center justify-content-center cursor-pointer shadow" style="width: 32px; height: 32px; margin-bottom: 10px; border: 2px solid white;">
+                                    <i class="fa-solid fa-camera small"></i>
+                                </label>
+                                <input type="file" id="profileUpload" class="d-none" accept="image/*" onchange="previewProfilePhoto(this)">
+                            </div>
+                            <h6 class="fw-bold mb-0">Fashion Guru</h6>
+                            <p class="text-muted small">Lead Couture Instructor</p>
+                        </div>
+
+                        <script>
+                            function previewProfilePhoto(input) {
+                                if (input.files && input.files[0]) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        const preview = document.getElementById('profilePreview');
+                                        preview.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                                    };
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Full Name</label>
+                                    <input type="text" class="form-control custom-input" value="Fashion Guru">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Email Address</label>
+                                    <input type="email" class="form-control custom-input" value="guru@fashioninstitute.edu">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Professional Bio</label>
+                                    <textarea class="form-control custom-input" rows="4">Master designer with 15+ years of experience in Haute Couture and sustainable fashion. Lead mentor at The Fashion Institute.</textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Specialization</label>
+                                    <input type="text" class="form-control custom-input" value="Haute Couture, Fashion Styling">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Phone Number</label>
+                                    <input type="text" class="form-control custom-input" value="+1 (555) 000-1234">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-gradient-dash px-5" onclick="saveProfileSettings()">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999;">
+        <div id="settingsToast" class="toast align-items-center text-white bg-dark border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body p-3">
+                    <i class="fa-solid fa-circle-check text-success me-2"></i> 
+                    Profile Updated Successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function previewProfilePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('profilePreview');
+                    preview.innerHTML = `<img src="${e.target.result}" id="savedProfileImg" style="width: 100%; height: 100%; object-fit: cover;">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProfileSettings() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Saving...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Save to LocalStorage
+                const img = document.getElementById('savedProfileImg');
+                if (img) {
+                    localStorage.setItem('vendorProfilePhoto', img.src);
+                }
+
+                const nameInput = document.querySelector('input[value="Fashion Guru"]') || document.querySelector('input[type="text"]');
+                if (nameInput) {
+                    localStorage.setItem('vendorName', nameInput.value);
+                }
+
+                // Show Success Toast
+                const toastEl = document.getElementById('settingsToast');
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                updateUIPerData();
+            }, 1000);
+        }
+
+        function updateUIPerData() {
+            const savedPhoto = localStorage.getItem('vendorProfilePhoto');
+            const savedName = localStorage.getItem('vendorName');
+
+            if (savedPhoto) {
+                document.querySelectorAll('.user-profile-img, .profile-upload-img').forEach(el => el.src = savedPhoto);
+                const preview = document.getElementById('profilePreview');
+                if (preview) preview.innerHTML = `<img src="${savedPhoto}" id="savedProfileImg" style="width: 100%; height: 100%; object-fit: cover;">`;
+            }
+            if (savedName) {
+                document.querySelectorAll('.fw-bold.mb-0, h6.mb-0.small.fw-bold').forEach(el => el.innerText = savedName);
+            }
+        }
+
+        window.onload = updateUIPerData;
+    </script>
+</body>
+
+</html>

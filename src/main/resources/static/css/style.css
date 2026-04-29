@@ -927,6 +927,58 @@ nav {
     transition: var(--transition);
 }
 
+/* --- 14. Reviews Slider (Infinite Scroll) --- */
+.reviews-slider-container {
+    overflow: hidden;
+    padding: 60px 0;
+    background: #fff5f2;
+    position: relative;
+}
+
+.reviews-track {
+    display: flex;
+    width: calc(350px * 10); /* Adjust based on card width and count */
+    animation: scroll 30s linear infinite;
+}
+
+.reviews-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-350px * 5)); } /* Scroll half of the total cards */
+}
+
+.review-card-premium {
+    width: 350px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 0 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.review-card-premium:hover {
+    transform: translateY(-10px);
+}
+
+.reviewer-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.stars { color: #ff6b35; margin-bottom: 10px; }
+.review-text { font-size: 0.95rem; color: #666; font-style: italic; line-height: 1.6; }
+.reviewer-name { font-weight: 700; color: #2d3436; margin-top: 15px; display: block; }
+.reviewer-role { font-size: 0.8rem; color: #ff6b35; text-transform: uppercase; font-weight: 600; }
+
 .footer-links a:hover {
     color: var(--theme-main);
     padding-left: 5px;
@@ -1233,3 +1285,144 @@ hr.opacity-10 {
 
 .portal-links a { color: #fff !important; text-decoration: none; font-weight: 700; transition: all 0.3s ease; opacity: 0.9; } .portal-links a:hover { opacity: 1; color: #ed1275 !important; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
+/* --- 15. Floating WhatsApp Button --- */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366 !important;
+    color: #FFF !important;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 9999 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    animation: pulse-whatsapp 2s infinite;
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e !important;
+    color: #fff !important;
+    transform: scale(1.1);
+}
+
+@keyframes pulse-whatsapp {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* --- 16. Floating Chatbot --- */
+.chatbot-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 115px !important; /* Above WhatsApp */
+    right: 40px;
+    background-color: #ff6b35 !important; /* var(--theme-orange) */
+    color: #FFF !important;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 25px;
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+    z-index: 9999 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.chatbot-float:hover {
+    transform: scale(1.1);
+}
+
+.chat-window {
+    position: fixed;
+    bottom: 190px !important;
+    right: 40px;
+    width: 350px;
+    height: 450px;
+    background: white !important;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+    z-index: 10000 !important;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.chat-window.active {
+    display: flex !important;
+    animation: slideUpChat 0.3s ease;
+}
+
+@keyframes slideUpChat {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.chat-header {
+    background: #ff6b35 !important;
+    color: white !important;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #fdf2e9 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-footer {
+    padding: 15px;
+    background: white !important;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+.msg-vendor {
+    background: white !important;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+    color: #2d3436 !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.msg-user {
+    background: #ff6b35 !important;
+    color: white !important;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.chat-input {
+    flex: 1;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 8px 15px;
+    outline: none;
+}

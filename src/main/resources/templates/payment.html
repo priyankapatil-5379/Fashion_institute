@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #fff5f2; font-family: 'Outfit', sans-serif; }
+        .payment-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .method-item { border: 2px solid #eee; border-radius: 15px; padding: 15px; cursor: pointer; transition: 0.3s; background: #fff; }
+        .method-item:hover { border-color: #ff6b35; }
+        .method-item.active { border-color: #ff6b35; background: #fffaf8; }
+        .method-item.active i { color: #ff6b35 !important; }
+    </style>
+</head>
+<body class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card payment-card p-4">
+                    <h3 class="fw-bold mb-4 text-center">Complete Enrollment</h3>
+                    <div class="p-3 bg-light rounded-4 mb-4 border">
+                        <p class="mb-1 text-muted small uppercase fw-bold">Selected Program</p>
+                        <h5 class="fw-bold" th:text="${course.title}">Advanced Couture Design</h5>
+                        <h4 class="text-primary mt-2 fw-black" th:text="${'₹' + course.price}">₹180,000</h4>
+                    </div>
+                    
+                    <h6 class="fw-bold mb-3">Select Payment Method</h6>
+                    <div class="d-grid gap-3" id="paymentMethods">
+                        <div class="method-item d-flex align-items-center gap-3" onclick="selectMethod(this)">
+                            <i class="fa-solid fa-credit-card fs-4 text-muted"></i>
+                            <span class="fw-bold">Credit / Debit Card</span>
+                        </div>
+                        <div class="method-item d-flex align-items-center gap-3" onclick="selectMethod(this)">
+                            <i class="fa-solid fa-mobile-screen fs-4 text-muted"></i>
+                            <span class="fw-bold">UPI (Google Pay / PhonePe)</span>
+                        </div>
+                        <div class="method-item d-flex align-items-center gap-3" onclick="selectMethod(this)">
+                            <i class="fa-solid fa-building-columns fs-4 text-muted"></i>
+                            <span class="fw-bold">Net Banking</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-dark btn-lg rounded-pill w-100 mt-5 py-3 fw-bold shadow" id="payBtn" th:onclick="'processPayment(' + ${course.id} + ')'">Pay Now</button>
+                    <p class="text-center mt-3"><a th:href="@{/user/course/{id}(id=${course.id})}" class="text-muted text-decoration-none small">Cancel and go back</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectMethod(element) {
+            document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function processPayment(courseId) {
+            const activeMethod = document.querySelector('.method-item.active');
+            if (!activeMethod) {
+                alert('Please select a payment method first!');
+                return;
+            }
+            
+            const btn = document.getElementById('payBtn');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = '/user/enroll-success/' + courseId;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

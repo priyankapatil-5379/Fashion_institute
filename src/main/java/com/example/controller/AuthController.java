@@ -27,7 +27,8 @@ public class AuthController {
                                 @org.springframework.web.bind.annotation.RequestParam String password,
                                 @org.springframework.web.bind.annotation.RequestParam String dob,
                                 @org.springframework.web.bind.annotation.RequestParam String gender,
-                                @org.springframework.web.bind.annotation.RequestParam String phone) {
+                                @org.springframework.web.bind.annotation.RequestParam String phone,
+                                @org.springframework.web.bind.annotation.RequestParam String role) {
         
         com.example.model.User user = new com.example.model.User();
         user.setUsername(username);
@@ -36,7 +37,7 @@ public class AuthController {
         user.setPhone(phone);
         user.setGender(gender);
         user.setDob(java.time.LocalDate.parse(dob));
-        user.setRole("STUDENT");
+        user.setRole(role);
 
         userService.registerUser(user);
         

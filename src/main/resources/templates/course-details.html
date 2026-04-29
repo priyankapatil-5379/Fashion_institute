@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${course.title + ' | The Fashion Institute'}">Course Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-orange: #ff6b35;
+            --theme-pink: #fff5f2;
+            --theme-dark: #2d3436;
+        }
+        body { font-family: 'Outfit', sans-serif; background: #fff; color: var(--theme-dark); }
+        .details-header { background: var(--theme-pink); padding: 60px 0; border-bottom: 1px solid #eee; }
+        .course-badge { background: var(--theme-orange); color: white; padding: 5px 15px; border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+        .section-title { font-family: 'Playfair Display', serif; font-weight: 900; position: relative; padding-bottom: 15px; margin-bottom: 25px; }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 3px; background: var(--theme-orange); }
+        .sidebar-card { border: none; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); position: sticky; top: 100px; overflow: hidden; }
+        .video-container { border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 40px; background: #000; aspect-ratio: 16/9; }
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #ddd; }
+        .btn-whatsapp { background: #25D366; color: white; border: none; }
+        .btn-whatsapp:hover { background: #128C7E; color: white; }
+        .content-block { margin-bottom: 50px; }
+        .syllabus-container { border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; margin-top: 20px; }
+        .syllabus-header { background: #9d1c30; color: white; padding: 12px 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .syllabus-row { display: flex; border-bottom: 1px solid #dee2e6; background: #fff; }
+        .syllabus-row:last-child { border-bottom: none; }
+        .syllabus-col-index { width: 80px; padding: 15px; border-right: 1px solid #dee2e6; color: #888; text-align: center; }
+        .syllabus-col-content { flex-grow: 1; padding: 15px 25px; color: #555; }
+        .fw-600 { font-weight: 600; }
+        .text-theme { color: var(--theme-orange); }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-black fs-3" th:href="@{/}" style="font-family: 'Playfair Display', serif;">
+                <span style="color: var(--theme-orange);">F</span> THE FASHION
+            </a>
+            <div class="d-flex align-items-center">
+                <a th:href="@{/user/dashboard}" class="btn btn-outline-dark rounded-pill px-4 me-2">Back to Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="details-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="course-badge mb-3 d-inline-block" th:text="${course.category}">FASHION DESIGN</span>
+                    <h1 class="display-4 fw-black mb-3" style="font-family: 'Playfair Display', serif;" th:text="${course.title}">Advanced Couture Design</h1>
+                    <div class="d-flex align-items-center gap-4 text-muted">
+                        <span><i class="fa-solid fa-star text-warning me-2"></i> <span th:text="${course.initialRating}">4.5</span> Rating</span>
+                        <span><i class="fa-solid fa-clock me-2"></i> <span th:text="${course.duration}">6 Months</span></span>
+                        <span><i class="fa-solid fa-user-graduate me-2"></i> <span th:text="${course.programLevel}">Diploma</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="row g-5">
+            <!-- Left Column: Content -->
+            <div class="col-lg-8">
+                <!-- Video Intro -->
+                <div class="video-container" th:if="${course.videoLink != null and !course.videoLink.isEmpty()}">
+                    <iframe width="100%" height="100%" 
+                            th:src="${course.videoLink.contains('watch?v=') ? course.videoLink.replace('watch?v=', 'embed/') : 
+                                    (course.videoLink.contains('youtu.be/') ? course.videoLink.replace('youtu.be/', 'youtube.com/embed/') : course.videoLink)}" 
+                            title="Course Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+
+                <!-- About -->
+                <div class="content-block">
+                    <h3 class="section-title fw-bold">Program Overview</h3>
+                    <p class="lead text-muted" th:text="${course.description}">Detailed summary of the course.</p>
+                </div>
+
+                <!-- Course Overview (Deep Dive) -->
+                <div class="content-block" th:if="${course.courseOverview != null and !course.courseOverview.isEmpty()}">
+                    <h3 class="section-title fw-bold">What is this Program About?</h3>
+                    <div class="text-muted" style="white-space: pre-line;" th:text="${course.courseOverview}"></div>
+                </div>
+
+                <!-- Why Choose -->
+                <div class="content-block" th:if="${course.whyChoose != null and !course.whyChoose.isEmpty()}">
+                    <h3 class="section-title fw-bold">Why Choose This Course?</h3>
+                    <div class="p-4 rounded-4 bg-light">
+                        <p class="mb-0" th:text="${course.whyChoose}">USP details</p>
+                    </div>
+                </div>
+
+                <!-- Learning Outcomes -->
+                <div class="content-block" th:if="${course.learningOutcomes != null and !course.learningOutcomes.isEmpty()}">
+                    <h3 class="section-title fw-bold">What You Will Learn</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2 d-flex align-items-start" th:each="outcome : ${course.learningOutcomes.split('\\R')}">
+                            <i class="fa-solid fa-circle-check text-success me-3 mt-1"></i>
+                            <span th:text="${outcome}">Outcome point</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Career Opportunities -->
+                <div class="content-block" th:if="${course.careerOpportunities != null and !course.careerOpportunities.isEmpty()}">
+                    <h3 class="section-title fw-bold">Career Opportunities</h3>
+                    <p class="text-muted" th:text="${course.careerOpportunities}">Career paths</p>
+                </div>
+
+                <!-- Syllabus -->
+                <div class="content-block" th:if="${course.courseStructure != null and !course.courseStructure.isEmpty()}">
+                    <h3 class="section-title fw-bold">Course Structure</h3>
+                    <div class="syllabus-container shadow-sm">
+                        <div class="syllabus-header">
+                            SYLLABUS
+                        </div>
+                        <div class="syllabus-row" th:each="item, iter : ${course.courseStructure.split('\\R')}">
+                            <div class="syllabus-col-index" th:text="${iter.count}">1</div>
+                            <div class="syllabus-col-content" th:text="${item}">Module Content</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Sidebar -->
+            <div class="col-lg-4">
+                <div class="card sidebar-card">
+                    <img th:src="${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}" class="card-img-top" alt="Course Thumbnail" style="height: 250px; object-fit: cover;">
+                    <div class="card-body p-4">
+                        <h3 class="fw-black mb-4" th:text="${'₹' + course.price}">₹180,000</h3>
+                        
+                        <div class="info-box mb-4">
+                            <div class="info-row">
+                                <span class="text-muted small">Duration</span>
+                                <span class="fw-bold small" th:text="${course.duration}">6 Months</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="text-muted small">Eligibility</span>
+                                <span class="fw-bold small" style="max-width: 60%; text-align: right;" th:text="${course.eligibility}">10+2 Pass</span>
+                            </div>
+                            <div class="info-row border-0">
+                                <span class="text-muted small">Level</span>
+                                <span class="fw-bold small" th:text="${course.programLevel}">Undergraduate</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            <a th:href="@{/user/payment/{id}(id=${course.id})}" class="btn btn-dark btn-lg rounded-pill fw-bold py-3 shadow text-decoration-none text-center">Enroll Now</a>
+                            <a th:href="'https://api.whatsapp.com/send?phone=919999999999&text=Hello, I am interested in enrolling for the ' + ${course.title} + ' program. Please provide more details.'" 
+                               target="_blank" class="btn btn-whatsapp btn-lg rounded-pill fw-bold py-3 shadow text-decoration-none text-center">
+                                <i class="fa-brands fa-whatsapp me-2"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                        
+                        <p class="text-center small text-muted mt-4">
+                            <i class="fa-solid fa-shield-halved me-1"></i> Secure Payment Guarantee
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2026 The Fashion Institute. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send?phone=919999999999&text=Hello, I have an inquiry about the Fashion Institute programs." class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp fab fa-whatsapp"></i>
+    </a>
+</body>
+</html>
