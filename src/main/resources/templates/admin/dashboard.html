@@ -142,11 +142,11 @@
                 <div class="activity-list">
                     <div th:each="activity : ${recentActivities}" class="activity-item">
                         <div class="activity-icon">
-                            <i class="fas fa-user-plus"></i>
+                            <i class="fas fa-inbox"></i>
                         </div>
                         <div class="activity-info">
-                            <p><strong th:text="${activity.user}">User</strong> <span th:text="${activity.action}">Action</span></p>
-                            <small th:text="${activity.time}">Time</small>
+                            <p><strong th:text="${activity.name}">User</strong> inquired about <span th:text="${activity.courseOfInterest}">Course</span></p>
+                            <small th:text="${#temporals.format(activity.createdAt, 'MMM dd, yyyy HH:mm')}">Time</small>
                         </div>
                     </div>
                     <div th:if="${#lists.isEmpty(recentActivities)}" style="text-align: center; padding: 2rem; color: var(--text-muted);">

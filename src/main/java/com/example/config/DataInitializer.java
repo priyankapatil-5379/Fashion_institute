@@ -18,6 +18,15 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // No admin initialization
+        // Initialize Default Admin if not exists
+        if (userRepository.findByUsername("admin").isEmpty()) {
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setEmail("admin@fashioninstitute.edu");
+            admin.setRole("ADMIN");
+            userRepository.save(admin);
+            System.out.println("Default Admin created: admin/admin");
+        }
     }
 }

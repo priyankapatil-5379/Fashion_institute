@@ -29,8 +29,8 @@ public class VendorController {
     private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        String instructor = "Fashion Guru";
+    public String dashboard(Model model, java.security.Principal principal) {
+        String instructor = principal.getName();
         java.util.List<Course> instructorCourses = courseService.getCoursesByInstructor(instructor);
         java.util.List<com.example.model.User> instructorStudents = userRepository.findStudentsByInstructor(instructor);
 
@@ -54,17 +54,20 @@ public class VendorController {
         model.addAttribute("totalCourses", totalCourses);
         model.addAttribute("activeStudents", activeStudents);
         model.addAttribute("avgRating", String.format("%.1f", avgRating));
-        model.addAttribute("totalEarnings", String.format("$%,.0f", totalEarnings));
+        model.addAttribute("totalEarnings", String.format("₹%,.0f", totalEarnings));
         model.addAttribute("newCourse", new Course());
         return "vendor/dashboard";
     }
 
     @PostMapping("/add-course")
-    public String addCourse(@ModelAttribute Course course, @RequestParam("thumbnailFile") MultipartFile file) {
-        course.setInstructorName("Fashion Guru"); // Mocking
+    public String addCourse(@ModelAttribute Course course, @RequestParam("thumbnailFile") MultipartFile file, java.security.Principal principal) {
+        course.setInstructorName(principal.getName());
         
-        if (!file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             try {
+                java.io.File uploadDir = new java.io.File(UPLOAD_DIR);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+                
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
                 Path path = Paths.get(UPLOAD_DIR + fileName);
                 Files.copy(file.getInputStream(), path);
@@ -75,32 +78,36 @@ public class VendorController {
         }
         
         courseService.saveCourse(course);
-        return "redirect:/vendor/courses";
+        return "redirect:/vendor/dashboard";
     }
 
     @GetMapping("/courses")
-    public String myCourses(Model model) {
-        model.addAttribute("courses", courseService.getCoursesByInstructor("Fashion Guru"));
+    public String myCourses(Model model, java.security.Principal principal) {
+        String instructor = principal.getName();
+        model.addAttribute("courses", courseService.getCoursesByInstructor(instructor));
         model.addAttribute("newCourse", new Course());
         return "vendor/courses";
     }
 
     @GetMapping("/students")
-    public String students(Model model) {
-        model.addAttribute("students", userRepository.findStudentsByInstructor("Fashion Guru"));
+    public String students(Model model, java.security.Principal principal) {
+        model.addAttribute("students", userRepository.findStudentsByInstructor(principal.getName()));
         return "vendor/students";
+    }
+
+    @GetMapping("/analytics")
+    public String analytics(Model model, java.security.Principal principal) {
+        String instructor = principal.getName();
+        java.util.List<Course> instructorCourses = courseService.getCoursesByInstructor(instructor);
+        model.addAttribute("courses", instructorCourses);
+        model.addAttribute("totalCourses", instructorCourses.size());
+        model.addAttribute("newCourse", new Course());
+        return "vendor/dashboard";
     }
 
     @GetMapping("/messages")
     public String messages(Model model) {
         return "vendor/messages";
-    }
-
-    @GetMapping("/analytics")
-    public String analytics(Model model) {
-        model.addAttribute("courses", courseService.getCoursesByInstructor("Fashion Guru"));
-        model.addAttribute("newCourse", new Course());
-        return "vendor/dashboard";
     }
 
     @GetMapping("/settings")
@@ -115,8 +122,8 @@ public class VendorController {
     }
 
     @GetMapping("/edit-course/{id}")
-    public String editCourse(@org.springframework.web.bind.annotation.PathVariable Long id, Model model) {
-        model.addAttribute("courses", courseService.getCoursesByInstructor("Fashion Guru"));
+    public String editCourse(@org.springframework.web.bind.annotation.PathVariable Long id, Model model, java.security.Principal principal) {
+        model.addAttribute("courses", courseService.getCoursesByInstructor(principal.getName()));
         model.addAttribute("newCourse", courseService.getCourseById(id));
         return "vendor/courses";
     }

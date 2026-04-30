@@ -7,7 +7,7 @@
     <title>Student Messages | The Fashion Institute</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
 </head>
 
 <body>
@@ -15,14 +15,15 @@
         <!-- Sidebar -->
         <div class="dashboard-sidebar">
             <div class="sidebar-brand">
-                <span class="text-theme">F</span> INSTITUTE
+                <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                <li><a th:href="@{/vendor/courses}"><i class="fa-solid fa-book-open"></i> My Courses</a></li>
-                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> Students</a></li>
-                <li><a th:href="@{/vendor/messages}" class="active"><i class="fa-solid fa-comments"></i> Messages</a></li>
-                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/vendor/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/vendor/messages}" class="active"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
                 <li class="mt-5">
                     <form th:action="@{/logout}" method="post" id="logoutForm">
                         <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
@@ -47,7 +48,7 @@
                 </div>
 
                 <!-- Chat Body -->
-                <div class="flex-grow-1 d-flex flex-column bg-light-pink">
+                <div class="flex-grow-1 d-flex flex-column" style="background: var(--bg-light);">
                     <div id="chatHeader" class="p-3 bg-white border-bottom d-flex align-items-center gap-3">
                         <img src="https://ui-avatars.com/api/?name=Student&background=random" id="headerImg" class="rounded-circle" style="width: 40px; height: 40px;">
                         <h6 class="fw-bold mb-0" id="headerName">Select a Student</h6>
@@ -55,7 +56,7 @@
                     
                     <div id="vendorChatBody" class="flex-grow-1 p-4 overflow-y-auto d-flex flex-column gap-3">
                         <div class="text-center text-muted my-auto">
-                            <i class="fa-solid fa-comments fa-3x mb-3"></i>
+                            <i class="fa-solid fa-comments fa-3x mb-3" style="color: var(--secondary); opacity: 0.2;"></i>
                             <h5>Select a conversation to start chatting</h5>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
 
     <script th:inline="javascript">
         let activeStudent = null;
-        const vendorName = "Fashion Guru";
+        const vendorName = /*[[${#authentication.name}]]*/ 'Vendor';
 
         async function loadContacts() {
             const response = await fetch(`/api/messages/contacts?user=${vendorName}`);
@@ -86,7 +87,7 @@
             
             contacts.forEach(username => {
                 newHTML += `
-                    <div class="d-flex align-items-center gap-3 p-3 rounded-4 ${activeStudent === username ? 'bg-theme-soft border-theme' : 'bg-light'} cursor-pointer mb-2 shadow-sm" onclick="selectStudent('${username}')">
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-4 ${activeStudent === username ? 'bg-light border' : 'bg-transparent'} cursor-pointer mb-2 transition" style="border: 1px solid transparent;" onclick="selectStudent('${username}')">
                         <img src="https://ui-avatars.com/api/?name=${username}&background=random" class="rounded-circle" style="width: 50px; height: 50px;">
                         <div class="flex-grow-1">
                             <div class="fw-bold">${username}</div>
@@ -121,9 +122,10 @@
                 div.style.padding = '12px 18px';
                 div.style.borderRadius = '20px';
                 div.style.alignSelf = msg.sender === vendorName ? 'flex-end' : 'flex-start';
-                div.style.background = msg.sender === vendorName ? '#ff6b35' : 'white';
+                div.style.background = msg.sender === vendorName ? 'var(--secondary)' : 'white';
                 div.style.color = msg.sender === vendorName ? 'white' : '#333';
                 div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+                div.style.marginBottom = '10px';
                 div.innerText = msg.content;
                 body.appendChild(div);
             });

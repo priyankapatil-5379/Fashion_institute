@@ -71,9 +71,8 @@
             <div class="col-lg-8">
                 <!-- Video Intro -->
                 <div class="video-container" th:if="${course.videoLink != null and !course.videoLink.isEmpty()}">
-                    <iframe width="100%" height="100%" 
-                            th:src="${course.videoLink.contains('watch?v=') ? course.videoLink.replace('watch?v=', 'embed/') : 
-                                    (course.videoLink.contains('youtu.be/') ? course.videoLink.replace('youtu.be/', 'youtube.com/embed/') : course.videoLink)}" 
+                    <iframe id="courseVideoIframe" width="100%" height="100%" 
+                            src=""
                             title="Course Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
 
@@ -176,6 +175,25 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        // Robust YouTube ID Extraction
+        function getYoutubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        const videoUrl = /*[[${course.videoLink}]]*/ '';
+        const videoId = getYoutubeId(videoUrl);
+        const iframe = document.getElementById('courseVideoIframe');
+        
+        if (videoId && iframe) {
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+        } else if (iframe) {
+            iframe.closest('.video-container').style.display = 'none';
+        }
+    </script>
     <!-- Floating WhatsApp Button -->
     <a href="https://api.whatsapp.com/send?phone=919999999999&text=Hello, I have an inquiry about the Fashion Institute programs." class="whatsapp-float" target="_blank">
         <i class="fa-brands fa-whatsapp fab fa-whatsapp"></i>

@@ -45,11 +45,43 @@
         </header>
 
         <div class="panel">
-            <h2>Pending Applications</h2>
-            <p style="color: var(--text-muted); text-align: center; padding: 50px;">
-                <i class="fas fa-file-alt" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
-                No pending applications to display.
-            </p>
+            <h2>Course Inquiries & Applications</h2>
+            
+            <div th:if="${#lists.isEmpty(applications)}">
+                <p style="color: var(--text-muted); text-align: center; padding: 50px;">
+                    <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
+                    No pending inquiries to display.
+                </p>
+            </div>
+            
+            <div th:if="${not #lists.isEmpty(applications)}" class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Course of Interest</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="inq : ${applications}">
+                            <td th:text="${#temporals.format(inq.createdAt, 'MMM dd, yyyy')}">May 01, 2026</td>
+                            <td style="font-weight: 600; color: var(--text-dark);" th:text="${inq.name}">Jane Doe</td>
+                            <td th:text="${inq.email}">jane@example.com</td>
+                            <td><span class="badge" th:text="${inq.courseOfInterest}">Makeup Artistry</span></td>
+                            <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" th:text="${inq.message}" th:title="${inq.message}">
+                                Message content...
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="${inq.isRead ? 'badge-secondary' : 'badge-primary'}" th:text="${inq.isRead ? 'Reviewed' : 'New'}">New</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </body>

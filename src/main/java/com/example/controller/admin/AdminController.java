@@ -21,6 +21,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private com.example.repository.InquiryRepository inquiryRepository;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
 
@@ -37,11 +40,12 @@ public class AdminController {
         model.addAttribute("activeCourses", activeCoursesCount);
         
         // Initializing other stats to 0 (for features not yet implemented in DB)
-        model.addAttribute("pendingApplications", 0);
+        model.addAttribute("pendingApplications", inquiryRepository.countByIsReadFalse());
         model.addAttribute("totalRevenue", "₹0");
 
-        // Empty Recent Activity (will be populated once activity logging is implemented)
-        model.addAttribute("recentActivities", java.util.Collections.emptyList());
+        // Fetch recent inquiries for activity
+        List<com.example.model.Inquiry> inquiries = inquiryRepository.findAllByOrderByCreatedAtDesc();
+        model.addAttribute("recentActivities", inquiries.stream().limit(5).toList());
 
         return "admin/dashboard";
     }
@@ -66,7 +70,7 @@ public class AdminController {
 
     @GetMapping("/applications")
     public String applications(Model model) {
-        model.addAttribute("applications", java.util.Collections.emptyList());
+        model.addAttribute("applications", inquiryRepository.findAllByOrderByCreatedAtDesc());
         return "admin/applications";
     }
 

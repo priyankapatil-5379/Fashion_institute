@@ -7,7 +7,7 @@
     <title>Instructor Dashboard | The Fashion Institute</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
 </head>
 
 <body>
@@ -15,14 +15,15 @@
         <!-- Sidebar -->
         <div class="dashboard-sidebar">
             <div class="sidebar-brand">
-                <span class="text-theme">F</span> INSTITUTE
+                <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                <li><a th:href="@{/vendor/courses}" class="active"><i class="fa-solid fa-book-open"></i> My Courses</a></li>
-                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> Students</a></li>
-                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
-                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/vendor/courses}" class="active"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/vendor/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
                 <li class="mt-5">
                     <form th:action="@{/logout}" method="post" id="logoutForm">
                         <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
@@ -147,11 +148,47 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label small fw-bold">Category</label>
                                 <select class="form-select custom-input" th:field="*{category}">
-                                    <option value="Fashion Designing">Fashion Designing</option>
-                                    <option value="Jewellery Designing">Jewellery Designing</option>
-                                    <option value="Interior Designing">Interior Designing</option>
-                                    <option value="Makeup Artistry">Makeup Artistry</option>
-                                    <option value="Footwear Designing">Footwear Designing</option>
+                                    <optgroup label="Courses Offered">
+                                        <option value="Fashion Designing">Fashion Designing</option>
+                                        <option value="Jewellery Designing">Jewellery Designing</option>
+                                        <option value="Interior Designing">Interior Designing</option>
+                                        <option value="Photography">Photography</option>
+                                        <option value="Shoe Designing">Shoe Designing</option>
+                                        <option value="Beauty and Grooming">Beauty and Grooming</option>
+                                    </optgroup>
+                                    <optgroup label="Diploma Programs">
+                                        <option value="Diploma in Fashion Designing">Diploma in Fashion Designing</option>
+                                        <option value="Diploma in Nail Technology">Diploma in Nail Technology</option>
+                                        <option value="Diploma in Apparel Technology">Diploma in Apparel Technology</option>
+                                        <option value="Diploma in Hair Styling">Diploma in Hair Styling</option>
+                                        <option value="Diploma in Textile Designing">Diploma in Textile Designing</option>
+                                        <option value="Diploma in Jewellery Designing">Diploma in Jewellery Designing</option>
+                                        <option value="Diploma in Boutique Management">Diploma in Boutique Management</option>
+                                        <option value="Diploma in Gemology">Diploma in Gemology</option>
+                                        <option value="Diploma in Cosmetology">Diploma in Cosmetology</option>
+                                        <option value="Diploma in Fashion Photography">Diploma in Fashion Photography</option>
+                                        <option value="Diploma in Professional Makeup Artistry">Diploma in Professional Makeup Artistry</option>
+                                        <option value="Diploma in Shoe Designing">Diploma in Shoe Designing</option>
+                                    </optgroup>
+                                    <optgroup label="Undergraduate (UG)">
+                                        <option value="Bachelor of Fashion Design">Bachelor of Fashion Design</option>
+                                        <option value="Bachelor of Hair, Makeup & Prosthetics">Bachelor of Hair, Makeup & Prosthetics</option>
+                                        <option value="Bachelor of Textile Design">Bachelor of Textile Design</option>
+                                        <option value="Bachelor of Jewellery Design">Bachelor of Jewellery Design</option>
+                                        <option value="Bachelor of Apparel Design & Production">Bachelor of Apparel Design & Production</option>
+                                        <option value="Bachelor of Accessory Design">Bachelor of Accessory Design</option>
+                                        <option value="Bachelor of Fashion Technology">Bachelor of Fashion Technology</option>
+                                        <option value="Bachelor of Footwear Design">Bachelor of Footwear Design</option>
+                                        <option value="Bachelor of Cosmetology">Bachelor of Cosmetology</option>
+                                        <option value="Bachelor of Sustainable Fashion">Bachelor of Sustainable Fashion</option>
+                                        <option value="Bachelor of Beauty & Wellness">Bachelor of Beauty & Wellness</option>
+                                    </optgroup>
+                                    <optgroup label="Short Term Courses">
+                                        <option value="Embroidery Designing">Embroidery Designing</option>
+                                        <option value="Crochet Designing">Crochet Designing</option>
+                                        <option value="Nail Art Courses">Nail Art Courses</option>
+                                        <option value="Fabric Painting">Fabric Painting</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">

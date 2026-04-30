@@ -7,49 +7,7 @@
     <title>Student Dashboard | The Fashion Institute</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <style>
-        /* Force Chatbot Visibility */
-        .chatbot-float {
-            position: fixed !important;
-            width: 60px !important;
-            height: 60px !important;
-            bottom: 115px !important;
-            right: 40px !important;
-            background-color: #ff6b35 !important;
-            color: #fff !important;
-            border-radius: 50% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-size: 24px !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
-            z-index: 99999 !important;
-            cursor: pointer !important;
-        }
-        .chat-window {
-            position: fixed !important;
-            bottom: 185px !important;
-            right: 40px !important;
-            width: 350px !important;
-            height: 450px !important;
-            background: white !important;
-            border-radius: 20px !important;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
-            z-index: 100000 !important;
-            display: none;
-            flex-direction: column !important;
-            overflow: hidden !important;
-            border: 1px solid rgba(0,0,0,0.1) !important;
-        }
-        .chat-window.active { display: flex !important; }
-        .chat-header { background: #ff6b35 !important; color: white !important; padding: 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
-        .chat-body { flex: 1 !important; padding: 15px !important; overflow-y: auto !important; background: #fdf2e9 !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
-        .chat-footer { padding: 15px !important; background: white !important; display: flex !important; gap: 10px !important; border-top: 1px solid #eee !important; }
-        .msg-vendor { background: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-start !important; max-width: 80% !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; color: #333 !important; }
-        .msg-user { background: #ff6b35 !important; color: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-end !important; max-width: 80% !important; }
-        .chat-input { flex: 1 !important; border: 1px solid #ddd !important; border-radius: 10px !important; padding: 8px 12px !important; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
 </head>
 
 <body>
@@ -57,14 +15,14 @@
         <!-- Sidebar -->
         <div class="dashboard-sidebar">
             <div class="sidebar-brand">
-                <span class="text-theme">F</span> INSTITUTE
+                <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/user/dashboard}" th:classappend="${view == 'dashboard' ? 'active' : ''}"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                <li><a th:href="@{/user/my-learning}" th:classappend="${view == 'learning' ? 'active' : ''}"><i class="fa-solid fa-graduation-cap"></i> My Learning</a></li>
-                <li><a th:href="@{/user/wishlist}" th:classappend="${view == 'wishlist' ? 'active' : ''}"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
+                <li><a th:href="@{/user/dashboard}" th:classappend="${view == 'dashboard' ? 'active' : ''}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/user/my-learning}" th:classappend="${view == 'learning' ? 'active' : ''}"><i class="fa-solid fa-graduation-cap"></i> <span>My Learning</span></a></li>
+                <li><a th:href="@{/user/wishlist}" th:classappend="${view == 'wishlist' ? 'active' : ''}"><i class="fa-solid fa-heart"></i> <span>Wishlist</span></a></li>
                 <li><a th:href="@{/user/messages}" th:classappend="${view == 'messages' ? 'active' : ''}">
-                    <i class="fa-solid fa-message"></i> Messages 
+                    <i class="fa-solid fa-message"></i> <span>Messages</span> 
                     <span id="studentMsgBadge" class="badge bg-danger rounded-circle ms-2 d-none" style="font-size: 0.6rem; padding: 0.3em 0.5em;">0</span>
                 </a></li>
                 <li class="mt-5">
@@ -105,14 +63,14 @@
                         <div class="col-lg-4 col-md-6" th:each="course : ${courses}">
                             <div class="elite-course-card">
                                 <div class="course-img-wrapper">
-                                    <span class="course-tag" th:text="${course.category}">FASHION</span>
+                                    <span class="course-tag" th:text="${course.category != null ? course.category : 'FASHION'}">FASHION</span>
                                     <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
-                                    <div class="course-duration" th:text="${course.duration}">6 Months</div>
+                                    <div class="course-duration" th:text="${course.duration != null ? course.duration : 'Short Term'}">6 Months</div>
                                 </div>
                                 <div class="course-info p-4">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <h5 class="fw-bold mb-0" th:text="${course.title}">Course Title</h5>
-                                        <span class="text-theme fw-bold" th:text="${'$' + course.price}">$0</span>
+                                        <span class="text-theme fw-bold" th:text="${course.price != null ? '₹' + course.price : '₹0'}">₹0</span>
                                     </div>
                                     <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 80)}">Learn the latest techniques in the fashion world from industry experts.</p>
                                     <div class="d-flex justify-content-between align-items-center">
@@ -133,9 +91,9 @@
                     </div>
 
                     <!-- My Wishlist (Dashboard Only) -->
-                    <div th:if="${!wishlist.empty}" class="mt-5">
+                    <div th:if="${wishlist != null and !#lists.isEmpty(wishlist)}" class="mt-5">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="fw-bold mb-0">My Wishlist <span class="badge bg-theme ms-2" th:text="${wishlist.size()}">0</span></h4>
+                            <h4 class="fw-bold mb-0">My Wishlist <span class="badge bg-theme ms-2" th:text="${#lists.size(wishlist)}">0</span></h4>
                         </div>
                         <div class="row g-4">
                             <div class="col-lg-4 col-md-6" th:each="course : ${wishlist}">
@@ -147,7 +105,7 @@
                                     <div class="course-info p-4">
                                         <h6 class="fw-bold mb-1 text-truncate" th:text="${course.title}">Course Title</h6>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <span class="text-theme fw-bold small" th:text="${'$' + course.price}">$0</span>
+                                            <span class="text-theme fw-bold small" th:text="${course.price != null ? '₹' + course.price : '₹0'}">₹0</span>
                                             <a th:href="@{/user/course/{id}(id=${course.id})}" class="btn btn-theme btn-sm px-3 rounded-pill" style="font-size: 0.7rem;">Enroll Now</a>
                                         </div>
                                     </div>
@@ -169,7 +127,7 @@
                             <div class="course-info p-4">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h5 class="fw-bold mb-0" th:text="${course.title}">Course Title</h5>
-                                    <span class="text-theme fw-bold" th:text="${'$' + course.price}">$0</span>
+                                    <span class="text-theme fw-bold" th:text="${course.price != null ? '₹' + course.price : '₹0'}">₹0</span>
                                 </div>
                                 <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 80)}">Learn the latest techniques in the fashion world from industry experts.</p>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -192,7 +150,7 @@
                         </div>
                     </div>
                     <!-- Placeholder if no courses -->
-                    <div class="col-12 text-center py-5" th:if="${courses.empty}">
+                    <div class="col-12 text-center py-5" th:if="${courses == null or #lists.isEmpty(courses)}">
                         <div class="mb-4"><i class="fa-solid fa-folder-open fa-4x text-light"></i></div>
                         <h5 class="text-muted">No courses available at the moment.</h5>
                         <p class="text-muted small">Check back later for new programs!</p>
@@ -245,7 +203,7 @@
                 </div>
 
                 <script th:inline="javascript">
-                    const currentUser = [[${#authentication.name}]];
+                    const currentUser = /*[[${#authentication.name}]]*/ 'anonymousUser';
                     const vendorUser = "Fashion Guru";
 
                     async function loadMessages() {
@@ -305,7 +263,8 @@
                         }
                     }
 
-                    if ([[${view == 'messages'}]]) {
+                    const currentView = /*[[${view}]]*/ 'dashboard';
+                    if (currentView === 'messages') {
                         loadMessages();
                         setInterval(loadMessages, 3000);
                     }

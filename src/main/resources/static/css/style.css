@@ -289,8 +289,20 @@ nav {
     background: var(--theme-dark);
     z-index: 2000;
     transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
-    padding: 100px 40px;
+    padding: 60px 30px; /* Reduced top padding */
     box-shadow: -10px 0 50px rgba(0,0,0,0.3);
+    overflow-y: auto; /* Ensure scroll if content is too long */
+}
+
+.drawer-links li {
+    margin-bottom: 20px; /* Reduced from default */
+}
+
+.drawer-links a {
+    font-size: 1.1rem; /* Slightly smaller for mobile fit */
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
 }
 
 .mobile-menu-drawer.active {
