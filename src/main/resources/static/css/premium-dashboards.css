@@ -121,8 +121,73 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* Premium Cards */
-.stat-card, .course-form-card, .table-premium, .elite-course-card {
+/* Course Cards */
+.elite-course-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    height: 100%;
+}
+
+.elite-course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    border-color: var(--secondary);
+}
+
+.course-img-wrapper {
+    position: relative;
+    height: 220px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.course-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.elite-course-card:hover .course-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.course-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--secondary);
+    z-index: 2;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.course-duration {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    z-index: 2;
+    font-weight: 500;
+}
+
+/* Stat Cards & Other Components */
+.stat-card, .course-form-card, .table-premium {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     border-radius: 24px;
@@ -132,7 +197,7 @@ body {
     padding: 1.8rem;
 }
 
-.stat-card:hover, .course-form-card:hover, .elite-course-card:hover {
+.stat-card:hover, .course-form-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
     border-color: var(--secondary);
@@ -205,6 +270,8 @@ body {
     border-radius: 12px;
     font-weight: 600;
     transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-gradient-dash:hover {

@@ -3,6 +3,7 @@ package com.example.controller.user;
 import com.example.model.User;
 import com.example.repository.UserRepository;
 import com.example.service.CourseService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Value("${razorpay.key.id}")
+    private String razorpayKeyId;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
@@ -99,6 +103,7 @@ public class UserController {
     @GetMapping("/payment/{id}")
     public String payment(@PathVariable Long id, Model model) {
         model.addAttribute("course", courseService.getCourseById(id));
+        model.addAttribute("razorpayKeyId", razorpayKeyId);
         return "payment";
     }
 

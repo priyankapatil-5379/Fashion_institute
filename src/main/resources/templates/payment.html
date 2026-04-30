@@ -28,48 +28,165 @@
                     </div>
                     
                     <h6 class="fw-bold mb-3">Select Payment Method</h6>
-                    <div class="d-grid gap-3" id="paymentMethods">
-                        <div class="method-item d-flex align-items-center gap-3" onclick="selectMethod(this)">
-                            <i class="fa-solid fa-credit-card fs-4 text-muted"></i>
-                            <span class="fw-bold">Credit / Debit Card</span>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="method-item d-flex flex-column align-items-center gap-2 active" data-method="card" onclick="selectMethod(this)">
+                                <i class="fa-solid fa-credit-card fs-3 text-theme"></i>
+                                <span class="fw-bold small">Card</span>
+                            </div>
                         </div>
-                        <div class="method-item d-flex align-items-center gap-3" onclick="selectMethod(this)">
-                            <i class="fa-solid fa-mobile-screen fs-4 text-muted"></i>
-                            <span class="fw-bold">UPI (Google Pay / PhonePe)</span>
+                        <div class="col-6">
+                            <div class="method-item d-flex flex-column align-items-center gap-2" data-method="upi" onclick="selectMethod(this)">
+                                <i class="fa-solid fa-mobile-screen fs-3 text-muted"></i>
+                                <span class="fw-bold small">UPI</span>
+                            </div>
                         </div>
-                        <div class="method-item d-flex align-items-center gap-3" onclick="selectMethod(this)">
-                            <i class="fa-solid fa-building-columns fs-4 text-muted"></i>
-                            <span class="fw-bold">Net Banking</span>
+                    </div>
+
+                    <!-- Detail Fields -->
+                    <div id="methodDetails" class="mt-4">
+                        <!-- Card Details -->
+                        <div id="cardSection" class="payment-details">
+                            <div class="mb-3">
+                                <label class="small fw-bold text-muted">Account Holder Name</label>
+                                <input type="text" id="cardName" class="form-control rounded-pill px-3" placeholder="Enter name as on card">
+                            </div>
+                            <div class="mb-3">
+                                <label class="small fw-bold text-muted">Card Number</label>
+                                <input type="text" id="cardNumber" class="form-control rounded-pill px-3" placeholder="0000 0000 0000 0000">
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="small fw-bold text-muted">Expiry Date</label>
+                                    <input type="text" id="cardExpiry" class="form-control rounded-pill px-3" placeholder="MM/YY">
+                                </div>
+                                <div class="col-6">
+                                    <label class="small fw-bold text-muted">CVV</label>
+                                    <input type="password" id="cardCvv" class="form-control rounded-pill px-3" placeholder="***">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UPI Details -->
+                        <div id="upiSection" class="payment-details d-none">
+                            <div class="mb-3">
+                                <label class="small fw-bold text-muted">UPI ID</label>
+                                <input type="text" id="upiId" class="form-control rounded-pill px-3" placeholder="username@bank">
+                                <small class="text-muted mt-2 d-block">Example: 9876543210@paytm or kishor@okaxis</small>
+                            </div>
                         </div>
                     </div>
                     
-                    <button class="btn btn-dark btn-lg rounded-pill w-100 mt-5 py-3 fw-bold shadow" id="payBtn" th:onclick="'processPayment(' + ${course.id} + ')'">Pay Now</button>
+                    <button class="btn btn-dark btn-lg rounded-pill w-100 mt-5 py-3 fw-bold shadow" id="payBtn" th:onclick="'startPayment(' + ${course.id} + ', ' + ${course.price} + ')'">Pay Now</button>
                     <p class="text-center mt-3"><a th:href="@{/user/course/{id}(id=${course.id})}" class="text-muted text-decoration-none small">Cancel and go back</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script th:inline="javascript">
+        const razorpayKeyId = /*[[${razorpayKeyId}]]*/ '';
+
         function selectMethod(element) {
-            document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.method-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('i').classList.remove('text-theme');
+                item.querySelector('i').classList.add('text-muted');
+            });
             element.classList.add('active');
+            element.querySelector('i').classList.add('text-theme');
+            element.querySelector('i').classList.remove('text-muted');
+
+            // Show/Hide details
+            const method = element.getAttribute('data-method');
+            document.querySelectorAll('.payment-details').forEach(el => el.classList.add('d-none'));
+            if (method === 'card') {
+                document.getElementById('cardSection').classList.remove('d-none');
+            } else {
+                document.getElementById('upiSection').classList.remove('d-none');
+            }
         }
 
-        function processPayment(courseId) {
-            const activeMethod = document.querySelector('.method-item.active');
-            if (!activeMethod) {
-                alert('Please select a payment method first!');
-                return;
-            }
-            
+        async function startPayment(courseId, amount) {
+            const activeMethod = document.querySelector('.method-item.active').getAttribute('data-method');
             const btn = document.getElementById('payBtn');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Processing...';
-            btn.disabled = true;
             
-            setTimeout(() => {
-                window.location.href = '/user/enroll-success/' + courseId;
-            }, 2000);
+            // Basic Validation
+            if (activeMethod === 'card') {
+                if (!document.getElementById('cardNumber').value || !document.getElementById('cardExpiry').value) {
+                    alert('Please enter complete card details');
+                    return;
+                }
+            } else if (activeMethod === 'upi') {
+                if (!document.getElementById('upiId').value) {
+                    alert('Please enter your UPI ID');
+                    return;
+                }
+            }
+
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Initializing Real-time Payment...';
+            btn.disabled = true;
+
+            try {
+                // 1. Create Order on Server
+                const response = await fetch('/api/payment/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: amount })
+                });
+                const order = await response.json();
+
+                // 2. Setup Razorpay Options
+                const options = {
+                    "key": razorpayKeyId,
+                    "amount": order.amount,
+                    "currency": "INR",
+                    "name": "The Fashion Institute",
+                    "description": "Enrollment for Course #" + courseId,
+                    "order_id": order.id,
+                    "handler": function (response) {
+                        // Success Callback
+                        window.location.href = '/user/enroll-success/' + courseId;
+                    },
+                    "prefill": {
+                        "name": activeMethod === 'card' ? document.getElementById('cardName').value : "Student",
+                        "email": "student@example.com",
+                        "contact": "9999999999"
+                    },
+                    "theme": {
+                        "color": "#FA891A"
+                    }
+                };
+
+                // 3. For "Real-time" look, we pass the method details if possible
+                // Note: Direct Card entry via JS SDK is restricted for security (PCI-DSS), 
+                // so we use the standard popup which will have these pre-filled or preferred.
+                if (activeMethod === 'upi') {
+                    options.config = {
+                        display: {
+                            blocks: {
+                                upi: {
+                                    name: "UPI Payment",
+                                    instruments: [{ method: "upi", vpa: document.getElementById('upiId').value }]
+                                }
+                            },
+                            sequence: ["block.upi"],
+                            preferences: { show_default_blocks: false }
+                        }
+                    };
+                }
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+                
+            } catch (error) {
+                alert('Connection failed. Please check your internet or try again later.');
+                console.error(error);
+            } finally {
+                btn.innerHTML = 'Pay Now';
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
