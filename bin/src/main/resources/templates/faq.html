@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .faq-header {
+            background: linear-gradient(135deg, #2b1b10 0%, #1a1a1a 100%);
+            padding: 100px 0;
+            color: white;
+            margin-bottom: 50px;
+        }
+        .accordion-item {
+            border: none;
+            margin-bottom: 1rem;
+            border-radius: 15px !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .accordion-button {
+            padding: 1.5rem;
+            font-weight: 700;
+            color: #2b1b10;
+            background: white;
+        }
+        .accordion-button:not(.collapsed) {
+            background: #fdf2e9;
+            color: #ed1275;
+            box-shadow: none;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0,0,0,.125);
+        }
+        .category-title {
+            color: #fa891a;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="sticky-top" style="background: linear-gradient(90deg, rgb(237, 18, 117) 0%, rgb(254, 152, 14) 100%); padding: 15px 5%;">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a th:href="@{/}" class="text-white text-decoration-none d-flex align-items-center gap-2">
+                <span class="brand-name h2 mb-0" style="color: white !important;">F</span>
+                <div>
+                    <div class="small fw-bold text-white">THE FASHION</div>
+                    <div class="brand-sub text-white opacity-75" style="font-size: 0.6rem;">INSTITUTE</div>
+                </div>
+            </a>
+            <a th:href="@{/}" class="btn btn-outline-light rounded-pill px-4 btn-sm">Back to Home</a>
+        </div>
+    </nav>
+
+    <div class="faq-header text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Frequently Asked Questions</h1>
+            <p class="lead opacity-75">Everything you need to know about starting your creative journey with us.</p>
+        </div>
+    </div>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                
+                <!-- Category: Admissions -->
+                <h4 class="category-title">Admissions & Enrollment</h4>
+                <div class="accordion" id="admissionsAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+                                How do I apply for a course at The Fashion Institute?
+                            </button>
+                        </h2>
+                        <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#admissionsAccordion">
+                            <div class="accordion-body text-muted">
+                                You can apply directly through our website by clicking the "Apply Now" button on the course details page. Alternatively, you can visit our campus or connect with an enrollment advisor via our inquiry form.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+                                What are the eligibility criteria for Undergraduate programs?
+                            </button>
+                        </h2>
+                        <div id="q2" class="accordion-collapse collapse" data-bs-parent="#admissionsAccordion">
+                            <div class="accordion-body text-muted">
+                                For most UG programs, a minimum of 10+2 (Higher Secondary) completion from a recognized board is required. Some creative programs may also require a portfolio review or a basic design aptitude test.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category: Scholarships -->
+                <h4 class="category-title">Scholarships & Financial Aid</h4>
+                <div class="accordion" id="scholarshipAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s1">
+                                Are there any scholarships for high-achieving students?
+                            </button>
+                        </h2>
+                        <div id="s1" class="accordion-collapse collapse" data-bs-parent="#scholarshipAccordion">
+                            <div class="accordion-body text-muted">
+                                Yes! We offer merit-based concessions. Students scoring above 95% in board exams receive a 5% concession, and those above 98% receive a 10% concession on their first-year tuition fees.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s2">
+                                Do you provide support for students from defence backgrounds?
+                            </button>
+                        </h2>
+                        <div id="s2" class="accordion-collapse collapse" data-bs-parent="#scholarshipAccordion">
+                            <div class="accordion-body text-muted">
+                                Absolutely. Children of serving or ex-serving armed forces personnel are eligible for a 10% tuition fee concession as a mark of respect for their family's service.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category: Courses -->
+                <h4 class="category-title">Courses & Curriculum</h4>
+                <div class="accordion" id="courseAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c1">
+                                Do you offer short-term or weekend courses?
+                            </button>
+                        </h2>
+                        <div id="c1" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                            <div class="accordion-body text-muted">
+                                Yes, we have various short-term certificate programs in Embroidery, Crochet, Nail Art, and Fabric Painting designed for working professionals and hobbyists.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c2">
+                                Is the curriculum industry-aligned?
+                            </button>
+                        </h2>
+                        <div id="c2" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                            <div class="accordion-body text-muted">
+                                Our curriculum is developed in collaboration with top fashion designers and industry experts to ensure students learn current trends, technologies, and professional workflows.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category: Career -->
+                <h4 class="category-title">Career & Placements</h4>
+                <div class="accordion" id="careerAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#p1">
+                                What kind of placement support does the Institute provide?
+                            </button>
+                        </h2>
+                        <div id="p1" class="accordion-collapse collapse" data-bs-parent="#careerAccordion">
+                            <div class="accordion-body text-muted">
+                                We have a dedicated placement cell that organizes campus interviews, industry visits, and portfolio showcases. Our students are often placed with top fashion houses, retail giants, and creative agencies.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 p-5 bg-white rounded-4 text-center shadow-sm">
+                    <h5 class="fw-bold mb-3">Still have questions?</h5>
+                    <p class="text-muted mb-4">Our admissions team is here to help you every step of the way.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-theme-solid px-4 py-2 rounded-pill">Contact Us</button>
+                        <button class="btn btn-outline-dark px-4 py-2 rounded-pill" onclick="toggleChat()">Live Chat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chatbot Button -->
+    <div class="chatbot-float" onclick="toggleChat()" style="background-color: #ff6b35; position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+        <i class="fa-solid fa-comment-dots text-white fa-xl"></i>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window" style="position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; z-index: 1000;">
+        <div class="chat-header" style="background: #2b1b10; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span class="fw-bold">Admissions Support</span>
+            <i class="fa-solid fa-xmark cursor-pointer" onclick="toggleChat()"></i>
+        </div>
+        <div id="chatBody" class="chat-body" style="flex: 1; padding: 20px; overflow-y: auto; background: #fdf2e9; display: flex; flex-direction: column; gap: 15px;">
+            <div class="message msg-College" style="background: white; padding: 12px 18px; border-radius: 20px 20px 20px 5px; align-self: flex-start; max-width: 80%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 0.9rem;">
+                Hello! I'm your admissions assistant. How can I help you with our programs or scholarship applications today?
+            </div>
+        </div>
+        <div class="chat-footer" style="padding: 15px; background: white; display: flex; gap: 10px; border-top: 1px solid #eee;">
+            <input type="text" id="chatInput" class="form-control rounded-pill border-light bg-light px-3" placeholder="Type your question..." style="font-size: 0.9rem;">
+            <button class="btn btn-theme-solid rounded-circle p-0" style="width: 40px; height: 40px;" onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 text-center mt-5">
+        <p class="mb-0 small opacity-50">&copy; 2026 The Fashion Institute. Crafting the future of couture.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleChat() {
+            const win = document.getElementById('chatWindow');
+            win.style.display = (win.style.display === 'none' || win.style.display === '') ? 'flex' : 'none';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const body = document.getElementById('chatBody');
+            if (input.value.trim() === '') return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message msg-user';
+            userMsg.style.cssText = "background: #ff6b35; color: white; padding: 12px 18px; border-radius: 20px 20px 5px 20px; align-self: flex-end; max-width: 80%; font-size: 0.9rem;";
+            userMsg.innerText = input.value;
+            body.appendChild(userMsg);
+
+            const text = input.value.toLowerCase();
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            setTimeout(() => {
+                const CollegeMsg = document.createElement('div');
+                CollegeMsg.className = 'message msg-College';
+                CollegeMsg.style.cssText = "background: white; padding: 12px 18px; border-radius: 20px 20px 20px 5px; align-self: flex-start; max-width: 80%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 0.9rem;";
+                
+                if (text.includes('scholarship') || text.includes('aid')) {
+                    CollegeMsg.innerText = "You can view all our financial support options on the Scholarship page. We offer up to 10% concessions for academic excellence!";
+                } else if (text.includes('apply') || text.includes('admission')) {
+                    CollegeMsg.innerText = "Applying is easy! Just register an inquiry on our home page or visit our admissions office.";
+                } else {
+                    CollegeMsg.innerText = "Thank you! An admissions counselor will be available shortly to help you with more details.";
+                }
+                
+                body.appendChild(CollegeMsg);
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+        }
+
+        document.getElementById('chatInput')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

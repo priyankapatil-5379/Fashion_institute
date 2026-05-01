@@ -12,9 +12,13 @@ public class HomeController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private com.example.service.GalleryService galleryService;
+
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("courses", courseService.getAllCourses());
+        model.addAttribute("images", galleryService.getAllImages());
         return "index";
     }
 
@@ -24,7 +28,8 @@ public class HomeController {
     }
 
     @GetMapping("/gallery")
-    public String gallery() {
+    public String gallery(Model model) {
+        model.addAttribute("images", galleryService.getAllImages());
         return "gallery";
     }
 

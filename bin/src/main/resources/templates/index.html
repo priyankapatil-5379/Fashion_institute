@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fashion Institute | Academy of Excellence</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Force Chatbot Visibility */
+        .chatbot-float {
+            position: fixed !important;
+            width: 60px !important;
+            height: 60px !important;
+            bottom: 115px !important;
+            right: 40px !important;
+            background-color: #ff6b35 !important;
+            color: #fff !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+            z-index: 99999 !important;
+            cursor: pointer !important;
+        }
+        .chat-window {
+            position: fixed !important;
+            bottom: 185px !important;
+            right: 40px !important;
+            width: 350px !important;
+            height: 450px !important;
+            background: white !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+            z-index: 100000 !important;
+            display: none;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+        }
+        .chat-window.active { display: flex !important; }
+        .chat-header { background: #ff6b35 !important; color: white !important; padding: 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
+        .chat-body { flex: 1 !important; padding: 15px !important; overflow-y: auto !important; background: #fdf2e9 !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
+        .chat-footer { padding: 15px !important; background: white !important; display: flex !important; gap: 10px !important; border-top: 1px solid #eee !important; }
+        .msg-College { background: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-start !important; max-width: 80% !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; color: #333 !important; }
+        .msg-user { background: #ff6b35 !important; color: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-end !important; max-width: 80% !important; }
+        .chat-input { flex: 1 !important; border: 1px solid #ddd !important; border-radius: 10px !important; padding: 8px 12px !important; }
+
+        /* Feature Card Watercolor Background */
+        .feature-card-new {
+            background-image: url('/images/box_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 40px 30px;
+            border-radius: 30px;
+            height: 100%;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+
+        .feature-card-new:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(237, 18, 117, 0.15);
+        }
+
+        .feature-card-new::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85); /* Light overlay for readability */
+            z-index: 1;
+        }
+
+        .feature-card-new > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-number {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(0,0,0,0.03);
+            line-height: 1;
+        }
+
+        .icon-box-feat {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ff6b35;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Existing Navbar (Kept as is) -->
+    <nav class="sticky-top">
+        <div class="nav-left">
+            <h1 class="brand-name">F</h1>
+            <div>
+                <div class="brand-name" style="font-size: 0.9rem;">THE FASHION</div>
+                <div class="brand-sub">INSTITUTE | EST. 1923</div>
+            </div>
+        </div>
+        <div class="nav-mid">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/about}">About Us</a></li>
+                <li class="has-dropdown" id="programsDropdown">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-1" onclick="toggleDropdown(event)">Programs <i class="fa-solid fa-chevron-down small" style="font-size: 0.6rem;"></i></a>
+                    <ul class="dropdown-menu-custom">
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Courses Offered <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a th:href="@{/programs/fashion-designing}" class="submenu-item">Fashion Designing</a></li>
+                                <li><a th:href="@{/programs/jewellery-designing}" class="submenu-item">Jewellery Designing</a></li>
+                                <li><a th:href="@{/programs/interior-designing}" class="submenu-item">Interior Designing</a></li>
+                                <li><a th:href="@{/programs/photography}" class="submenu-item">Photography</a></li>
+                                <li><a th:href="@{/programs/shoe-designing}" class="submenu-item">Shoe Designing</a></li>
+                                <li><a th:href="@{/programs/beauty-and-grooming}" class="submenu-item">Beauty and Grooming</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Diploma Programs <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a th:href="@{/programs/diploma-in-fashion-designing}" class="submenu-item">Diploma in Fashion Designing</a></li>
+                                <li><a th:href="@{/programs/diploma-in-nail-technology}" class="submenu-item">Diploma in Nail Designing</a></li>
+                                <li><a th:href="@{/programs/diploma-in-apparel-technology}" class="submenu-item">Diploma in Apparel Technology</a></li>
+                                <li><a th:href="@{/programs/diploma-in-hair-styling}" class="submenu-item">Diploma in Hair Styling</a></li>
+                                <li><a th:href="@{/programs/diploma-in-textile-designing}" class="submenu-item">Diploma in Textile Designing</a></li>
+                                <li><a th:href="@{/programs/diploma-in-jewellery-designing}" class="submenu-item">Diploma in Jewellery Designing</a></li>
+                                <li><a th:href="@{/programs/diploma-in-boutique-management}" class="submenu-item">Diploma in Boutique Management</a></li>
+                                <li><a th:href="@{/programs/diploma-in-gemology}" class="submenu-item">Diploma in Gemology</a></li>
+
+                                <li><a th:href="@{/programs/diploma-in-fashion-photography}" class="submenu-item">Diploma in Fashion Photography</a></li>
+                                <li><a th:href="@{/programs/diploma-in-professional-makeup-artistry}" class="submenu-item">Diploma in Professional Makeup Artistry</a></li>
+                                <li><a th:href="@{/programs/diploma-in-shoe-designing}" class="submenu-item">Diploma in Shoe Designing</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Undergraduate (UG) <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a th:href="@{/programs/bachelor-of-fashion-design}" class="submenu-item">Bachelor of Fashion Design</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-hair-makeup-prosthetics}" class="submenu-item">Bachelor of Hair, Makeup & Prosthetics</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-textile-design}" class="submenu-item">Bachelor of Textile Design</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-jewellery-design}" class="submenu-item">Bachelor of Jewellery Design</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-apparel-design-production}" class="submenu-item">Bachelor of Apparel Design & Production</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-accessory-design}" class="submenu-item">Bachelor of Accessory Design</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-fashion-technology}" class="submenu-item">Bachelor of Fashion Technology</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-footwear-design}" class="submenu-item">Bachelor of Footwear Design</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-cosmetology}" class="submenu-item">Bachelor of Cosmetology</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-sustainable-fashion}" class="submenu-item">Bachelor of Sustainable Fashion</a></li>
+                                <li><a th:href="@{/programs/bachelor-of-beauty-wellness}" class="submenu-item">Bachelor of Beauty & Wellness</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a class="dropdown-item-custom">Short Term Courses <i class="fa-solid fa-chevron-right"></i></a>
+                            <ul class="submenu-custom">
+                                <li><a th:href="@{/programs/embroidery-designing}" class="submenu-item">Embroidery Designing</a></li>
+                                <li><a th:href="@{/programs/crochet-designing}" class="submenu-item">Crochet Designing</a></li>
+                                <li><a th:href="@{/programs/nail-art-courses}" class="submenu-item">Nail Art Courses</a></li>
+                                <li><a th:href="@{/programs/fabric-painting}" class="submenu-item">Fabric Painting</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-dropdown" id="admissionsDropdown">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-1" onclick="toggleDropdown(event)">Admissions <i class="fa-solid fa-chevron-down small" style="font-size: 0.6rem;"></i></a>
+                    <ul class="dropdown-menu-custom">
+                        <li><a th:href="@{/scholarship}" class="dropdown-item-custom">Scholarship</a></li>
+                        <li><a th:href="@{/faq}" class="dropdown-item-custom">FAQ</a></li>
+                        <li><a th:href="@{/faculty}" class="dropdown-item-custom">Meet our Faculty</a></li>
+                    </ul>
+                </li>
+                <li><a th:href="@{/gallery}">Gallery</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <!-- Dynamic Dashboard Links -->
+                <li sec:authorize="hasRole('College')"><a th:href="@{/college/dashboard}" class="fw-bold text-theme">College Dashboard</a></li>
+                <li sec:authorize="hasRole('STUDENT')"><a th:href="@{/user/dashboard}" class="fw-bold text-theme">My Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <!-- User Login Trigger (Only shown if NOT logged in) -->
+            <a href="javascript:void(0)" style="color: #fff;" data-bs-toggle="modal" data-bs-target="#loginModal" sec:authorize="!isAuthenticated()">
+                <i class="fa-regular fa-circle-user fa-xl"></i>
+            </a>
+            <!-- Logout Link (Only shown if logged in) -->
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="d-inline">
+                <button type="submit" style="background: none; border: none; color: #fff; padding: 0;">
+                    <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+                </button>
+            </form>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content auth-modal">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5 pt-2">
+                    <!-- Success Alert -->
+                    <div th:if="${param.registrationSuccess}" class="alert alert-success border-0 rounded-4 mb-4 small">
+                        <i class="fa-solid fa-circle-check me-2"></i> Registration successful! Please login.
+                    </div>
+
+                    <!-- Error Alert -->
+                    <div th:if="${param.error}" class="alert alert-danger border-0 rounded-4 mb-4 small">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i> Invalid username or password.
+                    </div>
+                    
+                    <div class="text-center mb-5">
+                        <h2 class="fw-black mb-2" style="font-family: 'Playfair Display', serif; font-weight: 900;">Welcome Back</h2>
+                        <p class="text-muted small">Access your fashion institute portal</p>
+                    </div>
+                    <form th:action="@{/login}" method="post">
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Username or Email</label>
+                            <input type="text" name="username" class="form-control auth-input" placeholder="Enter username or email" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Password</label>
+                            <input type="password" name="password" class="form-control auth-input" placeholder="••••••••" required>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 small">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="modalRemember">
+                                <label class="form-check-label" for="modalRemember">Remember me</label>
+                            </div>
+                            <a th:href="@{/forgot-password}" class="text-theme">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn-auth w-100 py-3 mb-4">SIGN IN</button>
+                    </form>
+                    <div class="text-center small">
+                        Don't have an account? <a th:href="@{/register}" class="text-theme fw-bold">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu-drawer" id="mobileMenu">
+        <button class="close-drawer" onclick="toggleMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="drawer-content">
+            <h2 class="brand-name mb-5 text-theme">THE FASHION INSTITUTE</h2>
+            <ul class="drawer-links">
+                <li><a th:href="@{/}" onclick="toggleMobileMenu()">Home</a></li>
+                <li><a th:href="@{/about}" onclick="toggleMobileMenu()">About Us</a></li>
+                <li><a href="#programs" onclick="toggleMobileMenu()">Programs</a></li>
+                <li><a th:href="@{/gallery}" onclick="toggleMobileMenu()">Gallery</a></li>
+                <li><a href="#testimonials" onclick="toggleMobileMenu()">Reviews</a></li>
+                <li><a href="#contact" onclick="toggleMobileMenu()">Contact</a></li>
+            </ul>
+            <div class="drawer-footer">
+                <a href="#" class="btn-solid w-100 d-block text-center">Apply Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. Redesigned Hero Carousel -->
+    <section id="home" class="hero-carousel-section">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <!-- Slide 1: Fashion -->
+                <div class="carousel-item active">
+                    <img th:src="@{/images/f1.jpeg}" class="d-block w-100 carousel-img" alt="Fashion Design">
+                    <div class="carousel-caption d-md-block text-start">
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">THE SCHOOL OF
+                            COUTURE</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Sculpting the<br><span class="text-glow">Future of
+                                Style</span></h1>
+                        <p class="lead mb-4 slide-up-3">Master the art of couture and avant-garde design from the
+                            industry's finest.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Jewellery -->
+                <div class="carousel-item">
+                    <img th:src="@{/images/f4.jpeg}" class="d-block w-100 carousel-img"
+                        alt="Jewellery Design">
+                    <div class="carousel-caption d-md-block text-start">
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">GEMOLOGICAL
+                            EXCELLENCE</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Elegance in<br><span class="text-glow">Every
+                                Detail</span></h1>
+                        <p class="lead mb-4 slide-up-3">Design the next iconic gem. Learn precision craftsmanship and
+                            stone artistry.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Shoe Design -->
+                <div class="carousel-item">
+                    <img th:src="@{/images/f3.jpeg}" class="d-block w-100 carousel-img" alt="Shoe Design">
+                    <div class="carousel-caption d-md-block text-start">
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">FOOTWEAR
+                            ATELIER</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Crafting Luxury<br><span class="text-glow">From
+                                the Ground Up</span></h1>
+                        <p class="lead mb-4 slide-up-3">From sketch to runway. Step into the spotlight with expert shoe
+                            architecture.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Beauty & Grooming -->
+                <div class="carousel-item">
+                    <img th:src="@{/images/f2.jpeg}" class="d-block w-100 carousel-img" alt="Beauty">
+                    <div class="carousel-caption d-md-block text-start">
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">BEAUTY &
+                            GROOMING</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Artistry in<br><span class="text-glow">Every
+                                Stroke</span></h1>
+                        <p class="lead mb-4 slide-up-3">Redefine beauty with expert grooming. The pinnacle of aesthetic
+                            training.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+
+    <!-- 2. Features Section (Premium Redesign) -->
+    <section class="features-section-premium">
+        <div class="mesh-gradient-bg"></div>
+        <div class="container text-center pt-4 position-relative">
+            <h2 class="fw-bold mb-2 section-title">Our Global Excellence</h2>
+            <p class="text-muted mb-5">Why aspiring fashion leaders choose The Fashion Institute</p>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-3">
+                    <div class="feature-card-new">
+                        <span class="feature-number">01</span>
+                        <div class="icon-box-feat"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h5 class="fw-bold">Expert Trainers</h5>
+                        <p class="small text-muted">Learn from world-renowned industry veterans and designers.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card-new">
+                        <span class="feature-number">02</span>
+                        <div class="icon-box-feat"><i class="fa-solid fa-medal"></i></div>
+                        <h5 class="fw-bold">Certified Courses</h5>
+                        <p class="small text-muted">Globally recognized accreditation to boost your career.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card-new">
+                        <span class="feature-number">03</span>
+                        <div class="icon-box-feat"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h5 class="fw-bold">Practical Training</h5>
+                        <p class="small text-muted">Intensive hands-on experience in real-world ateliers.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card-new">
+                        <span class="feature-number">04</span>
+                        <div class="icon-box-feat"><i class="fa-solid fa-briefcase"></i></div>
+                        <h5 class="fw-bold">Placement Support</h5>
+                        <p class="small text-muted">Direct connections to international luxury fashion houses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Courses Section (Redesigned) -->
+    <section id="courses" class="py-5 bg-light-pink pt-5 mt-4">
+        <div class="container py-4">
+            <h2 class="text-center fw-bold mb-2 section-title">Elite Programs</h2>
+            <p class="text-center text-muted mb-5">Professional accreditation for your creative journey</p>
+
+            <div class="row g-4">
+                <!-- Dynamic Course Cards -->
+                <div class="col-lg-3 col-md-6" th:each="course : ${courses}">
+                    <div class="elite-course-card">
+                        <div class="course-img-wrapper">
+                            <span class="course-tag" th:text="${course.category}">CATEGORY</span>
+                            <img th:src="${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}" th:alt="${course.title}">
+                            <div class="course-duration" th:text="${course.duration}">Duration</div>
+                        </div>
+                        <div class="course-info p-4 text-center">
+                            <h5 class="fw-bold mb-2" th:text="${course.title}">Course Title</h5>
+                            <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 100)}">Short description of the program.</p>
+                            <div class="d-flex flex-column align-items-center">
+                                <span class="price-hint mb-2">Enrolling Now</span>
+                                <a th:href="@{/user/course/{id}(id=${course.id})}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Message if no courses -->
+                <div class="col-12 text-center py-5" th:if="${courses.empty}">
+                    <p class="text-muted">No programs available at the moment. Please check back later!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Couture Gallery (Redesigned) -->
+    <section id="gallery" class="py-5 bg-peach">
+        <div class="container py-4">
+            <h2 class="text-center fw-bold mb-2 section-title">Institute Atelier Gallery</h2>
+            <p class="text-center text-muted mb-5">A glimpse into our world of high-fashion and artistry</p>
+
+            <div class="row g-3">
+                <!-- Large Feature -->
+                <div class="col-md-6">
+                    <div class="gallery-card-premium tall">
+                        <img th:src="@{/images/f.jpeg}" alt="Feature Gown">
+                        <div class="gallery-info-overlay">
+                            <span class="gallery-cat">HAUTE COUTURE</span>
+                            <h4 class="fw-bold">The Lotus Gala</h4>
+                            <a th:href="@{/gallery}" class="gallery-btn">View Collection</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2x2 Grid for the rest -->
+                <div class="col-md-6">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="gallery-card-premium sm">
+                                <img th:src="@{/images/makeup.png}" alt="Makeup">
+                                <div class="gallery-info-overlay">
+                                    <span class="gallery-cat">ARTISTRY</span>
+                                    <h6 class="fw-bold">Editorial Beauty</h6>
+                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="gallery-card-premium sm">
+                                <img th:src="@{/images/fashion.png}" alt="Fashion">
+                                <div class="gallery-info-overlay">
+                                    <span class="gallery-cat">STYLING</span>
+                                    <h6 class="fw-bold">Backstage Mood</h6>
+                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="gallery-card-premium wide">
+                                <img th:src="@{/images/catwalk.png}" alt="Catwalk">
+                                <div class="gallery-info-overlay">
+                                    <span class="gallery-cat">RUNWAY</span>
+                                    <h4 class="fw-bold">Spring Showcase</h4>
+                                    <a th:href="@{/gallery}" class="gallery-btn">Watch Show</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Student Stories (Infinite Slider) -->
+    <section id="testimonials" class="reviews-slider-container">
+        <div class="container mb-5">
+            <h2 class="text-center fw-bold mb-2 section-title">Student Stories</h2>
+            <p class="text-center text-muted">Real journeys of our creative icons in the making</p>
+        </div>
+        
+        <div class="reviews-track">
+            <!-- Story 1 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Sophia+E&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Sophia Evans</span>
+                        <span class="reviewer-role">Makeup Artistry Alumna</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 2 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Marcus+C&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Marcus Chen</span>
+                        <span class="reviewer-role">Fashion Styling Graduate</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 3 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Elena Rodriguez</span>
+                        <span class="reviewer-role">Catwalk & Stage Presence</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 4 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=David+K&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">David Kim</span>
+                        <span class="reviewer-role">Advanced Hair Artistry</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Story 5 -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Amina+J&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Amina Jalloh</span>
+                        <span class="reviewer-role">Haute Couture Apprentice</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Duplicates for seamless loop -->
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Sophia+E&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Sophia Evans</span>
+                        <span class="reviewer-role">Makeup Artistry Alumna</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Marcus+C&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Marcus Chen</span>
+                        <span class="reviewer-role">Fashion Styling Graduate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Elena Rodriguez</span>
+                        <span class="reviewer-role">Catwalk & Stage Presence</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=David+K&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">David Kim</span>
+                        <span class="reviewer-role">Advanced Hair Artistry</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card-premium">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Amina+J&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <div>
+                        <span class="reviewer-name">Amina Jalloh</span>
+                        <span class="reviewer-role">Haute Couture Apprentice</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Get In Touch (Enhanced) -->
+    <section id="contact" class="py-5 bg-peach">
+        <div class="container py-5">
+            <div class="row g-0 rounded-5 overflow-hidden shadow-lg border border-light">
+                <!-- Left: Fashion Image -->
+                <div class="col-lg-5 d-none d-lg-block overflow-hidden">
+                    <div class="contact-image-h position-relative h-100">
+                        <img th:src="@{/images/contact_hero.png}" alt="Fashion Lead" class="w-100 h-100 object-fit-cover">
+                        <div class="contact-img-overlay position-absolute bottom-0 start-0 w-100 p-5"
+                            style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                            <div class="text-white">
+                                <h3 class="fw-bold mb-0">Visit Our Atelier</h3>
+                                <p class="small mb-0 opacity-75">Connect with our admissions team today.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Contact Form -->
+                <div class="col-lg-7 bg-white p-5">
+                    <div class="ps-lg-4 text-center">
+                        <span class="text-theme fw-bold letter-spacing-1 small d-block mb-2">CONTACT US</span>
+                        <h2 class="fw-bold mb-4">Start Your Creative Journey</h2>
+                        <form action="javascript:void(0);" onsubmit="submitContactForm(event)" class="row g-3" id="contactForm">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Full Name</label>
+                                <input type="text" class="form-control custom-input-v2" placeholder="Jane Doe" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Email Address</label>
+                                <input type="email" class="form-control custom-input-v2" placeholder="jane@example.com"
+                                    required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">Course of Interest</label>
+                                <select class="form-select custom-input-v2" required>
+                                    <option value="" selected disabled>Choose a program...</option>
+                                    <option>Fashion Designing</option>
+                                    <option>Jewellery Designing</option>
+                                    <option>Interior Designing</option>
+                                    <option>Photography</option>
+                                    <option>Shoe Designing</option>
+                                    <option>Beauty and Grooming</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">A Message For Us</label>
+                                <textarea class="form-control custom-input-v2" rows="4"
+                                    placeholder="How can we help?" required></textarea>
+                            </div>
+                            <div class="col-12 pt-3">
+                                <button type="submit" class="btn btn-gradient-feat w-100 py-3">Send My Inquiry <i
+                                        class="fa-solid fa-paper-plane ms-2"></i></button>
+                            </div>
+                            <div class="col-12 mt-3" id="contactSuccessMessage" style="display: none;">
+                                <div class="alert alert-success border-0 rounded-3 small">
+                                    <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your inquiry has been sent to our College Admissions team.
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <script>
+                            async function submitContactForm(event) {
+                                event.preventDefault(); // Stop the default POST request
+                                const btn = event.target.querySelector('button[type="submit"]');
+                                const originalText = btn.innerHTML;
+                                
+                                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                                btn.disabled = true;
+                                
+                                const formData = {
+                                    name: event.target.elements[0].value,
+                                    email: event.target.elements[1].value,
+                                    courseOfInterest: event.target.elements[2].value,
+                                    message: event.target.elements[3].value
+                                };
+
+                                try {
+                                    const response = await fetch('/api/inquiries', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(formData)
+                                    });
+
+                                    if (response.ok) {
+                                        document.getElementById('contactSuccessMessage').style.display = 'block';
+                                        event.target.reset(); // Clear the form
+                                        
+                                        // Hide the message after 5 seconds
+                                        setTimeout(() => {
+                                            document.getElementById('contactSuccessMessage').style.display = 'none';
+                                        }, 5000);
+                                    } else {
+                                        alert('There was a problem sending your inquiry. Please try again.');
+                                    }
+                                } catch (error) {
+                                    console.error('Error submitting form:', error);
+                                    alert('Network error. Please try again later.');
+                                } finally {
+                                    btn.innerHTML = originalText;
+                                    btn.disabled = false;
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Professional Footer -->
+    <footer class="footer-area pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Column 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand mb-4">
+                        <h3 class="brand-name text-theme">THE FASHION INSTITUTE</h3>
+                        <p class="small mt-3">Empowering the next generation of fashion icons and beauty experts through
+                            world-class training and industry-led curriculum since 1923.</p>
+                        <div class="footer-social mt-4">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div class="col-lg-2 col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Discovery</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a th:href="@{/about}">Our Story</a></li>
+                        <li><a href="/#courses">Academy Campus</a></li>
+                        <li><a th:href="@{/gallery}">Workshops</a></li>
+                        <li><a href="/#contact">Career Portal</a></li>
+                        <li><a href="/#contact">Admissions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Ateliers -->
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Elite Ateliers</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">Makeup Artistry</a></li>
+                        <li><a href="#">Fashion Styling</a></li>
+                        <li><a href="#">Beauty Training</a></li>
+                        <li><a href="#">Hair Styling</a></li>
+                        <li><a href="#">Shoe Training</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact & Newsletter -->
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Connect</h5>
+                    <div class="contact-info small">
+                        <p><i class="fa-solid fa-location-dot me-2 text-theme"></i> 123 Fashion Ave, Design District</p>
+                        <p><i class="fa-solid fa-phone me-2 text-theme"></i> +1 (555) glam-style</p>
+                        <p><i class="fa-solid fa-envelope me-2 text-theme"></i> admissions@fashioninstitute.edu</p>
+                    </div>
+                    <div class="mt-4">
+                        <div class="input-group newsletter-group">
+                            <input type="text" class="form-control bg-transparent text-white border-secondary"
+                                placeholder="Newsletter">
+                            <button class="btn btn-theme-solid" type="button"><i
+                                    class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mt-5 mb-4 opacity-10">
+
+            <!-- Portals & Legal (Bottom Bar) -->
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small text-muted mb-0">© 2026 The Fashion Institute. All icons and images are copyright of
+                        their respective owners.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <div class="portal-links small">
+                        <a th:href="@{/login}" class="me-3">Student Portal</a>
+                        <a th:href="@{/login}">College Portal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Simple Reveal Script -->
+    <script>
+        const observerOptions = {
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
+
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const parent = event.currentTarget.closest('.has-dropdown');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.has-dropdown').forEach(el => {
+                if(el !== parent) el.classList.remove('show');
+            });
+
+            if(parent) parent.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            document.querySelectorAll('.has-dropdown').forEach(el => {
+                if(!el.contains(e.target)) el.classList.remove('show');
+            });
+        });
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+
+        // Auto-open login modal if 'login=true', 'registrationSuccess=true', or 'error' is in URL
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('login') === 'true' || urlParams.get('registrationSuccess') === 'true' || urlParams.get('error') !== null) {
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            }
+        });
+    </script>
+    <!-- Floating Chatbot Button -->
+    <div class="chatbot-float" onclick="toggleChat()" style="background-color: #ff6b35;">
+        <i class="fa-solid fa-comment-dots fa fa-comment text-white"></i>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-white" style="width: 10px; height: 10px;"></div>
+                <span class="fw-bold">College Support</span>
+            </div>
+            <i class="fa-solid fa-xmark cursor-pointer" onclick="toggleChat()"></i>
+        </div>
+        <div id="chatBody" class="chat-body">
+            <div class="message msg-College">
+                Hello! Welcome to The Fashion Institute. How can I help you connect with our master Colleges or learn about our programs?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+            <button class="btn btn-theme-solid p-2 rounded-circle" style="width: 40px; height: 40px;" onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('active');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const body = document.getElementById('chatBody');
+            if (input.value.trim() === '') return;
+
+            // User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message msg-user';
+            userMsg.innerText = input.value;
+            body.appendChild(userMsg);
+
+            const text = input.value.toLowerCase();
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            // Simulated College Response
+            setTimeout(() => {
+                const CollegeMsg = document.createElement('div');
+                CollegeMsg.className = 'message msg-College';
+                
+                if (text.includes('enroll') || text.includes('admission')) {
+                    CollegeMsg.innerText = "Admissions are currently open! You can apply directly through the 'Apply Now' button or chat with a specific mentor here.";
+                } else if (text.includes('price') || text.includes('fee')) {
+                    CollegeMsg.innerText = "Our courses offer premium value with flexible payment plans. Which program are you interested in?";
+                } else {
+                    CollegeMsg.innerText = "Thank you for reaching out! A representative from our College atelier will be with you shortly.";
+                }
+                
+                body.appendChild(CollegeMsg);
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+        }
+
+        document.getElementById('chatInput')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+
+
+</body>
+
+</html>

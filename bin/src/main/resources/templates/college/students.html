@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Students | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/college/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/college/students}" class="active"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/college/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/college/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/college/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+                <li class="mt-5">
+                    <form th:action="@{/logout}" method="post" id="logoutForm">
+                        <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Registered Students</h2>
+                    <p class="text-muted small">Overview of students enrolled in your fashion programs.</p>
+                </div>
+            </div>
+
+            <!-- Students List -->
+            <div class="table-premium">
+                <div class="p-4 border-bottom">
+                    <h5 class="fw-bold mb-0">Enrollment Directory</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Student Details</th>
+                                <th>Enrolled Course</th>
+                                <th>Enrollment Date</th>
+                                <th>Contact Info</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="student : ${students}">
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img th:src="${'https://ui-avatars.com/api/?name=' + student.username + '&background=random'}" class="rounded-circle" style="width: 40px; height: 40px;">
+                                        <div>
+                                            <div class="fw-bold" th:text="${student.username}">Student Name</div>
+                                            <small class="text-muted" th:text="${student.email}">student@email.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:each="course : ${student.enrolledCourses}" th:if="${course.CollegeName == 'Fashion Guru'}">
+                                        <div class="fw-bold text-theme" th:text="${course.title}">Course Title</div>
+                                        <small class="badge bg-light text-dark" th:text="${course.category}">Category</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">April 28, 2026</div>
+                                    <small class="text-muted">10:30 AM</small>
+                                </td>
+                                <td>
+                                    <div class="small"><i class="fa-solid fa-phone me-2 text-muted"></i> <span th:text="${student.phone}">N/A</span></div>
+                                    <div class="small mt-1"><i class="fa-solid fa-envelope me-2 text-muted"></i> Email sent</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Active Learner</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${students.empty}">
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="mb-3"><i class="fa-solid fa-user-slash fa-3x text-light"></i></div>
+                                    <h5 class="text-muted">No students registered yet.</h5>
+                                    <p class="small text-muted">Students will appear here once they enroll in your courses.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

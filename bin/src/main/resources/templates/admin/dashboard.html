@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Fashion Institute</title>
+    <link rel="stylesheet" th:href="@{/css/admin-premium.css}">
+    <style>
+        :root {
+            --primary: #fa891a !important;
+            --secondary: #ed1275 !important;
+            --bg-light: #fdf2e9 !important;
+            --card-bg: rgba(255, 255, 255, 0.9) !important;
+            --sidebar-bg: #ffffff !important;
+            --text-main: #2b1b10 !important;
+            --text-muted: #6b7280 !important;
+        }
+        body {
+            background: linear-gradient(135deg, #fdf2e9 0%, #fff0f5 100%) !important;
+            color: #2b1b10 !important;
+        }
+        .sidebar {
+            background-color: #ffffff !important;
+            border-right: 1px solid rgba(0,0,0,0.08) !important;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02) !important;
+        }
+        .logo {
+            background: linear-gradient(to right, #ed1275, #fa891a) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+        }
+        .nav-links a {
+            color: #6b7280 !important;
+        }
+        .nav-links a.active {
+            background: linear-gradient(45deg, rgba(237, 18, 117, 0.1), rgba(250, 137, 26, 0.1)) !important;
+            color: #ed1275 !important;
+        }
+        .stat-card, .panel {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border: 1px solid rgba(0,0,0,0.08) !important;
+            color: #2b1b10 !important;
+        }
+        .stat-card h3, .panel h2 {
+            color: #2b1b10 !important;
+        }
+        .value {
+            color: #2b1b10 !important;
+        }
+    </style>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fas fa-skating"></i>
+            <span>FashionInst.</span>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a th:href="@{/admin/students}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a th:href="@{/admin/colleges}"><i class="fas fa-university"></i> Colleges</a></li>
+            <li><a th:href="@{/admin/courses}"><i class="fas fa-book-open"></i> Courses</a></li>
+            <li><a th:href="@{/admin/events}"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a th:href="@{/admin/settings}"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="logout" style="margin-top: auto;">
+            <a th:href="@{/}" style="color: var(--primary); margin-bottom: 0.5rem;"><i class="fas fa-home"></i> Back to Home</a>
+            <a th:href="@{/logout}" style="color: var(--secondary);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+ 
+    <!-- Main Content -->
+    <main class="main-content">
+        <header>
+            <div class="welcome">
+                <h1>Dashboard Overview <span style="font-size: 0.8rem; color: var(--secondary);">[NEW THEME ACTIVE]</span></h1>
+                <p>Welcome back, <span style="color: var(--primary); font-weight: 600;">Admin</span></p>
+            </div>
+            <div class="user-profile">
+                <i class="far fa-bell" style="margin-right: 1rem; cursor: pointer; color: var(--text-muted);"></i>
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100" alt="Admin Profile">
+                <span>Admin User</span>
+                <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: var(--text-muted);"></i>
+            </div>
+        </header>
+ 
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Students</h3>
+                <div class="value" th:text="${totalStudents}">0</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 12% vs last month</div> -->
+            </div>
+            <div class="stat-card">
+                <h3>Total Colleges</h3>
+                <div class="value" th:text="${totalColleges}">0</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 5% vs last month</div> -->
+            </div>
+            <div class="stat-card">
+                <h3>Active Courses</h3>
+                <div class="value" th:text="${activeCourses}">0</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend"><i class="fas fa-minus"></i> Stable</div> -->
+            </div>
+            <div class="stat-card">
+                <h3>Revenue</h3>
+                <div class="value" th:text="${totalRevenue}">$0</div>
+                <!-- Trend hidden as it is mock data -->
+                <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 8% growth</div> -->
+            </div>
+        </div>
+ 
+        <!-- Dashboard Details -->
+        <div class="dashboard-details">
+            <!-- Chart Panel -->
+            <div class="panel" style="width: 100%;">
+                <h2>Enrollment Trends</h2>
+                <div style="height: 300px; position: relative;">
+                    <canvas id="enrollmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Section -->
+        <div class="panel" style="margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Course Management</h2>
+                <a th:href="@{/admin/courses}" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem;">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="table-container" style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Title</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Instructor</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Duration</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="course : ${courses}" style="border-bottom: 1px solid rgba(0,0,0,0.02);">
+                            <td style="padding: 1rem; font-weight: 500;" th:text="${course.title}">Title</td>
+                            <td style="padding: 1rem; color: var(--text-muted);" th:text="${course.instructorName}">Instructor</td>
+                            <td style="padding: 1rem; color: var(--text-muted);" th:text="${course.duration}">Duration</td>
+                            <td style="padding: 1rem; color: var(--secondary); font-weight: 600;" th:text="${'₹' + course.price}">Price</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(courses)}">
+                            <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-muted);">No courses found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script th:src="@{/js/admin-premium-dashboard.js}"></script>
+</body>
+
+</html>

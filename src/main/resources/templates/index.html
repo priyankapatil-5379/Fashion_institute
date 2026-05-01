@@ -452,53 +452,20 @@
             <h2 class="text-center fw-bold mb-2 section-title">Institute Atelier Gallery</h2>
             <p class="text-center text-muted mb-5">A glimpse into our world of high-fashion and artistry</p>
 
-            <div class="row g-3">
-                <!-- Large Feature -->
-                <div class="col-md-6">
-                    <div class="gallery-card-premium tall">
-                        <img th:src="@{/images/f.jpeg}" alt="Feature Gown">
+            <div class="row g-4">
+                <!-- Dynamic Gallery Items -->
+                <div class="col-lg-3 col-md-6" th:each="img, iterStat : ${images}" th:if="${iterStat.index < 4}">
+                    <div class="gallery-card-premium sm" style="height: 300px;">
+                        <img th:src="${img.imageUrl}" th:alt="${img.title}" style="height: 100%; object-fit: cover;">
                         <div class="gallery-info-overlay">
-                            <span class="gallery-cat">HAUTE COUTURE</span>
-                            <h4 class="fw-bold">The Lotus Gala</h4>
-                            <a th:href="@{/gallery}" class="gallery-btn">View Collection</a>
+                            <span class="gallery-cat" th:text="${img.category}">CATEGORY</span>
+                            <a th:href="@{/gallery}" class="gallery-btn small">View Gallery</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- 2x2 Grid for the rest -->
-                <div class="col-md-6">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <div class="gallery-card-premium sm">
-                                <img th:src="@{/images/makeup.png}" alt="Makeup">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">ARTISTRY</span>
-                                    <h6 class="fw-bold">Editorial Beauty</h6>
-                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="gallery-card-premium sm">
-                                <img th:src="@{/images/fashion.png}" alt="Fashion">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">STYLING</span>
-                                    <h6 class="fw-bold">Backstage Mood</h6>
-                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="gallery-card-premium wide">
-                                <img th:src="@{/images/catwalk.png}" alt="Catwalk">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">RUNWAY</span>
-                                    <h4 class="fw-bold">Spring Showcase</h4>
-                                    <a th:href="@{/gallery}" class="gallery-btn">Watch Show</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Fallback if no images -->
+                <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(images)}">
+                    <p class="text-muted">New gallery collections coming soon!</p>
                 </div>
             </div>
         </div>

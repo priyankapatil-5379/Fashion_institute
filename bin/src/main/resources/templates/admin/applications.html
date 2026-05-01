@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admissions Applications | Fashion Institute</title>
+    <link rel="stylesheet" th:href="@{/css/admin-premium.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fas fa-skating"></i>
+            <span>FashionInst.</span>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a th:href="@{/admin/students}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a th:href="@{/admin/colleges}"><i class="fas fa-store"></i> Colleges</a></li>
+            <li><a th:href="@{/admin/courses}"><i class="fas fa-book-open"></i> Courses</a></li>
+            <li><a th:href="@{/admin/applications}" class="active"><i class="fas fa-file-signature"></i> Applications</a></li>
+            <li><a th:href="@{/admin/events}"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a th:href="@{/admin/settings}"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="logout" style="margin-top: auto;">
+            <a th:href="@{/}" style="color: var(--primary); margin-bottom: 0.5rem;"><i class="fas fa-home"></i> Back to Home</a>
+            <a th:href="@{/logout}" style="color: var(--secondary);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header>
+            <div class="welcome">
+                <h1>Admissions</h1>
+                <p>Review and process student applications.</p>
+            </div>
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100" alt="Admin Profile">
+                <span>Admin User</span>
+            </div>
+        </header>
+
+        <div class="panel">
+            <h2>Course Inquiries & Applications</h2>
+            
+            <div th:if="${#lists.isEmpty(applications)}">
+                <p style="color: var(--text-muted); text-align: center; padding: 50px;">
+                    <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
+                    No pending inquiries to display.
+                </p>
+            </div>
+            
+            <div th:if="${not #lists.isEmpty(applications)}" class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Course of Interest</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="inq : ${applications}">
+                            <td th:text="${#temporals.format(inq.createdAt, 'MMM dd, yyyy')}">May 01, 2026</td>
+                            <td style="font-weight: 600; color: var(--text-dark);" th:text="${inq.name}">Jane Doe</td>
+                            <td th:text="${inq.email}">jane@example.com</td>
+                            <td><span class="badge" th:text="${inq.courseOfInterest}">Makeup Artistry</span></td>
+                            <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" th:text="${inq.message}" th:title="${inq.message}">
+                                Message content...
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="${inq.isRead ? 'badge-secondary' : 'badge-primary'}" th:text="${inq.isRead ? 'Reviewed' : 'New'}">New</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
