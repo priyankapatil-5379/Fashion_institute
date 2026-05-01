@@ -107,7 +107,7 @@ public class CollegeController {
     public String students(Model model, java.security.Principal principal) {
         // Fetching all students so manually added students without courses also appear
         model.addAttribute("students", userService.getAllStudents());
-        model.addAttribute("courses", courseService.getCoursesByInstructor(principal.getName()));
+        model.addAttribute("courses", courseService.getAllCourses());
         return "college/students";
     }
 

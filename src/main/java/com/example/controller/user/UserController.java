@@ -27,11 +27,12 @@ public class UserController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
-        model.addAttribute("courses", courseService.getAllCourses());
         if (principal != null) {
             Optional<User> user = userRepository.findByUsername(principal.getName());
+            model.addAttribute("courses", user.map(User::getEnrolledCourses).orElse(new ArrayList<>()));
             model.addAttribute("wishlist", user.map(User::getWishlistCourses).orElse(new ArrayList<>()));
         } else {
+            model.addAttribute("courses", new ArrayList<>());
             model.addAttribute("wishlist", new ArrayList<>());
         }
         model.addAttribute("view", "dashboard");

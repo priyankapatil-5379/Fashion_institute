@@ -81,33 +81,9 @@
                                     
                                     <!-- Manual Enroll Option -->
                                     <button class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="modal" th:attr="data-bs-target='#enrollModal' + ${student.id}">
-                                        <i class="fa-solid fa-plus me-1"></i> Enroll Manually
+                                        <i class="fa-solid fa-plus me-1"></i> Enroll Course
                                     </button>
                                     
-                                    <!-- Enroll Student Modal -->
-                                    <div class="modal fade" th:id="'enrollModal' + ${student.id}" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content border-0 shadow">
-                                                <div class="modal-header border-bottom-0 pb-0">
-                                                    <h5 class="modal-title fw-bold">Enroll Student in Course</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form th:action="@{/college/enroll-student}" method="post">
-                                                        <input type="hidden" name="studentId" th:value="${student.id}">
-                                                        <div class="mb-4 text-start">
-                                                            <label class="form-label small fw-bold">Select Course</label>
-                                                            <select name="courseId" class="form-select" required>
-                                                                <option value="" disabled selected>Choose a course...</option>
-                                                                <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.title}"></option>
-                                                            </select>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary w-100">Enroll</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                                 <td>
                                     <div class="small">April 28, 2026</div>
@@ -171,6 +147,33 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Save Student</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enroll Student Modals (moved outside table to fix backdrop issue) -->
+    <div th:each="student : ${students}">
+        <div class="modal fade" th:id="'enrollModal' + ${student.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-bottom-0 pb-0">
+                        <h5 class="modal-title fw-bold">Enroll Student in Course</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/college/enroll-student}" method="post">
+                            <input type="hidden" name="studentId" th:value="${student.id}">
+                            <div class="mb-4 text-start">
+                                <label class="form-label small fw-bold">Select Course</label>
+                                <select name="courseId" class="form-select" required>
+                                    <option value="" disabled selected>Choose a course...</option>
+                                    <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.title}"></option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Enroll</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
