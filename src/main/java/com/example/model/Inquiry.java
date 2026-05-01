@@ -24,6 +24,13 @@ public class Inquiry {
     private LocalDateTime createdAt;
     
     private boolean isRead = false;
+    private String status = "New";
+    private String paymentMethod; // EMI or Full Payment
+    private Double amountPaid;
+    private Double dueAmount;
+    
+    private String generatedUsername;
+    private String generatedPassword;
 
     public Inquiry() {
         this.createdAt = LocalDateTime.now();
@@ -50,4 +57,22 @@ public class Inquiry {
 
     public boolean isRead() { return isRead; }
     public void setRead(boolean read) { isRead = read; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+
+    public Double getAmountPaid() { return amountPaid; }
+    public void setAmountPaid(Double amountPaid) { this.amountPaid = amountPaid; }
+
+    public Double getDueAmount() { return dueAmount; }
+    public void setDueAmount(Double dueAmount) { this.dueAmount = dueAmount; }
+
+    public String getGeneratedUsername() { return generatedUsername; }
+    public void setGeneratedUsername(String generatedUsername) { this.generatedUsername = generatedUsername; }
+
+    public String getGeneratedPassword() { return generatedPassword; }
+    public void setGeneratedPassword(String generatedPassword) { this.generatedPassword = generatedPassword; }
 }

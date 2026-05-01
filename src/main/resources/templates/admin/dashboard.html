@@ -65,9 +65,8 @@
         <ul class="nav-links">
             <li><a th:href="@{/admin/dashboard}" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
             <li><a th:href="@{/admin/students}"><i class="fas fa-user-graduate"></i> Students</a></li>
-            <li><a th:href="@{/admin/vendors}"><i class="fas fa-store"></i> Vendors</a></li>
+            <li><a th:href="@{/admin/colleges}"><i class="fas fa-university"></i> Colleges</a></li>
             <li><a th:href="@{/admin/courses}"><i class="fas fa-book-open"></i> Courses</a></li>
-            <li><a th:href="@{/admin/applications}"><i class="fas fa-file-signature"></i> Applications</a></li>
             <li><a th:href="@{/admin/events}"><i class="fas fa-calendar-alt"></i> Events</a></li>
             <li><a th:href="@{/admin/settings}"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
@@ -76,7 +75,7 @@
             <a th:href="@{/logout}" style="color: var(--secondary);"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </nav>
-
+ 
     <!-- Main Content -->
     <main class="main-content">
         <header>
@@ -91,7 +90,7 @@
                 <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: var(--text-muted);"></i>
             </div>
         </header>
-
+ 
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card">
@@ -101,8 +100,8 @@
                 <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 12% vs last month</div> -->
             </div>
             <div class="stat-card">
-                <h3>Total Vendors</h3>
-                <div class="value" th:text="${totalVendors}">0</div>
+                <h3>Total Colleges</h3>
+                <div class="value" th:text="${totalColleges}">0</div>
                 <!-- Trend hidden as it is mock data -->
                 <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 5% vs last month</div> -->
             </div>
@@ -113,46 +112,20 @@
                 <!-- <div class="trend"><i class="fas fa-minus"></i> Stable</div> -->
             </div>
             <div class="stat-card">
-                <h3>Pending Apps</h3>
-                <div class="value" th:text="${pendingApplications}">0</div>
-                <!-- Trend hidden as it is mock data -->
-                <!-- <div class="trend down"><i class="fas fa-arrow-down"></i> 5% vs last week</div> -->
-            </div>
-            <div class="stat-card">
                 <h3>Revenue</h3>
                 <div class="value" th:text="${totalRevenue}">$0</div>
                 <!-- Trend hidden as it is mock data -->
                 <!-- <div class="trend up"><i class="fas fa-arrow-up"></i> 8% growth</div> -->
             </div>
         </div>
-
+ 
         <!-- Dashboard Details -->
         <div class="dashboard-details">
             <!-- Chart Panel -->
-            <div class="panel">
+            <div class="panel" style="width: 100%;">
                 <h2>Enrollment Trends</h2>
                 <div style="height: 300px; position: relative;">
                     <canvas id="enrollmentChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Recent Activity Panel -->
-            <div class="panel">
-                <h2>Recent Activity</h2>
-                <div class="activity-list">
-                    <div th:each="activity : ${recentActivities}" class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-inbox"></i>
-                        </div>
-                        <div class="activity-info">
-                            <p><strong th:text="${activity.name}">User</strong> inquired about <span th:text="${activity.courseOfInterest}">Course</span></p>
-                            <small th:text="${#temporals.format(activity.createdAt, 'MMM dd, yyyy HH:mm')}">Time</small>
-                        </div>
-                    </div>
-                    <div th:if="${#lists.isEmpty(recentActivities)}" style="text-align: center; padding: 2rem; color: var(--text-muted);">
-                        <i class="fas fa-history" style="font-size: 2rem; display: block; margin-bottom: 0.5rem; opacity: 0.2;"></i>
-                        No recent activity.
-                    </div>
                 </div>
             </div>
         </div>

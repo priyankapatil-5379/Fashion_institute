@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instructor Dashboard | The Fashion Institute</title>
+    <title>College Dashboard | The Fashion Institute</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
@@ -18,12 +18,12 @@
                 <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
-                <li><a th:href="@{/vendor/courses}" class="active"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
-                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
-                <li><a th:href="@{/vendor/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
-                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
-                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+                <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/college/courses}" class="active"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/college/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/college/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/college/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/college/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
                 <li class="mt-5">
                     <form th:action="@{/logout}" method="post" id="logoutForm">
                         <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
@@ -46,7 +46,7 @@
                     <div class="d-flex align-items-center gap-2">
                         <div class="text-end d-none d-md-block">
                             <h6 class="mb-0 small fw-bold">Fashion Guru</h6>
-                            <small class="text-muted">Lead Instructor</small>
+                            <small class="text-muted">Lead College</small>
                         </div>
                         <img src="https://ui-avatars.com/api/?name=Fashion+Guru&background=FA891A&color=fff" class="user-profile-img" alt="Profile">
                     </div>
@@ -90,10 +90,10 @@
                                         <td class="fw-bold" th:text="${'₹' + course.price}">₹180000</td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a th:href="@{/vendor/edit-course/{id}(id=${course.id})}" class="btn btn-light btn-sm rounded-circle text-primary shadow-sm" title="Edit">
+                                                <a th:href="@{/college/edit-course/{id}(id=${course.id})}" class="btn btn-light btn-sm rounded-circle text-primary shadow-sm" title="Edit">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
-                                                <a th:href="@{/vendor/delete-course/{id}(id=${course.id})}" class="btn btn-light btn-sm rounded-circle text-danger shadow-sm" title="Delete" onclick="return confirm('Are you sure you want to delete this course?')">
+                                                <a th:href="@{/college/delete-course/{id}(id=${course.id})}" class="btn btn-light btn-sm rounded-circle text-danger shadow-sm" title="Delete" onclick="return confirm('Are you sure you want to delete this course?')">
                                                     <i class="fa-solid fa-trash-can"></i>
                                                 </a>
                                             </div>
@@ -117,10 +117,10 @@
             <div class="modal-content border-0 rounded-4 shadow-lg">
                 <div class="modal-header border-0 p-4 pb-0">
                     <h4 class="fw-black mb-0" style="font-family: 'Playfair Display', serif;" th:text="${newCourse.id != null ? 'Edit Course' : 'Add New Course'}">Add New Course</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.href='/vendor/courses'"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.href='/college/courses'"></button>
                 </div>
                 <div class="modal-body p-4 pt-2">
-                    <form th:action="@{/vendor/add-course}" th:object="${newCourse}" method="POST" enctype="multipart/form-data">
+                    <form th:action="@{/college/add-course}" th:object="${newCourse}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" th:field="*{id}">
                         
                         <!-- Visual Identity Section -->
@@ -248,7 +248,7 @@
                         </div>
 
                         <div class="modal-footer border-0 p-0 pt-3">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="window.location.href='/vendor/courses'">Cancel</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="window.location.href='/college/courses'">Cancel</button>
                             <button type="submit" class="btn btn-gradient-dash px-5">Publish Program <i class="fa-solid fa-paper-plane ms-2"></i></button>
                         </div>
                     </form>

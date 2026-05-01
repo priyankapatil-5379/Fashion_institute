@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/login", "/register", "/forgot-password", "/css/**", "/images/**", "/js/**", "/user/course/**", "/user/payment/**", "/uploads/**", "/api/inquiries/**", "/gallery", "/about", "/scholarship", "/faq", "/faculty", "/programs/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/vendor/**").hasRole("VENDOR")
+                        .requestMatchers("/college/**").hasRole("VENDOR")
                         .requestMatchers("/user/**").hasAnyRole("STUDENT", "ADMIN")
                         .anyRequest().authenticated()
 
@@ -42,7 +42,7 @@ public class SecurityConfig {
                             var authorities = authentication.getAuthorities();
                             for (var authority : authorities) {
                                 if (authority.getAuthority().equals("ROLE_VENDOR")) {
-                                    redirectUrl = "/vendor/dashboard";
+                                    redirectUrl = "/college/dashboard";
                                     break;
                                 } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
                                     redirectUrl = "/admin/dashboard";

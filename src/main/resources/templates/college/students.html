@@ -18,12 +18,12 @@
                 <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
-                <li><a th:href="@{/vendor/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
-                <li><a th:href="@{/vendor/students}" class="active"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
-                <li><a th:href="@{/vendor/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
-                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
-                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+                <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/college/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/college/students}" class="active"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/college/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/college/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/college/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
                 <li class="mt-5">
                     <form th:action="@{/logout}" method="post" id="logoutForm">
                         <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
@@ -71,7 +71,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div th:each="course : ${student.enrolledCourses}" th:if="${course.instructorName == 'Fashion Guru'}">
+                                    <div th:each="course : ${student.enrolledCourses}" th:if="${course.CollegeName == 'Fashion Guru'}">
                                         <div class="fw-bold text-theme" th:text="${course.title}">Course Title</div>
                                         <small class="badge bg-light text-dark" th:text="${course.category}">Category</small>
                                     </div>

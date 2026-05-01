@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     List<Inquiry> findAllByOrderByCreatedAtDesc();
+    List<Inquiry> findByCourseOfInterestInOrderByCreatedAtDesc(List<String> courseTitles);
     long countByIsReadFalse();
+    long countByCourseOfInterestInAndIsReadFalse(List<String> courseTitles);
 }

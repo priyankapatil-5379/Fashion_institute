@@ -18,12 +18,12 @@
                 <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/vendor/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
-                <li><a th:href="@{/vendor/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
-                <li><a th:href="@{/vendor/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
-                <li><a th:href="@{/vendor/messages}" class="active"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
-                <li><a th:href="@{/vendor/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
-                <li><a th:href="@{/vendor/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+                <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/college/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/college/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/college/messages}" class="active"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/college/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/college/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
                 <li class="mt-5">
                     <form th:action="@{/logout}" method="post" id="logoutForm">
                         <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
@@ -54,7 +54,7 @@
                         <h6 class="fw-bold mb-0" id="headerName">Select a Student</h6>
                     </div>
                     
-                    <div id="vendorChatBody" class="flex-grow-1 p-4 overflow-y-auto d-flex flex-column gap-3">
+                    <div id="CollegeChatBody" class="flex-grow-1 p-4 overflow-y-auto d-flex flex-column gap-3">
                         <div class="text-center text-muted my-auto">
                             <i class="fa-solid fa-comments fa-3x mb-3" style="color: var(--secondary); opacity: 0.2;"></i>
                             <h5>Select a conversation to start chatting</h5>
@@ -63,8 +63,8 @@
 
                     <div class="p-4 bg-white border-top">
                         <div class="d-flex gap-3">
-                            <input type="text" id="vendorChatInput" class="form-control custom-input" placeholder="Write a reply...">
-                            <button class="btn btn-gradient-dash px-4" onclick="sendVendorMessage()">Reply <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                            <input type="text" id="CollegeChatInput" class="form-control custom-input" placeholder="Write a reply...">
+                            <button class="btn btn-gradient-dash px-4" onclick="sendCollegeMessage()">Reply <i class="fa-solid fa-paper-plane ms-2"></i></button>
                         </div>
                     </div>
                 </div>
@@ -74,10 +74,10 @@
 
     <script th:inline="javascript">
         let activeStudent = null;
-        const vendorName = /*[[${#authentication.name}]]*/ 'Vendor';
+        const CollegeName = /*[[${#authentication.name}]]*/ 'College';
 
         async function loadContacts() {
-            const response = await fetch(`/api/messages/contacts?user=${vendorName}`);
+            const response = await fetch(`/api/messages/contacts?user=${CollegeName}`);
             const contacts = await response.json();
             const list = document.getElementById('studentList');
             
@@ -105,25 +105,25 @@
             document.getElementById('headerName').innerText = username;
             document.getElementById('headerImg').src = `https://ui-avatars.com/api/?name=${username}&background=random`;
             loadContacts(); // Refresh list to show active state
-            loadVendorMessages();
+            loadCollegeMessages();
         }
 
-        async function loadVendorMessages() {
+        async function loadCollegeMessages() {
             if (!activeStudent) return;
-            const response = await fetch(`/api/messages/conversation?user1=${vendorName}&user2=${activeStudent}`);
+            const response = await fetch(`/api/messages/conversation?user1=${CollegeName}&user2=${activeStudent}`);
             const messages = await response.json();
-            const body = document.getElementById('vendorChatBody');
+            const body = document.getElementById('CollegeChatBody');
             
             body.innerHTML = '';
             messages.forEach(msg => {
                 const div = document.createElement('div');
-                div.className = `message ${msg.sender === vendorName ? 'msg-user' : 'msg-vendor'}`;
+                div.className = `message ${msg.sender === CollegeName ? 'msg-user' : 'msg-College'}`;
                 div.style.maxWidth = '70%';
                 div.style.padding = '12px 18px';
                 div.style.borderRadius = '20px';
-                div.style.alignSelf = msg.sender === vendorName ? 'flex-end' : 'flex-start';
-                div.style.background = msg.sender === vendorName ? 'var(--secondary)' : 'white';
-                div.style.color = msg.sender === vendorName ? 'white' : '#333';
+                div.style.alignSelf = msg.sender === CollegeName ? 'flex-end' : 'flex-start';
+                div.style.background = msg.sender === CollegeName ? 'var(--secondary)' : 'white';
+                div.style.color = msg.sender === CollegeName ? 'white' : '#333';
                 div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
                 div.style.marginBottom = '10px';
                 div.innerText = msg.content;
@@ -132,12 +132,12 @@
             body.scrollTop = body.scrollHeight;
         }
 
-        async function sendVendorMessage() {
-            const input = document.getElementById('vendorChatInput');
+        async function sendCollegeMessage() {
+            const input = document.getElementById('CollegeChatInput');
             if (!input.value.trim() || !activeStudent) return;
 
             const msg = {
-                sender: vendorName,
+                sender: CollegeName,
                 receiver: activeStudent,
                 content: input.value
             };
@@ -149,13 +149,13 @@
             });
 
             input.value = '';
-            loadVendorMessages();
+            loadCollegeMessages();
         }
 
         window.onload = () => {
             loadContacts();
             setInterval(loadContacts, 5000);
-            setInterval(loadVendorMessages, 3000);
+            setInterval(loadCollegeMessages, 3000);
         };
     </script>
 </body>

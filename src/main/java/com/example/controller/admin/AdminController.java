@@ -21,14 +21,13 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private com.example.repository.InquiryRepository inquiryRepository;
+
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
 
         long totalStudentsCount = userService.countStudents();
-        long totalVendorsCount = userService.countVendors();
+        long totalCollegesCount = userService.countVendors();
         long activeCoursesCount = courseService.getAllCourses().size();
 
         model.addAttribute("courses", courseService.getAllCourses());
@@ -36,16 +35,13 @@ public class AdminController {
 
         // Statistics from DB
         model.addAttribute("totalStudents", totalStudentsCount);
-        model.addAttribute("totalVendors", totalVendorsCount);
+        model.addAttribute("totalColleges", totalCollegesCount);
         model.addAttribute("activeCourses", activeCoursesCount);
         
         // Initializing other stats to 0 (for features not yet implemented in DB)
-        model.addAttribute("pendingApplications", inquiryRepository.countByIsReadFalse());
         model.addAttribute("totalRevenue", "₹0");
 
-        // Fetch recent inquiries for activity
-        List<com.example.model.Inquiry> inquiries = inquiryRepository.findAllByOrderByCreatedAtDesc();
-        model.addAttribute("recentActivities", inquiries.stream().limit(5).toList());
+
 
         return "admin/dashboard";
     }
@@ -56,10 +52,10 @@ public class AdminController {
         return "admin/students";
     }
 
-    @GetMapping("/vendors")
-    public String vendors(Model model) {
-        model.addAttribute("vendors", userService.getAllVendors());
-        return "admin/vendors";
+    @GetMapping("/colleges")
+    public String colleges(Model model) {
+        model.addAttribute("colleges", userService.getAllVendors());
+        return "admin/colleges";
     }
 
     @GetMapping("/courses")
@@ -68,11 +64,7 @@ public class AdminController {
         return "admin/courses";
     }
 
-    @GetMapping("/applications")
-    public String applications(Model model) {
-        model.addAttribute("applications", inquiryRepository.findAllByOrderByCreatedAtDesc());
-        return "admin/applications";
-    }
+
 
     @GetMapping("/events")
     public String events(Model model) {

@@ -49,7 +49,7 @@
         .chat-header { background: #ff6b35 !important; color: white !important; padding: 15px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
         .chat-body { flex: 1 !important; padding: 15px !important; overflow-y: auto !important; background: #fdf2e9 !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
         .chat-footer { padding: 15px !important; background: white !important; display: flex !important; gap: 10px !important; border-top: 1px solid #eee !important; }
-        .msg-vendor { background: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-start !important; max-width: 80% !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; color: #333 !important; }
+        .msg-College { background: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-start !important; max-width: 80% !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; color: #333 !important; }
         .msg-user { background: #ff6b35 !important; color: white !important; padding: 10px !important; border-radius: 15px !important; align-self: flex-end !important; max-width: 80% !important; }
         .chat-input { flex: 1 !important; border: 1px solid #ddd !important; border-radius: 10px !important; padding: 8px 12px !important; }
 
@@ -204,7 +204,7 @@
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <!-- Dynamic Dashboard Links -->
-                <li sec:authorize="hasRole('VENDOR')"><a th:href="@{/vendor/dashboard}" class="fw-bold text-theme">Vendor Dashboard</a></li>
+                <li sec:authorize="hasRole('College')"><a th:href="@{/college/dashboard}" class="fw-bold text-theme">College Dashboard</a></li>
                 <li sec:authorize="hasRole('STUDENT')"><a th:href="@{/user/dashboard}" class="fw-bold text-theme">My Dashboard</a></li>
             </ul>
         </div>
@@ -688,7 +688,7 @@
                             </div>
                             <div class="col-12 mt-3" id="contactSuccessMessage" style="display: none;">
                                 <div class="alert alert-success border-0 rounded-3 small">
-                                    <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your inquiry has been sent to our Admissions team (Admin).
+                                    <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your inquiry has been sent to our College Admissions team.
                                 </div>
                             </div>
                         </form>
@@ -817,7 +817,7 @@
                 <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                     <div class="portal-links small">
                         <a th:href="@{/login}" class="me-3">Student Portal</a>
-                        <a th:href="@{/login}">Vendor Portal</a>
+                        <a th:href="@{/login}">College Portal</a>
                     </div>
                 </div>
             </div>
@@ -884,13 +884,13 @@
         <div class="chat-header">
             <div class="d-flex align-items-center gap-2">
                 <div class="rounded-circle bg-white" style="width: 10px; height: 10px;"></div>
-                <span class="fw-bold">Vendor Support</span>
+                <span class="fw-bold">College Support</span>
             </div>
             <i class="fa-solid fa-xmark cursor-pointer" onclick="toggleChat()"></i>
         </div>
         <div id="chatBody" class="chat-body">
-            <div class="message msg-vendor">
-                Hello! Welcome to The Fashion Institute. How can I help you connect with our master vendors or learn about our programs?
+            <div class="message msg-College">
+                Hello! Welcome to The Fashion Institute. How can I help you connect with our master Colleges or learn about our programs?
             </div>
         </div>
         <div class="chat-footer">
@@ -921,20 +921,20 @@
             input.value = '';
             body.scrollTop = body.scrollHeight;
 
-            // Simulated Vendor Response
+            // Simulated College Response
             setTimeout(() => {
-                const vendorMsg = document.createElement('div');
-                vendorMsg.className = 'message msg-vendor';
+                const CollegeMsg = document.createElement('div');
+                CollegeMsg.className = 'message msg-College';
                 
                 if (text.includes('enroll') || text.includes('admission')) {
-                    vendorMsg.innerText = "Admissions are currently open! You can apply directly through the 'Apply Now' button or chat with a specific mentor here.";
+                    CollegeMsg.innerText = "Admissions are currently open! You can apply directly through the 'Apply Now' button or chat with a specific mentor here.";
                 } else if (text.includes('price') || text.includes('fee')) {
-                    vendorMsg.innerText = "Our courses offer premium value with flexible payment plans. Which program are you interested in?";
+                    CollegeMsg.innerText = "Our courses offer premium value with flexible payment plans. Which program are you interested in?";
                 } else {
-                    vendorMsg.innerText = "Thank you for reaching out! A representative from our vendor atelier will be with you shortly.";
+                    CollegeMsg.innerText = "Thank you for reaching out! A representative from our College atelier will be with you shortly.";
                 }
                 
-                body.appendChild(vendorMsg);
+                body.appendChild(CollegeMsg);
                 body.scrollTop = body.scrollHeight;
             }, 1000);
         }
