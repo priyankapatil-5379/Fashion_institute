@@ -36,11 +36,14 @@
 
         <!-- Main Content -->
         <div class="dashboard-content">
-            <div class="dashboard-header mb-4">
+            <div class="dashboard-header mb-4 d-flex justify-content-between align-items-center">
                 <div>
                     <h2 class="fw-bold mb-1">Registered Students</h2>
                     <p class="text-muted small">Overview of students enrolled in your fashion programs.</p>
                 </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                    <i class="fa-solid fa-user-plus me-2"></i> Add Student
+                </button>
             </div>
 
             <!-- Students List -->
@@ -71,9 +74,39 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div th:each="course : ${student.enrolledCourses}" th:if="${course.CollegeName == 'Fashion Guru'}">
+                                    <div th:each="course : ${student.enrolledCourses}">
                                         <div class="fw-bold text-theme" th:text="${course.title}">Course Title</div>
                                         <small class="badge bg-light text-dark" th:text="${course.category}">Category</small>
+                                    </div>
+                                    
+                                    <!-- Manual Enroll Option -->
+                                    <button class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="modal" th:attr="data-bs-target='#enrollModal' + ${student.id}">
+                                        <i class="fa-solid fa-plus me-1"></i> Enroll Manually
+                                    </button>
+                                    
+                                    <!-- Enroll Student Modal -->
+                                    <div class="modal fade" th:id="'enrollModal' + ${student.id}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content border-0 shadow">
+                                                <div class="modal-header border-bottom-0 pb-0">
+                                                    <h5 class="modal-title fw-bold">Enroll Student in Course</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form th:action="@{/college/enroll-student}" method="post">
+                                                        <input type="hidden" name="studentId" th:value="${student.id}">
+                                                        <div class="mb-4 text-start">
+                                                            <label class="form-label small fw-bold">Select Course</label>
+                                                            <select name="courseId" class="form-select" required>
+                                                                <option value="" disabled selected>Choose a course...</option>
+                                                                <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.title}"></option>
+                                                            </select>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary w-100">Enroll</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -81,11 +114,12 @@
                                     <small class="text-muted">10:30 AM</small>
                                 </td>
                                 <td>
-                                    <div class="small"><i class="fa-solid fa-phone me-2 text-muted"></i> <span th:text="${student.phone}">N/A</span></div>
-                                    <div class="small mt-1"><i class="fa-solid fa-envelope me-2 text-muted"></i> Email sent</div>
+                                    <div class="small mt-1"><i class="fa-solid fa-envelope me-2 text-muted"></i> <span th:text="${student.email}">student@email.com</span></div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Active Learner</span>
+                                    <span class="badge px-3 py-2 rounded-pill"
+                                          th:classappend="${student.status == 'Active' || student.status == null ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary'}"
+                                          th:text="${student.status != null ? student.status : 'Active'}">Active</span>
                                 </td>
                             </tr>
                             <tr th:if="${students.empty}">
@@ -97,6 +131,46 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="addStudentModalLabel">Manually Add Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/college/add-student}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Full Name</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Student ID (Username)</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Temporary Password</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Save Student</button>
+                    </form>
                 </div>
             </div>
         </div>

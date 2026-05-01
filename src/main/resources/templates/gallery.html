@@ -178,9 +178,9 @@
     <!-- Gallery Hero -->
     <header class="gallery-hero">
         <div class="container">
-            <span class="badge mb-3" style="background: var(--theme-main);">VISUAL EXCELLENCE</span>
-            <h1 class="display-3 fw-bold">The Couture Archives</h1>
-            <p class="lead opacity-75">Explore the artistry, innovation, and elegance of our master ateliers.</p>
+            <span class="badge mb-3" style="background: var(--theme-main);">OUR GALLERY</span>
+            <h1 class="display-3 fw-bold">Our Project Works</h1>
+            <p class="lead opacity-75">Explore the beautiful projects and designs created by our students.</p>
         </div>
     </header>
 
@@ -189,10 +189,10 @@
         <div class="container text-center">
             <div class="mb-5">
                 <button class="filter-btn active" onclick="filterGallery('all')">All Works</button>
-                <button class="filter-btn" onclick="filterGallery('couture')">Haute Couture</button>
-                <button class="filter-btn" onclick="filterGallery('artistry')">Artistry</button>
-                <button class="filter-btn" onclick="filterGallery('runway')">Runway</button>
-                <button class="filter-btn" onclick="filterGallery('styling')">Styling</button>
+                <button class="filter-btn" onclick="filterGallery('couture')">Jewellery Designing</button>
+                <button class="filter-btn" onclick="filterGallery('artistry')">Fashion Designing</button>
+                <button class="filter-btn" onclick="filterGallery('runway')">Apparel</button>
+                <button class="filter-btn" onclick="filterGallery('styling')">Events</button>
             </div>
 
             <div class="mosaic-container" id="gallery-grid">
@@ -411,7 +411,7 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                     <div class="portal-links small">
-                        <a th:href="@{/user/dashboard}" class="me-3">Student Portal</a>
+                        <a th:href="@{/student-login}" class="me-3">Student Login</a>
                         <a th:href="@{/college/dashboard}">College Portal</a>
                     </div>
                 </div>

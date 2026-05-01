@@ -105,8 +105,46 @@ public class CollegeController {
  
     @GetMapping("/students")
     public String students(Model model, java.security.Principal principal) {
-        model.addAttribute("students", userRepository.findStudentsByInstructor(principal.getName()));
+        // Fetching all students so manually added students without courses also appear
+        model.addAttribute("students", userService.getAllStudents());
+        model.addAttribute("courses", courseService.getCoursesByInstructor(principal.getName()));
         return "college/students";
+    }
+
+    @PostMapping("/enroll-student")
+    public String enrollStudent(@RequestParam Long studentId, @RequestParam Long courseId) {
+        com.example.model.User student = userRepository.findById(studentId).orElse(null);
+        com.example.model.Course course = courseService.getCourseById(courseId);
+        
+        if (student != null && course != null) {
+            if (!student.getEnrolledCourses().contains(course)) {
+                student.getEnrolledCourses().add(course);
+                userRepository.save(student);
+            }
+        }
+        return "redirect:/college/students";
+    }
+
+    @PostMapping("/add-student")
+    public String addStudent(@RequestParam String name,
+                             @RequestParam String username,
+                             @RequestParam String email,
+                             @RequestParam String password,
+                             @RequestParam String status) {
+        
+        com.example.model.User user = userRepository.findByEmail(email).orElse(new com.example.model.User());
+        user.setName(name);
+        user.setUsername(username);
+        user.setEmail(email);
+        if (password != null && !password.isEmpty()) {
+            user.setPassword(password);
+        }
+        user.setStatus(status);
+        user.setRole("STUDENT");
+        
+        userService.registerUser(user);
+        
+        return "redirect:/college/students";
     }
 
     @GetMapping("/applications")

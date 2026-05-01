@@ -16,6 +16,11 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/student-login")
+    public String studentLogin() {
+        return "student-login";
+    }
+
     @GetMapping("/register")
     public String register() {
         return "register";

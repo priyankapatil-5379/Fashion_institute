@@ -31,6 +31,8 @@ public class User {
 
     private String role; // STUDENT, VENDOR, INSTRUCTOR
 
+    private String status = "Active"; // Active, Inactive
+
     private String resetToken;
     private java.time.LocalDateTime resetTokenExpiry;
 
@@ -67,6 +69,8 @@ public class User {
     public void setGender(String gender) { this.gender = gender; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     public java.util.List<Course> getEnrolledCourses() { return enrolledCourses; }
     public void setEnrolledCourses(java.util.List<Course> enrolledCourses) { this.enrolledCourses = enrolledCourses; }
