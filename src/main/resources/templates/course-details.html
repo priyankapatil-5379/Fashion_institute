@@ -151,11 +151,7 @@
                         </div>
 
                         <div class="d-grid gap-3">
-                            <a th:href="@{/user/payment/{id}(id=${course.id})}" class="btn btn-dark btn-lg rounded-pill fw-bold py-3 shadow text-decoration-none text-center">Enroll Now</a>
-                            <a th:href="'https://api.whatsapp.com/send?phone=919999999999&text=Hello, I am interested in enrolling for the ' + ${course.title} + ' program. Please provide more details.'" 
-                               target="_blank" class="btn btn-whatsapp btn-lg rounded-pill fw-bold py-3 shadow text-decoration-none text-center">
-                                <i class="fa-brands fa-whatsapp me-2"></i> Chat on WhatsApp
-                            </a>
+
                         </div>
                         
                         <p class="text-center small text-muted mt-4">
@@ -167,10 +163,83 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-5 mt-5">
-        <div class="container text-center">
-            <p class="mb-0">&copy; 2026 The Fashion Institute. All rights reserved.</p>
+    <!-- 7. Professional Footer -->
+    <footer class="footer-area pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Column 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand mb-4">
+                        <h3 class="brand-name text-theme">THE FASHION INSTITUTE</h3>
+                        <p class="small mt-3">Empowering the next generation of fashion icons and beauty experts through
+                            world-class training and industry-led curriculum since 1923.</p>
+                        <div class="footer-social mt-4">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div class="col-lg-2 col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Discovery</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a th:href="@{/about}">Our Story</a></li>
+                        <li><a href="/#courses">Academy Campus</a></li>
+                        <li><a th:href="@{/gallery}">Workshops</a></li>
+                        <li><a href="/#contact">Career Portal</a></li>
+                        <li><a href="/#contact">Admissions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Ateliers -->
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Elite Ateliers</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">Makeup Artistry</a></li>
+                        <li><a href="#">Fashion Styling</a></li>
+                        <li><a href="#">Beauty Training</a></li>
+                        <li><a href="#">Hair Styling</a></li>
+                        <li><a href="#">Shoe Training</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact & Newsletter -->
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Connect</h5>
+                    <div class="contact-info small">
+                        <p><i class="fa-solid fa-location-dot me-2 text-theme"></i> 123 Fashion Ave, Design District</p>
+                        <p><i class="fa-solid fa-phone me-2 text-theme"></i> +1 (555) glam-style</p>
+                        <p><i class="fa-solid fa-envelope me-2 text-theme"></i> admissions@fashioninstitute.edu</p>
+                    </div>
+                    <div class="mt-4">
+                        <div class="input-group newsletter-group">
+                            <input type="text" class="form-control bg-transparent text-white border-secondary"
+                                placeholder="Newsletter">
+                            <button class="btn btn-theme-solid" type="button"><i
+                                    class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mt-5 mb-4 opacity-10">
+
+            <!-- Portals & Legal (Bottom Bar) -->
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small text-muted mb-0">© 2026 The Fashion Institute. All icons and images are copyright of
+                        their respective owners.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <div class="portal-links small">
+                        <a th:href="@{/login}" class="me-3">Student Portal</a>
+                        <a th:href="@{/login}">Vendor Portal</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -194,9 +263,6 @@
             iframe.closest('.video-container').style.display = 'none';
         }
     </script>
-    <!-- Floating WhatsApp Button -->
-    <a href="https://api.whatsapp.com/send?phone=919999999999&text=Hello, I have an inquiry about the Fashion Institute programs." class="whatsapp-float" target="_blank">
-        <i class="fa-brands fa-whatsapp fab fa-whatsapp"></i>
-    </a>
+
 </body>
 </html>

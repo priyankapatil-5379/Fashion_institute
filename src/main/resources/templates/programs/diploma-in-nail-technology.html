@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diploma in Nail Technology | The Fashion Institute</title>
+    <title>Diploma in Nail Designing | The Fashion Institute</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -41,7 +41,7 @@
         <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&q=80&w=1200" class="hero-img" alt="Hero">
         <div class="container">
             <span class="hero-badge">DIPLOMA PROGRAM</span>
-            <h1 class="program-title mb-3">Diploma in Nail Technology</h1>
+            <h1 class="program-title mb-3">Diploma in Nail Designing</h1>
             <p class="lead fs-4 opacity-75">Master the art of nail design, extensions, and professional nail care artistry.</p>
         </div>
     </header>
@@ -52,7 +52,7 @@
                     <div class="info-card">
                         <h2 class="fw-bold mb-4" style="color: var(--theme-secondary);">Course Overview</h2>
                         <p class="fs-5 lh-lg mb-0">
-                            Our Diploma in Nail Technology provides comprehensive training in acrylics, gel nails, 3D nail art, 
+                            Our Diploma in Nail Designing provides comprehensive training in acrylics, gel nails, 3D nail art, 
                             and professional salon management. Learn the latest trends in the beauty industry.
                         </p>
                     </div>
@@ -70,7 +70,7 @@
         <div class="container">
             <h2 class="package-title">Enrollment Packages</h2>
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6" th:each="course : ${relatedCourses}" th:if="${#strings.containsIgnoreCase(course.title, 'Diploma in Nail Technology')}">
+                <div class="col-lg-4 col-md-6" th:each="course : ${relatedCourses}" th:if="${#strings.containsIgnoreCase(course.title, 'Diploma in Nail Designing')}">
                     <div class="elite-course-card">
                         <div class="course-img-wrapper">
                             <span class="course-tag">NAIL TECH</span>
