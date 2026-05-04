@@ -17,6 +17,12 @@
             <div class="sidebar-brand">
                 <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
+            
+            <div class="mb-4 px-2">
+                <a th:href="@{/}" class="btn btn-light w-100 rounded-pill shadow-sm small fw-bold text-muted">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Back to Home
+                </a>
+            </div>
             <ul class="sidebar-nav">
                 <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
                 <li><a th:href="@{/college/courses}" class="active"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
@@ -138,6 +144,24 @@
                             </div>
                         </div>
 
+                        <!-- Design Customization Section -->
+                        <h6 class="text-theme fw-bold mb-3 border-bottom pb-2">Design Customization</h6>
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold">Heading Color</label>
+                                <input type="color" class="form-control form-control-color w-100 custom-input" th:field="*{headingColor}" title="Choose heading color">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold">Heading Font Family</label>
+                                <select class="form-select custom-input" th:field="*{fontFamily}">
+                                    <option value="'Playfair Display', serif">Playfair Display (Elegant)</option>
+                                    <option value="'Outfit', sans-serif">Outfit (Modern)</option>
+                                    <option value="'Poppins', sans-serif">Poppins (Clean)</option>
+                                    <option value="'Inter', sans-serif">Inter (Professional)</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- Core Details Section -->
                         <h6 class="text-theme fw-bold mb-3 border-bottom pb-2">Core Details</h6>
                         <div class="row mb-4">
@@ -153,41 +177,17 @@
                                         <option value="Jewellery Designing">Jewellery Designing</option>
                                         <option value="Interior Designing">Interior Designing</option>
                                         <option value="Photography">Photography</option>
-                                        <option value="Shoe Designing">Shoe Designing</option>
-                                        <option value="Beauty and Grooming">Beauty and Grooming</option>
                                     </optgroup>
                                     <optgroup label="Diploma Programs">
                                         <option value="Diploma in Fashion Designing">Diploma in Fashion Designing</option>
-                                        <option value="Diploma in Nail Designing">Diploma in Nail Designing</option>
-                                        <option value="Diploma in Apparel Technology">Diploma in Apparel Technology</option>
-                                        <option value="Diploma in Hair Styling">Diploma in Hair Styling</option>
-                                        <option value="Diploma in Textile Designing">Diploma in Textile Designing</option>
                                         <option value="Diploma in Jewellery Designing">Diploma in Jewellery Designing</option>
                                         <option value="Diploma in Boutique Management">Diploma in Boutique Management</option>
                                         <option value="Diploma in Gemology">Diploma in Gemology</option>
-
                                         <option value="Diploma in Fashion Photography">Diploma in Fashion Photography</option>
-                                        <option value="Diploma in Professional Makeup Artistry">Diploma in Professional Makeup Artistry</option>
-                                        <option value="Diploma in Shoe Designing">Diploma in Shoe Designing</option>
                                     </optgroup>
                                     <optgroup label="Undergraduate (UG)">
                                         <option value="Bachelor of Fashion Design">Bachelor of Fashion Design</option>
-                                        <option value="Bachelor of Hair, Makeup & Prosthetics">Bachelor of Hair, Makeup & Prosthetics</option>
-                                        <option value="Bachelor of Textile Design">Bachelor of Textile Design</option>
                                         <option value="Bachelor of Jewellery Design">Bachelor of Jewellery Design</option>
-                                        <option value="Bachelor of Apparel Design & Production">Bachelor of Apparel Design & Production</option>
-                                        <option value="Bachelor of Accessory Design">Bachelor of Accessory Design</option>
-                                        <option value="Bachelor of Fashion Technology">Bachelor of Fashion Technology</option>
-                                        <option value="Bachelor of Footwear Design">Bachelor of Footwear Design</option>
-                                        <option value="Bachelor of Cosmetology">Bachelor of Cosmetology</option>
-                                        <option value="Bachelor of Sustainable Fashion">Bachelor of Sustainable Fashion</option>
-                                        <option value="Bachelor of Beauty & Wellness">Bachelor of Beauty & Wellness</option>
-                                    </optgroup>
-                                    <optgroup label="Short Term Courses">
-                                        <option value="Embroidery Designing">Embroidery Designing</option>
-                                        <option value="Crochet Designing">Crochet Designing</option>
-                                        <option value="Nail Art Courses">Nail Art Courses</option>
-                                        <option value="Fabric Painting">Fabric Painting</option>
                                     </optgroup>
                                 </select>
                             </div>

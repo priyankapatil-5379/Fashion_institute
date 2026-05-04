@@ -21,8 +21,7 @@
             <li><a th:href="@{/admin/students}"><i class="fas fa-user-graduate"></i> Students</a></li>
             <li><a th:href="@{/admin/colleges}"><i class="fas fa-store"></i> Colleges</a></li>
             <li><a th:href="@{/admin/courses}" class="active"><i class="fas fa-book-open"></i> Courses</a></li>
-            
-            <li><a th:href="@{/admin/events}"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a th:href="@{/admin/gallery}"><i class="fas fa-camera"></i> Photos</a></li>
             <li><a th:href="@{/admin/settings}"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
         <div class="logout" style="margin-top: auto;">
@@ -47,9 +46,6 @@
         <div class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2>Active Courses</h2>
-                <button style="padding: 0.8rem 1.5rem; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-plus"></i> Create New Course
-                </button>
             </div>
             
             <table>
@@ -69,8 +65,12 @@
                         <td th:text="${course.duration}">Duration</td>
                         <td th:text="${'₹' + course.price}">Price</td>
                         <td>
-                            <i class="fas fa-edit" style="cursor: pointer; color: var(--text-muted); margin-right: 10px;"></i>
-                            <i class="fas fa-trash-alt" style="cursor: pointer; color: #f43f5e;"></i>
+                            <a th:href="@{/admin/courses/edit/{id}(id=${course.id})}" style="text-decoration: none; color: inherit;">
+                                <i class="fas fa-edit" style="cursor: pointer; color: var(--text-muted); margin-right: 10px;"></i>
+                            </a>
+                            <a th:href="@{/admin/courses/delete/{id}(id=${course.id})}" style="text-decoration: none; color: inherit;" onclick="return confirm('Are you sure you want to delete this course?')">
+                                <i class="fas fa-trash-alt" style="cursor: pointer; color: #f43f5e;"></i>
+                            </a>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(courses)}">

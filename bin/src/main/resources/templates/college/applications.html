@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Inquiries | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
+</head>
+ 
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/college/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
+                <li><a th:href="@{/college/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+                <li><a th:href="@{/college/applications}" class="active"><i class="fa-solid fa-file-signature"></i> <span>Student Inquiries</span></a></li>
+                <li><a th:href="@{/college/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
+                <li><a th:href="@{/college/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a th:href="@{/college/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+                <li class="mt-5">
+                    <form th:action="@{/logout}" method="post" id="logoutForm">
+                        <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()" class="text-danger">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+ 
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <div>
+                    <h2 class="fw-bold mb-1">Student Inquiries</h2>
+                    <p class="text-muted small">Manage and review student course inquiries.</p>
+                </div>
+            </div>
+
+            <!-- Registration Error Alert -->
+            <div th:if="${regError}" class="alert alert-danger alert-dismissible fade show border-0 rounded-4 mb-4 shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-triangle-exclamation fs-4 me-3 text-danger"></i>
+                    <div>
+                        <h6 class="alert-heading fw-bold mb-1">Registration Failed</h6>
+                        <p class="mb-0 small" th:text="${regError}">An error occurred during registration.</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="table-premium">
+                <div class="p-4 border-bottom">
+                    <h5 class="fw-bold mb-0">Inquiry List</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Course of Interest</th>
+                                <th>Payment Method</th>
+                                <th>Amount Paid</th>
+                                <th>Due Amount</th>
+                                <th>Status</th>
+                                <th>Credentials</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="inq : ${applications}" th:id="'inquiry-' + ${inq.id}">
+                                <td th:text="${#temporals.format(inq.createdAt, 'MMM dd, yyyy')}">May 01, 2026</td>
+                                <td class="fw-bold" th:text="${inq.name}">Jane Doe</td>
+                                <td th:text="${inq.email}">jane@example.com</td>
+                                <td><span class="badge rounded-pill bg-secondary text-white" th:text="${inq.courseOfInterest}">Course</span></td>
+                                <td>
+                                    <select class="form-select form-select-sm" th:onchange="'updatePaymentInfo(' + ${inq.id} + ')'" th:id="'paymentMethod-' + ${inq.id}">
+                                        <option value="" th:selected="${inq.paymentMethod == null}">Select...</option>
+                                        <option value="EMI" th:selected="${inq.paymentMethod == 'EMI'}">EMI</option>
+                                        <option value="Full Payment" th:selected="${inq.paymentMethod == 'Full Payment'}">Full Payment</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" style="width: 100px;" 
+                                           th:value="${inq.amountPaid}" th:id="'amountPaid-' + ${inq.id}" 
+                                           th:onblur="'updatePaymentInfo(' + ${inq.id} + ')'" placeholder="0.00">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" style="width: 100px;" 
+                                           th:value="${inq.dueAmount}" th:id="'dueAmount-' + ${inq.id}" 
+                                           th:onblur="'updatePaymentInfo(' + ${inq.id} + ')'" placeholder="0.00">
+                                </td>
+                                <td class="status-cell">
+                                    <span class="badge status-badge" 
+                                          th:classappend="${inq.status == 'Registered' ? 'bg-primary' : (inq.status == 'New' ? 'bg-success' : 'bg-secondary')}" 
+                                          th:text="${inq.status}">New</span>
+                                </td>
+                                <td>
+                                    <div th:if="${inq.generatedUsername != null}" class="small bg-light p-2 rounded border">
+                                        <div class="fw-bold text-dark">ID: <span class="fw-normal font-monospace" th:text="${inq.generatedUsername}">user123</span></div>
+                                        <div class="fw-bold text-dark">Pwd: <span class="fw-normal font-monospace" th:text="${inq.generatedPassword}">pass123</span></div>
+                                    </div>
+                                    <span th:if="${inq.generatedUsername == null}" class="text-muted small">Not generated</span>
+                                </td>
+                                <td>
+                                    <button th:if="${inq.status != 'Registered'}" 
+                                            class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                                            th:onclick="'updateInquiryStatus(' + ${inq.id} + ', \'Registered\')'">
+                                        <i class="fa-solid fa-user-check me-1"></i> Registered
+                                    </button>
+                                    <span th:if="${inq.status == 'Registered'}" class="text-success small fw-bold mb-2 d-block">
+                                        <i class="fa-solid fa-check-double"></i> Verified
+                                    </span>
+                                    <a th:if="${inq.generatedUsername == null}" th:href="@{/college/student-register(name=${inq.name}, email=${inq.email})}" 
+                                       class="btn btn-sm btn-gradient-dash w-100 mt-1">
+                                        Create Credentials
+                                    </a>
+                                    <a th:if="${inq.generatedUsername != null}" th:href="@{/college/student-register(name=${inq.name}, email=${inq.email})}" 
+                                       class="btn btn-sm btn-outline-warning w-100 mt-1">
+                                        Regenerate
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(applications)}">
+                                <td colspan="10" class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-inbox d-block mb-2 fs-2 opacity-25"></i>
+                                    No inquiries found.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function updatePaymentInfo(id) {
+            const method = document.getElementById(`paymentMethod-${id}`).value;
+            const paid = document.getElementById(`amountPaid-${id}`).value;
+            const due = document.getElementById(`dueAmount-${id}`).value;
+
+            try {
+                await fetch(`/api/inquiries/${id}/payment?paymentMethod=${method}&amountPaid=${paid}&dueAmount=${due}`, {
+                    method: 'POST'
+                });
+                console.log('Payment info saved');
+            } catch (error) {
+                console.error('Error saving payment info:', error);
+            }
+        }
+
+        async function updateInquiryStatus(id, newStatus) {
+            const btn = event.currentTarget;
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                const response = await fetch(`/api/inquiries/${id}/status?status=${newStatus}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    // Update UI in real-time
+                    const row = document.getElementById(`inquiry-${id}`);
+                    const statusCell = row.querySelector('.status-cell');
+                    const badge = statusCell.querySelector('.status-badge');
+                    
+                    badge.innerText = newStatus;
+                    badge.className = 'badge status-badge bg-primary';
+                    
+                    const actionCell = btn.parentElement;
+                    actionCell.innerHTML = '<span class="text-success small fw-bold"><i class="fa-solid fa-check-double"></i> Completed</span>';
+                } else {
+                    alert('Failed to update status. Please try again.');
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Network error.');
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
+    </script>
+</body>
+</html>

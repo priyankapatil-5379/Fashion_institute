@@ -21,6 +21,10 @@ public class Course {
     // Visual Identity
     private String imageUrl;
     private String videoLink;
+    
+    // Custom Styling
+    private String headingColor;
+    private String fontFamily;
 
     // Detailed Content - Using @Lob and LONGTEXT to ensure enough space
     @Lob
@@ -84,4 +88,8 @@ public class Course {
     public void setCareerOpportunities(String careerOpportunities) { this.careerOpportunities = careerOpportunities; }
     public String getCourseStructure() { return courseStructure; }
     public void setCourseStructure(String courseStructure) { this.courseStructure = courseStructure; }
+    public String getHeadingColor() { return headingColor; }
+    public void setHeadingColor(String headingColor) { this.headingColor = headingColor; }
+    public String getFontFamily() { return fontFamily; }
+    public void setFontFamily(String fontFamily) { this.fontFamily = fontFamily; }
 }

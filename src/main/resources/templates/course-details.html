@@ -18,7 +18,7 @@
         .details-header { background: var(--theme-pink); padding: 60px 0; border-bottom: 1px solid #eee; }
         .course-badge { background: var(--theme-orange); color: white; padding: 5px 15px; border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
         .section-title { font-family: 'Playfair Display', serif; font-weight: 900; position: relative; padding-bottom: 15px; margin-bottom: 25px; }
-        .section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 3px; background: var(--theme-orange); }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 3px; background: var(--theme-line-color, var(--theme-orange)); }
         .sidebar-card { border: none; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); position: sticky; top: 100px; overflow: hidden; }
         .video-container { border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 40px; background: #000; aspect-ratio: 16/9; }
         .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #ddd; }
@@ -35,13 +35,13 @@
         .text-theme { color: var(--theme-orange); }
     </style>
 </head>
-<body>
+<body th:style="${'--theme-line-color: ' + (course.headingColor != null ? course.headingColor : '#ff6b35') + ';'}">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
         <div class="container">
             <a class="navbar-brand fw-black fs-3" th:href="@{/}" style="font-family: 'Playfair Display', serif;">
-                <span style="color: var(--theme-orange);">F</span> THE FASHION
+                <span th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + ';'}">F</span> THE FASHION
             </a>
             <div class="d-flex align-items-center">
                 <a th:href="@{/user/dashboard}" class="btn btn-outline-dark rounded-pill px-4 me-2">Back to Dashboard</a>
@@ -53,8 +53,8 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <span class="course-badge mb-3 d-inline-block" th:text="${course.category}">FASHION DESIGN</span>
-                    <h1 class="display-4 fw-black mb-3" style="font-family: 'Playfair Display', serif;" th:text="${course.title}">Advanced Couture Design</h1>
+                    <span class="course-badge mb-3 d-inline-block" th:style="${'background: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + ';'}" th:text="${course.category}">FASHION DESIGN</span>
+                    <h1 class="display-4 fw-black mb-3" th:style="${'font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + '; color: ' + (course.headingColor != null ? course.headingColor : '#2d3436') + ';'}" th:text="${course.title}">Advanced Couture Design</h1>
                     <div class="d-flex align-items-center gap-4 text-muted">
                         <span><i class="fa-solid fa-star text-warning me-2"></i> <span th:text="${course.initialRating}">4.5</span> Rating</span>
                         <span><i class="fa-solid fa-clock me-2"></i> <span th:text="${course.duration}">6 Months</span></span>
@@ -78,19 +78,19 @@
 
                 <!-- About -->
                 <div class="content-block">
-                    <h3 class="section-title fw-bold">Program Overview</h3>
+                    <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Program Overview</h3>
                     <p class="lead text-muted" th:text="${course.description}">Detailed summary of the course.</p>
                 </div>
 
                 <!-- Course Overview (Deep Dive) -->
                 <div class="content-block" th:if="${course.courseOverview != null and !course.courseOverview.isEmpty()}">
-                    <h3 class="section-title fw-bold">What is this Program About?</h3>
+                    <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">What is this Program About?</h3>
                     <div class="text-muted" style="white-space: pre-line;" th:text="${course.courseOverview}"></div>
                 </div>
 
                 <!-- Why Choose -->
                 <div class="content-block" th:if="${course.whyChoose != null and !course.whyChoose.isEmpty()}">
-                    <h3 class="section-title fw-bold">Why Choose This Course?</h3>
+                    <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Why Choose This Course?</h3>
                     <div class="p-4 rounded-4 bg-light">
                         <p class="mb-0" th:text="${course.whyChoose}">USP details</p>
                     </div>
@@ -98,7 +98,7 @@
 
                 <!-- Learning Outcomes -->
                 <div class="content-block" th:if="${course.learningOutcomes != null and !course.learningOutcomes.isEmpty()}">
-                    <h3 class="section-title fw-bold">What You Will Learn</h3>
+                    <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Learning Outcomes</h3>
                     <ul class="list-unstyled">
                         <li class="mb-2 d-flex align-items-start" th:each="outcome : ${course.learningOutcomes.split('\\R')}">
                             <i class="fa-solid fa-circle-check text-success me-3 mt-1"></i>
@@ -109,13 +109,13 @@
 
                 <!-- Career Opportunities -->
                 <div class="content-block" th:if="${course.careerOpportunities != null and !course.careerOpportunities.isEmpty()}">
-                    <h3 class="section-title fw-bold">Career Opportunities</h3>
+                    <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Career Opportunities</h3>
                     <p class="text-muted" th:text="${course.careerOpportunities}">Career paths</p>
                 </div>
 
                 <!-- Syllabus -->
                 <div class="content-block" th:if="${course.courseStructure != null and !course.courseStructure.isEmpty()}">
-                    <h3 class="section-title fw-bold">Course Structure</h3>
+                    <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Course Structure</h3>
                     <div class="syllabus-container shadow-sm">
                         <div class="syllabus-header">
                             SYLLABUS

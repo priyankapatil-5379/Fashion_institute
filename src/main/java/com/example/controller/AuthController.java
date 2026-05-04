@@ -27,15 +27,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String processRegister(@org.springframework.web.bind.annotation.RequestParam String username,
-                                @org.springframework.web.bind.annotation.RequestParam String email,
-                                @org.springframework.web.bind.annotation.RequestParam String password,
-                                @org.springframework.web.bind.annotation.RequestParam String dob,
-                                @org.springframework.web.bind.annotation.RequestParam String gender,
-                                @org.springframework.web.bind.annotation.RequestParam String phone,
-                                @org.springframework.web.bind.annotation.RequestParam String role) {
+    public String processRegister(@org.springframework.web.bind.annotation.RequestParam String fullName,
+                                 @org.springframework.web.bind.annotation.RequestParam String username,
+                                 @org.springframework.web.bind.annotation.RequestParam String email,
+                                 @org.springframework.web.bind.annotation.RequestParam String password,
+                                 @org.springframework.web.bind.annotation.RequestParam String dob,
+                                 @org.springframework.web.bind.annotation.RequestParam String gender,
+                                 @org.springframework.web.bind.annotation.RequestParam String phone,
+                                 @org.springframework.web.bind.annotation.RequestParam String role) {
         
         com.example.model.User user = new com.example.model.User();
+        user.setFullName(fullName);
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);

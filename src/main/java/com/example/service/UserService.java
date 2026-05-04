@@ -42,4 +42,14 @@ public class UserService {
     public java.util.List<User> getAllVendors() {
         return userRepository.findAllByRole("VENDOR");
     }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void deleteAllStudents() {
+        java.util.List<User> students = userRepository.findAllByRole("STUDENT");
+        for (User student : students) {
+            student.getEnrolledCourses().clear();
+            student.getWishlistCourses().clear();
+            userRepository.delete(student);
+        }
+    }
 }

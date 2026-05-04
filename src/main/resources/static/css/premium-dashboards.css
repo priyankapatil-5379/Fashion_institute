@@ -262,6 +262,12 @@ body {
     box-shadow: 0 0 0 4px rgba(237, 18, 117, 0.1) !important;
 }
 
+.form-control-color {
+    padding: 0.3rem !important;
+    height: 48px !important;
+    cursor: pointer;
+}
+
 .btn-gradient-dash {
     background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
     color: white;

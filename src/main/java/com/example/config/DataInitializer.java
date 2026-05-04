@@ -19,7 +19,23 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private com.example.repository.CourseRepository courseRepository;
 
+    @Autowired
+    private com.example.repository.AttendanceRepository attendanceRepository;
+    
+    @Autowired
+    private com.example.repository.AssessmentRepository assessmentRepository;
+    
+    @Autowired
+    private com.example.repository.TestResultRepository testResultRepository;
+    
+    @Autowired
+    private com.example.repository.CertificationRepository certificationRepository;
+
+    @Autowired
+    private com.example.repository.InquiryRepository inquiryRepository;
+
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void run(String... args) throws Exception {
         // Initialize Default Admin if not exists
         if (userRepository.findByUsername("admin").isEmpty()) {
@@ -32,31 +48,42 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("Default Admin created: admin/admin");
         }
 
-        // Initialize Default Courses from Home Page
-        java.util.List<com.example.model.Course> existingCourses = courseRepository.findAll();
-        java.util.Set<String> existingTitles = existingCourses.stream().map(c -> c.getTitle()).collect(java.util.stream.Collectors.toSet());
+        // ROLE MIGRATION: Ensure all "College" roles are converted to "VENDOR" for security compatibility
+        userRepository.findAll().stream()
+            .filter(u -> "College".equalsIgnoreCase(u.getRole()))
+            .forEach(u -> {
+                u.setRole("VENDOR");
+                userRepository.save(u);
+                System.out.println("Migrated user " + u.getUsername() + " from College to VENDOR role.");
+            });
 
-        String[] defaultCourses = {
-            "Fashion Designing",
-            "Jewellery Designing",
-            "Interior Designing",
-            "Photography",
-            "Shoe Designing",
-            "Beauty and Grooming"
-        };
+        // SYSTEM RESET: Force-clear all inquiries and students one last time to ensure synchronization
+        System.out.println("Force-cleaning all stale data for system reset...");
         
-        for (String title : defaultCourses) {
-            if (!existingTitles.contains(title)) {
-                com.example.model.Course course = new com.example.model.Course();
-                course.setTitle(title);
-                course.setCategory("Diploma Program"); // Default category
-                course.setDescription("Comprehensive program in " + title);
-                course.setPrice(15000.0);
-                course.setDuration("1 Year");
-                course.setInstructorName("System");
-                courseRepository.save(course);
+        // 1. Clear all student-related records
+        attendanceRepository.deleteAll();
+        assessmentRepository.deleteAll();
+        testResultRepository.deleteAll();
+        certificationRepository.deleteAll();
+        inquiryRepository.deleteAll();
+        
+        // 2. Clear all users except admin
+        userRepository.findAll().stream()
+            .filter(u -> !"ADMIN".equals(u.getRole()))
+            .forEach(u -> {
+                u.getEnrolledCourses().clear();
+                u.getWishlistCourses().clear();
+                userRepository.save(u);
+                userRepository.delete(u);
+            });
+            
+        // 3. Clear all courses (only if they are from the dummy set or unnamed)
+        courseRepository.findAll().forEach(c -> {
+            if (c.getInstructorName() == null || "The Fashion Institute".equals(c.getInstructorName()) || "System".equals(c.getInstructorName())) {
+                courseRepository.delete(c);
             }
-        }
-        System.out.println("Default Courses checked and initialized.");
+        });
+        
+        System.out.println("System Reset Complete.");
     }
 }

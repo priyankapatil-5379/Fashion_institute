@@ -13,6 +13,9 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private com.example.repository.UserRepository userRepository;
+
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
@@ -25,8 +28,21 @@ public class CourseService {
         return courseRepository.findByInstructorName(instructorName);
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public void deleteCourse(Long id) {
-        courseRepository.deleteById(id);
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course != null) {
+            // Remove course from all users' enrolled and wishlist lists
+            userRepository.findByEnrolledCoursesId(id).forEach(user -> {
+                user.getEnrolledCourses().remove(course);
+                userRepository.save(user);
+            });
+            userRepository.findByWishlistCoursesId(id).forEach(user -> {
+                user.getWishlistCourses().remove(course);
+                userRepository.save(user);
+            });
+            courseRepository.delete(course);
+        }
     }
 
     public Course getCourseById(Long id) {

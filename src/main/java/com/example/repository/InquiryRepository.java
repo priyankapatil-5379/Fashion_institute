@@ -12,4 +12,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     List<Inquiry> findByCourseOfInterestInOrderByCreatedAtDesc(List<String> courseTitles);
     long countByIsReadFalse();
     long countByCourseOfInterestInAndIsReadFalse(List<String> courseTitles);
+
+    @org.springframework.data.jpa.repository.Query("SELECT SUM(i.amountPaid) FROM Inquiry i")
+    Double sumAllAmountPaid();
 }

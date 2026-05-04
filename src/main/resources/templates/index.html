@@ -144,52 +144,26 @@
                                 <li><a th:href="@{/programs/jewellery-designing}" class="submenu-item">Jewellery Designing</a></li>
                                 <li><a th:href="@{/programs/interior-designing}" class="submenu-item">Interior Designing</a></li>
                                 <li><a th:href="@{/programs/photography}" class="submenu-item">Photography</a></li>
-                                <li><a th:href="@{/programs/shoe-designing}" class="submenu-item">Shoe Designing</a></li>
-                                <li><a th:href="@{/programs/beauty-and-grooming}" class="submenu-item">Beauty and Grooming</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Diploma Programs <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
                                 <li><a th:href="@{/programs/diploma-in-fashion-designing}" class="submenu-item">Diploma in Fashion Designing</a></li>
-                                <li><a th:href="@{/programs/diploma-in-nail-technology}" class="submenu-item">Diploma in Nail Designing</a></li>
-                                <li><a th:href="@{/programs/diploma-in-apparel-technology}" class="submenu-item">Diploma in Apparel Technology</a></li>
-                                <li><a th:href="@{/programs/diploma-in-hair-styling}" class="submenu-item">Diploma in Hair Styling</a></li>
-                                <li><a th:href="@{/programs/diploma-in-textile-designing}" class="submenu-item">Diploma in Textile Designing</a></li>
                                 <li><a th:href="@{/programs/diploma-in-jewellery-designing}" class="submenu-item">Diploma in Jewellery Designing</a></li>
                                 <li><a th:href="@{/programs/diploma-in-boutique-management}" class="submenu-item">Diploma in Boutique Management</a></li>
                                 <li><a th:href="@{/programs/diploma-in-gemology}" class="submenu-item">Diploma in Gemology</a></li>
-
                                 <li><a th:href="@{/programs/diploma-in-fashion-photography}" class="submenu-item">Diploma in Fashion Photography</a></li>
-                                <li><a th:href="@{/programs/diploma-in-professional-makeup-artistry}" class="submenu-item">Diploma in Professional Makeup Artistry</a></li>
-                                <li><a th:href="@{/programs/diploma-in-shoe-designing}" class="submenu-item">Diploma in Shoe Designing</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Undergraduate (UG) <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
                                 <li><a th:href="@{/programs/bachelor-of-fashion-design}" class="submenu-item">Bachelor of Fashion Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-hair-makeup-prosthetics}" class="submenu-item">Bachelor of Hair, Makeup & Prosthetics</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-textile-design}" class="submenu-item">Bachelor of Textile Design</a></li>
                                 <li><a th:href="@{/programs/bachelor-of-jewellery-design}" class="submenu-item">Bachelor of Jewellery Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-apparel-design-production}" class="submenu-item">Bachelor of Apparel Design & Production</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-accessory-design}" class="submenu-item">Bachelor of Accessory Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-fashion-technology}" class="submenu-item">Bachelor of Fashion Technology</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-footwear-design}" class="submenu-item">Bachelor of Footwear Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-cosmetology}" class="submenu-item">Bachelor of Cosmetology</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-sustainable-fashion}" class="submenu-item">Bachelor of Sustainable Fashion</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-beauty-wellness}" class="submenu-item">Bachelor of Beauty & Wellness</a></li>
                             </ul>
                         </li>
-                        <li class="has-submenu">
-                            <a class="dropdown-item-custom">Short Term Courses <i class="fa-solid fa-chevron-right"></i></a>
-                            <ul class="submenu-custom">
-                                <li><a th:href="@{/programs/embroidery-designing}" class="submenu-item">Embroidery Designing</a></li>
-                                <li><a th:href="@{/programs/crochet-designing}" class="submenu-item">Crochet Designing</a></li>
-                                <li><a th:href="@{/programs/nail-art-courses}" class="submenu-item">Nail Art Courses</a></li>
-                                <li><a th:href="@{/programs/fabric-painting}" class="submenu-item">Fabric Painting</a></li>
-                            </ul>
-                        </li>
+
                     </ul>
                 </li>
                 <li class="has-dropdown" id="admissionsDropdown">
@@ -367,6 +341,27 @@
             </button>
         </div>
     </section>
+    
+    <!-- 1.5 Video Showcase Section (Full Width & Clean) -->
+    <section class="video-section-full-clean bg-black py-0 overflow-hidden">
+        <div class="container-fluid p-0">
+            <div class="video-clean-wrapper position-relative" style="aspect-ratio: 21/9; background: #000; width: 100%;">
+                <!-- Transparent overlay to block control interaction -->
+                <div class="video-blocker" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: default; background: rgba(0,0,0,0.1);">
+                    <div class="video-text-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
+                        <h2 class="display-3 fw-bold mb-2" style="font-family: 'Playfair Display', serif; text-shadow: 0 5px 25px rgba(0,0,0,0.8);">Experience Our Vision</h2>
+                        <p class="lead" style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">The creative heart of The Fashion Institute</p>
+                    </div>
+                </div>
+                
+                <!-- Cropped Iframe to hide top and bottom Drive bars -->
+                <div class="iframe-zoom-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 140%;">
+                    <iframe src="https://drive.google.com/file/d/10zq1H7BkKTYLe4z5CkvYDNUyfFUYGYqC/preview" 
+                            width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" style="border: none; filter: brightness(0.8);"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- 2. Features Section (Premium Redesign) -->
@@ -419,9 +414,9 @@
             <h2 class="text-center fw-bold mb-2 section-title">Elite Programs</h2>
             <p class="text-center text-muted mb-5">Professional accreditation for your creative journey</p>
 
-            <div class="row g-4">
-                <!-- Dynamic Course Cards -->
-                <div class="col-lg-3 col-md-6" th:each="course : ${courses}">
+            <div class="row g-4" id="initialCourses">
+                <!-- Dynamic Course Cards (First 4) -->
+                <div class="col-lg-3 col-md-6" th:each="course, iterStat : ${courses}" th:if="${iterStat.index < 4}">
                     <div class="elite-course-card">
                         <div class="course-img-wrapper">
                             <span class="course-tag" th:text="${course.category}">CATEGORY</span>
@@ -429,17 +424,51 @@
                             <div class="course-duration" th:text="${course.duration}">Duration</div>
                         </div>
                         <div class="course-info p-4 text-center">
-                            <h5 class="fw-bold mb-2" th:text="${course.title}">Course Title</h5>
+                            <h5 class="fw-bold mb-2" th:text="${course.title}" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : '#2b1b10') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Course Title</h5>
                             <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 100)}">Short description of the program.</p>
                             <div class="d-flex flex-column align-items-center">
-                                <span class="price-hint mb-2">Enrolling Now</span>
                                 <a th:href="@{/user/course/{id}(id=${course.id})}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Message if no courses -->
-                <div class="col-12 text-center py-5" th:if="${courses.empty}">
+            </div>
+
+            <!-- Hidden Courses Section -->
+            <div class="row g-4 mt-2 d-none" id="allCourses">
+                <div class="col-lg-3 col-md-6" th:each="course, iterStat : ${courses}" th:if="${iterStat.index >= 4}">
+                    <div class="elite-course-card">
+                        <div class="course-img-wrapper">
+                            <span class="course-tag" th:text="${course.category}">CATEGORY</span>
+                            <img th:src="${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}" th:alt="${course.title}">
+                            <div class="course-duration" th:text="${course.duration}">Duration</div>
+                        </div>
+                        <div class="course-info p-4 text-center">
+                            <h5 class="fw-bold mb-2" th:text="${course.title}" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : '#2b1b10') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Course Title</h5>
+                            <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 100)}">Short description of the program.</p>
+                            <div class="d-flex flex-column align-items-center">
+                                <a th:href="@{/user/course/{id}(id=${course.id})}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Button -->
+            <div class="text-center mt-5" th:if="${#lists.size(courses) > 4}" id="viewAllContainer">
+                <button class="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold" onclick="showAllCourses()">View All Courses</button>
+            </div>
+
+            <script>
+                function showAllCourses() {
+                    document.getElementById('allCourses').classList.remove('d-none');
+                    document.getElementById('viewAllContainer').classList.add('d-none');
+                }
+            </script>
+
+            <!-- Message if no courses -->
+            <div class="row" th:if="${courses.empty}">
+                <div class="col-12 text-center py-5">
                     <p class="text-muted">No programs available at the moment. Please check back later!</p>
                 </div>
             </div>
@@ -452,53 +481,20 @@
             <h2 class="text-center fw-bold mb-2 section-title">Institute Atelier Gallery</h2>
             <p class="text-center text-muted mb-5">A glimpse into our world of high-fashion and artistry</p>
 
-            <div class="row g-3">
-                <!-- Large Feature -->
-                <div class="col-md-6">
-                    <div class="gallery-card-premium tall">
-                        <img th:src="@{/images/f.jpeg}" alt="Feature Gown">
+            <div class="row g-4">
+                <!-- Dynamic Gallery Items -->
+                <div class="col-lg-3 col-md-6" th:each="img, iterStat : ${images}" th:if="${iterStat.index < 4}">
+                    <div class="gallery-card-premium sm" style="height: 300px;">
+                        <img th:src="${img.imageUrl}" th:alt="${img.title}" style="height: 100%; object-fit: cover;">
                         <div class="gallery-info-overlay">
-                            <span class="gallery-cat">HAUTE COUTURE</span>
-                            <h4 class="fw-bold">The Lotus Gala</h4>
-                            <a th:href="@{/gallery}" class="gallery-btn">View Collection</a>
+                            <span class="gallery-cat" th:text="${img.category}">CATEGORY</span>
+                            <a th:href="@{/gallery}" class="gallery-btn small">View Gallery</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- 2x2 Grid for the rest -->
-                <div class="col-md-6">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <div class="gallery-card-premium sm">
-                                <img th:src="@{/images/makeup.png}" alt="Makeup">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">ARTISTRY</span>
-                                    <h6 class="fw-bold">Editorial Beauty</h6>
-                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="gallery-card-premium sm">
-                                <img th:src="@{/images/fashion.png}" alt="Fashion">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">STYLING</span>
-                                    <h6 class="fw-bold">Backstage Mood</h6>
-                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="gallery-card-premium wide">
-                                <img th:src="@{/images/catwalk.png}" alt="Catwalk">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">RUNWAY</span>
-                                    <h4 class="fw-bold">Spring Showcase</h4>
-                                    <a th:href="@{/gallery}" class="gallery-btn">Watch Show</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Fallback if no images -->
+                <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(images)}">
+                    <p class="text-muted">New gallery collections coming soon!</p>
                 </div>
             </div>
         </div>
@@ -666,6 +662,10 @@
                                     required>
                             </div>
                             <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">Phone Number</label>
+                                <input type="tel" class="form-control custom-input-v2" placeholder="+91 98765 43210" required>
+                            </div>
+                            <div class="col-12">
                                 <label class="form-label small fw-bold text-muted">Course of Interest</label>
                                 <select class="form-select custom-input-v2" required>
                                     <option value="" selected disabled>Choose a program...</option>
@@ -705,8 +705,9 @@
                                 const formData = {
                                     name: event.target.elements[0].value,
                                     email: event.target.elements[1].value,
-                                    courseOfInterest: event.target.elements[2].value,
-                                    message: event.target.elements[3].value
+                                    phone: event.target.elements[2].value,
+                                    courseOfInterest: event.target.elements[3].value,
+                                    message: event.target.elements[4].value
                                 };
 
                                 try {

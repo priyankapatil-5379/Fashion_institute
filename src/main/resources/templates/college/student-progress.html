@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Student Progress | The Fashion Institute</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/premium-dashboards.css}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-sidebar">
+            <div class="sidebar-brand"><i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span></div>
+            
+            <div class="mb-4 px-2">
+                <a th:href="@{/}" class="btn btn-light w-100 rounded-pill shadow-sm small fw-bold text-muted">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Back to Home
+                </a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+                <li><a th:href="@{/college/students}" class="active"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
+            </ul>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="dashboard-header mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <img th:src="${'https://ui-avatars.com/api/?name=' + student.username + '&background=random'}" class="rounded-circle" style="width: 50px;">
+                    <div>
+                        <h2 class="fw-bold mb-0" th:text="${'Manage: ' + student.fullName}">Student Name</h2>
+                        <p class="text-muted small mb-0" th:text="${student.email}">email@example.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Attendance Form -->
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <h5 class="fw-bold mb-4"><i class="fa-solid fa-calendar-check me-2 text-theme"></i> Mark Attendance</h5>
+                        <form th:action="@{/college/save-attendance}" method="post">
+                            <input type="hidden" name="studentId" th:value="${student.id}">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Select Course</label>
+                                <select name="courseId" class="form-select" required>
+                                    <option th:each="c : ${student.enrolledCourses}" th:value="${c.id}" th:text="${c.title}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Date</label>
+                                <input type="date" name="date" class="form-control" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required>
+                            </div>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" name="present" checked id="presentCheck">
+                                <label class="form-check-label small fw-bold" for="presentCheck">Is Present?</label>
+                            </div>
+                            <button type="submit" class="btn btn-gradient-dash w-100">Save Attendance</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Assessment Form -->
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <h5 class="fw-bold mb-4"><i class="fa-solid fa-file-signature me-2 text-theme"></i> Add Assessment</h5>
+                        <form th:action="@{/college/save-assessment}" method="post">
+                            <input type="hidden" name="studentId" th:value="${student.id}">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Course</label>
+                                <select name="courseId" class="form-select" required>
+                                    <option th:each="c : ${student.enrolledCourses}" th:value="${c.id}" th:text="${c.title}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Assessment Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g. Mid-term Project" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label small fw-bold">Grade</label>
+                                    <select name="grade" class="form-select">
+                                        <option>A+</option><option>A</option><option>B+</option><option>B</option><option>C</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold">Feedback</label>
+                                <textarea name="feedback" class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-gradient-dash w-100">Save Assessment</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Test Result Form -->
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <h5 class="fw-bold mb-4"><i class="fa-solid fa-vial me-2 text-theme"></i> Post Test Score</h5>
+                        <form th:action="@{/college/save-test}" method="post">
+                            <input type="hidden" name="studentId" th:value="${student.id}">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Course</label>
+                                <select name="courseId" class="form-select" required>
+                                    <option th:each="c : ${student.enrolledCourses}" th:value="${c.id}" th:text="${c.title}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Test Name</label>
+                                <input type="text" name="testName" class="form-control" required>
+                            </div>
+                            <div class="row g-2 mb-4">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold">Score</label>
+                                    <input type="number" name="score" class="form-control" required>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold">Max Score</label>
+                                    <input type="number" name="maxScore" class="form-control" value="100" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-gradient-dash w-100">Publish Score</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Certification Form -->
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <h5 class="fw-bold mb-4"><i class="fa-solid fa-award me-2 text-theme"></i> Award Certification</h5>
+                        <form th:action="@{/college/save-certification}" method="post">
+                            <input type="hidden" name="studentId" th:value="${student.id}">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Course</label>
+                                <select name="courseId" class="form-select" required>
+                                    <option th:each="c : ${student.enrolledCourses}" th:value="${c.id}" th:text="${c.title}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Certificate Name</label>
+                                <input type="text" name="certificateName" class="form-control" placeholder="Certificate of Excellence" required>
+                            </div>
+                            <button type="submit" class="btn btn-gradient-dash w-100">Award Certificate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

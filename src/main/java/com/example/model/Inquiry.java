@@ -17,6 +17,7 @@ public class Inquiry {
     private String name;
     private String email;
     private String courseOfInterest;
+    private String phone;
     
     @Column(length = 2000)
     private String message;
@@ -48,6 +49,9 @@ public class Inquiry {
     
     public String getCourseOfInterest() { return courseOfInterest; }
     public void setCourseOfInterest(String courseOfInterest) { this.courseOfInterest = courseOfInterest; }
+    
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
     
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }

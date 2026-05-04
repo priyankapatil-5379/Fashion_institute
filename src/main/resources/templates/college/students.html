@@ -17,6 +17,12 @@
             <div class="sidebar-brand">
                 <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
+            
+            <div class="mb-4 px-2">
+                <a th:href="@{/}" class="btn btn-light w-100 rounded-pill shadow-sm small fw-bold text-muted">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Back to Home
+                </a>
+            </div>
             <ul class="sidebar-nav">
                 <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
                 <li><a th:href="@{/college/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
@@ -41,9 +47,14 @@
                     <h2 class="fw-bold mb-1">Registered Students</h2>
                     <p class="text-muted small">Overview of students enrolled in your fashion programs.</p>
                 </div>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                    <i class="fa-solid fa-user-plus me-2"></i> Add Student
-                </button>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/college/clear-students}" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete all students? This cannot be undone.')">
+                        <i class="fa-solid fa-trash-sweep me-2"></i> Clear All Students
+                    </a>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                        <i class="fa-solid fa-user-plus me-2"></i> Add Student
+                    </button>
+                </div>
             </div>
 
             <!-- Students List -->
@@ -60,10 +71,13 @@
                                 <th>Enrollment Date</th>
                                 <th>Contact Info</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="student : ${students}">
+                                <!-- ... existing student row ... -->
+                                <!-- I'll replace the whole <tr> to ensure consistency -->
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
                                         <img th:src="${'https://ui-avatars.com/api/?name=' + student.username + '&background=random'}" class="rounded-circle" style="width: 40px; height: 40px;">
@@ -78,12 +92,9 @@
                                         <div class="fw-bold text-theme" th:text="${course.title}">Course Title</div>
                                         <small class="badge bg-light text-dark" th:text="${course.category}">Category</small>
                                     </div>
-                                    
-                                    <!-- Manual Enroll Option -->
                                     <button class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="modal" th:attr="data-bs-target='#enrollModal' + ${student.id}">
                                         <i class="fa-solid fa-plus me-1"></i> Enroll Course
                                     </button>
-                                    
                                 </td>
                                 <td>
                                     <div class="small">April 28, 2026</div>
@@ -91,11 +102,17 @@
                                 </td>
                                 <td>
                                     <div class="small mt-1"><i class="fa-solid fa-envelope me-2 text-muted"></i> <span th:text="${student.email}">student@email.com</span></div>
+                                    <div class="small mt-1" th:if="${student.phone != null}"><i class="fa-solid fa-phone me-2 text-muted"></i> <span th:text="${student.phone}">+91 0000000000</span></div>
                                 </td>
                                 <td>
                                     <span class="badge px-3 py-2 rounded-pill"
                                           th:classappend="${student.status == 'Active' || student.status == null ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary'}"
                                           th:text="${student.status != null ? student.status : 'Active'}">Active</span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/college/student-progress/{id}(id=${student.id})}" class="btn btn-sm btn-gradient-dash">
+                                        <i class="fa-solid fa-chart-line me-1"></i> Progress
+                                    </a>
                                 </td>
                             </tr>
                             <tr th:if="${students.empty}">
@@ -133,6 +150,10 @@
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Email</label>
                             <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Temporary Password</label>

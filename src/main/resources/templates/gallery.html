@@ -17,88 +17,107 @@
         rel="stylesheet">
     <style>
         .gallery-hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/f1.jpeg');
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/f1.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            height: 50vh;
+            height: 40vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
+            border-bottom: 5px solid var(--theme-main);
+        }
+
+        .filter-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
         .filter-btn {
-            background: transparent;
-            border: 1px solid var(--theme-soft);
-            color: var(--theme-dark);
-            padding: 8px 25px;
-            border-radius: 50px;
-            font-size: 0.8rem;
+            background: white;
+            border: 1px solid #eee;
+            color: #555;
+            padding: 10px 25px;
+            border-radius: 12px;
+            font-size: 0.85rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            margin: 5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
         .filter-btn.active, .filter-btn:hover {
             background: var(--theme-main);
-            border-color: var(--theme-main);
             color: white;
-            box-shadow: 0 5px 15px rgba(250, 137, 26, 0.3);
+            border-color: var(--theme-main);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(250, 137, 26, 0.2);
         }
 
-        .mosaic-container {
-            column-count: 3;
-            column-gap: 20px;
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 0 15px;
         }
 
-        @media (max-width: 992px) {
-            .mosaic-container { column-count: 2; }
-        }
-        @media (max-width: 576px) {
-            .mosaic-container { column-count: 1; }
+        @media (max-width: 768px) {
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
         }
 
         .gallery-item {
-            display: inline-block;
-            width: 100%;
-            margin-bottom: 20px;
             position: relative;
-            border-radius: 15px;
+            border-radius: 24px;
             overflow: hidden;
-            cursor: pointer;
-            transition: var(--transition);
+            aspect-ratio: 4/3; /* Controls the image length */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            transition: all 0.5s ease;
+            background: #eee;
         }
 
         .gallery-item img {
             width: 100%;
-            display: block;
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
         }
 
         .gallery-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             opacity: 0;
-            transition: var(--transition);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-overlay i {
             color: white;
-            padding: 20px;
-            text-align: center;
+            font-size: 2.5rem;
+            transform: scale(0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .gallery-item:hover .gallery-overlay {
             opacity: 1;
+        }
+
+        .gallery-item:hover .gallery-overlay i {
+            transform: scale(1);
         }
 
         .gallery-item:hover img {
@@ -106,22 +125,27 @@
         }
 
         .gallery-badge {
+            display: inline-block;
             background: var(--theme-main);
-            font-size: 0.6rem;
-            padding: 4px 12px;
-            border-radius: 50px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
+            color: white;
+            font-size: 0.7rem;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-weight: 700;
             letter-spacing: 1px;
+            margin-bottom: 0.5rem;
         }
 
         .modal-content {
-            background-color: transparent;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
             border: none;
+            overflow: hidden;
         }
 
-        .modal-header { border: none; }
-        .btn-close { filter: invert(1); opacity: 1; }
+        .modal-header { border: none; padding: 1.5rem; }
+        .btn-close { opacity: 1; }
     </style>
 </head>
 
@@ -187,148 +211,27 @@
     <!-- Gallery Filter -->
     <section class="py-5 bg-peach">
         <div class="container text-center">
-            <div class="mb-5">
+            <!-- Filters -->
+            <div class="filter-container">
                 <button class="filter-btn active" onclick="filterGallery('all')">All Works</button>
-                <button class="filter-btn" onclick="filterGallery('couture')">Jewellery Designing</button>
-                <button class="filter-btn" onclick="filterGallery('artistry')">Fashion Designing</button>
-                <button class="filter-btn" onclick="filterGallery('runway')">Apparel</button>
-                <button class="filter-btn" onclick="filterGallery('styling')">Events</button>
+                <button class="filter-btn" onclick="filterGallery('fashion')">Fashion Designing</button>
+                <button class="filter-btn" onclick="filterGallery('interior')">Interior Designing</button>
+                <button class="filter-btn" onclick="filterGallery('shoe')">Shoe Designing</button>
+                <button class="filter-btn" onclick="filterGallery('jewellery')">Jewellery Designing</button>
             </div>
 
-            <div class="mosaic-container" id="gallery-grid">
-                <!-- AI Generated Masterpieces -->
-                <div class="gallery-item couture">
-                    <img th:src="@{/images/fashion_design_hero_1777442653047.png}" alt="Fashion Design Hero">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/fashion_design_hero_1777442653047.png">
-                        <span class="gallery-badge">Couture</span>
-                        <h5 class="fw-bold">Avant-Garde Silhouette</h5>
-                        <p class="small opacity-75">A bold exploration of modern textile architecture.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Dynamic Gallery Items -->
+                <div th:each="img : ${images}" 
+                     th:class="${'gallery-item ' + (img.category == 'Fashion Designing' ? 'fashion' : (img.category == 'Interior Designing' ? 'interior' : (img.category == 'Shoe Designing' ? 'shoe' : 'jewellery')))}">
+                    <img th:src="${img.imageUrl}" th:alt="${img.title}">
+                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" th:attr="data-bs-img=${img.imageUrl}">
+                        <i class="fa-solid fa-expand-arrows-alt"></i>
                     </div>
                 </div>
 
-                <div class="gallery-item artistry">
-                    <img th:src="@{/images/jewellery_design_hero_1777442723446.png}" alt="Jewellery Design Hero">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/jewellery_design_hero_1777442723446.png">
-                        <span class="gallery-badge">Artistry</span>
-                        <h5 class="fw-bold">Luminescent Details</h5>
-                        <p class="small opacity-75">Mastering the craft of intricate gemstone setting.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item styling">
-                    <img th:src="@{/images/photography_hero_1777442814734.png}" alt="Photography Hero">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/photography_hero_1777442814734.png">
-                        <span class="gallery-badge">Styling</span>
-                        <h5 class="fw-bold">Editorial Vision</h5>
-                        <p class="small opacity-75">Capturing the perfect interaction of light and fabric.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item runway">
-                    <img th:src="@{/images/interior_design_hero_1777442780905.png}" alt="Interior Design Hero">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/interior_design_hero_1777442780905.png">
-                        <span class="gallery-badge">Runway</span>
-                        <h5 class="fw-bold">Spatial Elegance</h5>
-                        <p class="small opacity-75">Designing spaces that inspire elite creativity.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <!-- Couture -->
-                <div class="gallery-item couture">
-                    <img th:src="@{/images/f.jpeg}" alt="Gown Design">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/f.jpeg">
-                        <span class="gallery-badge">Couture</span>
-                        <h5 class="fw-bold">The Royal Gala</h5>
-                        <p class="small opacity-75">Hand-stitched silk with gold thread embroidery.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item couture">
-                    <img th:src="@{/images/f2.jpeg}" alt="Jewellery Design">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/f2.jpeg">
-                        <span class="gallery-badge">Couture</span>
-                        <h5 class="fw-bold">Gemstone Architecture</h5>
-                        <p class="small opacity-75">Precision cut diamonds set in 24k gold.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <!-- Artistry -->
-                <div class="gallery-item artistry">
-                    <img th:src="@{/images/makeup.png}" alt="Makeup Art">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/makeup.png">
-                        <span class="gallery-badge">Artistry</span>
-                        <h5 class="fw-bold">Editorial Beauty</h5>
-                        <p class="small opacity-75">Avant-garde concept for Vogue Paris.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item artistry">
-                    <img th:src="@{/images/hair.png}" alt="Hair Art">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/hair.png">
-                        <span class="gallery-badge">Artistry</span>
-                        <h5 class="fw-bold">Structural Flow</h5>
-                        <p class="small opacity-75">Geometric hairstyling for high-fashion events.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <!-- Runway -->
-                <div class="gallery-item runway">
-                    <img th:src="@{/images/catwalk.png}" alt="Runway">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/catwalk.png">
-                        <span class="gallery-badge">Runway</span>
-                        <h5 class="fw-bold">Spring Showcase</h5>
-                        <p class="small opacity-75">The 2026 Student Graduation Walk.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item runway">
-                    <img th:src="@{/images/f3.jpeg}" alt="Shoe Architecture">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/f3.jpeg">
-                        <span class="gallery-badge">Runway</span>
-                        <h5 class="fw-bold">Velvet Stride</h5>
-                        <p class="small opacity-75">Handcrafted luxury footwear collection.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <!-- Styling -->
-                <div class="gallery-item styling">
-                    <img th:src="@{/images/fashion.png}" alt="Fashion Styling">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/fashion.png">
-                        <span class="gallery-badge">Styling</span>
-                        <h5 class="fw-bold">Urban Chic</h5>
-                        <p class="small opacity-75">Ready-to-wear editorial styling.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item styling">
-                    <img th:src="@{/images/hero.png}" alt="Model Styling">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/hero.png">
-                        <span class="gallery-badge">Styling</span>
-                        <h5 class="fw-bold">The Modern Icon</h5>
-                        <p class="small opacity-75">Corporate high-fashion crossover.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
-                </div>
-
-                <div class="gallery-item artistry">
-                    <img th:src="@{/images/f4.jpeg}" alt="Beauty Stroke">
-                    <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-img="/images/f4.jpeg">
-                        <span class="gallery-badge">Artistry</span>
-                        <h5 class="fw-bold">Ethereal Glow</h5>
-                        <p class="small opacity-75">Natural light beauty photography.</p>
-                        <i class="fa-solid fa-expand-arrows-alt mt-3"></i>
-                    </div>
+                <div th:if="${#lists.isEmpty(images)}" class="w-100 text-center py-5">
+                    <p class="text-muted">New gallery collections coming soon!</p>
                 </div>
             </div>
         </div>
@@ -433,15 +336,23 @@
             const buttons = document.querySelectorAll('.filter-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            const activeBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(`'${category}'`));
+            if (activeBtn) activeBtn.classList.add('active');
 
             items.forEach(item => {
+                item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
                 if (category === 'all' || item.classList.contains(category)) {
-                    item.style.display = 'inline-block';
-                    setTimeout(() => item.style.opacity = '1', 50);
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, 10);
                 } else {
                     item.style.opacity = '0';
-                    setTimeout(() => item.style.display = 'none', 300);
+                    item.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        item.style.display = 'none';
+                    }, 400);
                 }
             });
         }

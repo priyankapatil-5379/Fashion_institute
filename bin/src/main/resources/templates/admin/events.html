@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events & Workshops | Fashion Institute</title>
+    <link rel="stylesheet" th:href="@{/css/admin-premium.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fas fa-skating"></i>
+            <span>FashionInst.</span>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a th:href="@{/admin/students}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a th:href="@{/admin/colleges}"><i class="fas fa-store"></i> Colleges</a></li>
+            <li><a th:href="@{/admin/courses}"><i class="fas fa-book-open"></i> Courses</a></li>
+            
+            <li><a th:href="@{/admin/events}" class="active"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a th:href="@{/admin/settings}"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="logout" style="margin-top: auto;">
+            <a th:href="@{/}" style="color: var(--primary); margin-bottom: 0.5rem;"><i class="fas fa-home"></i> Back to Home</a>
+            <a th:href="@{/logout}" style="color: var(--secondary);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header>
+            <div class="welcome">
+                <h1>Events Calendar</h1>
+                <p>Schedule fashion shows, workshops, and exhibitions.</p>
+            </div>
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100" alt="Admin Profile">
+                <span>Admin User</span>
+            </div>
+        </header>
+
+        <div class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Upcoming Events</h2>
+                <button style="padding: 0.8rem 1.5rem; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">
+                    <i class="fas fa-calendar-plus"></i> Create Event
+                </button>
+            </div>
+            
+            <p style="color: var(--text-muted); text-align: center; padding: 50px;">
+                <i class="fas fa-calendar-check" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
+                No events scheduled for this month.
+            </p>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @org.springframework.data.jpa.repository.Query("SELECT COUNT(u) FROM User u JOIN u.enrolledCourses c WHERE c.id = :courseId")
     long countStudentsByCourseId(Long courseId);
 
+    java.util.List<User> findByEnrolledCoursesId(Long courseId);
+    java.util.List<User> findByWishlistCoursesId(Long courseId);
 }
