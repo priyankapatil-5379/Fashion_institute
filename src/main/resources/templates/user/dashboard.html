@@ -69,7 +69,7 @@
                             <div class="elite-course-card enrolled-border">
                                 <div class="course-img-wrapper">
                                     <span class="course-tag bg-success text-white" th:text="${course.category}">FASHION</span>
-                                    <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                    <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                     <div class="course-duration">Active</div>
                                 </div>
                                 <div class="course-info p-4">
@@ -94,7 +94,7 @@
                             <div class="elite-course-card">
                                 <div class="course-img-wrapper">
                                     <span class="course-tag" th:text="${course.category != null ? course.category : 'FASHION'}">FASHION</span>
-                                    <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                    <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                     <div class="course-duration" th:text="${course.duration != null ? course.duration : 'Short Term'}">6 Months</div>
                                 </div>
                                 <div class="course-info p-4">
@@ -130,7 +130,7 @@
                                 <div class="elite-course-card" style="border: 1px dashed var(--theme-main);">
                                     <div class="course-img-wrapper">
                                         <span class="course-tag" th:text="${course.category}">FASHION</span>
-                                        <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                        <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                     </div>
                                     <div class="course-info p-4">
                                         <h6 class="fw-bold mb-1 text-truncate" th:text="${course.title}">Course Title</h6>
@@ -247,7 +247,7 @@
                         <div class="elite-course-card">
                             <div class="course-img-wrapper">
                                 <span class="course-tag" th:text="${course.category}">FASHION</span>
-                                <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                 <div class="course-duration" th:text="${course.duration}">6 Months</div>
                             </div>
                             <div class="course-info p-4">
