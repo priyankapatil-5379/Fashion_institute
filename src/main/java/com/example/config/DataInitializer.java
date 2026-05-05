@@ -57,33 +57,54 @@ public class DataInitializer implements CommandLineRunner {
                 System.out.println("Migrated user " + u.getUsername() + " from College to VENDOR role.");
             });
 
-        // SYSTEM RESET: Force-clear all inquiries and students one last time to ensure synchronization
-        System.out.println("Force-cleaning all stale data for system reset...");
-        
-        // 1. Clear all student-related records
-        attendanceRepository.deleteAll();
-        assessmentRepository.deleteAll();
-        testResultRepository.deleteAll();
-        certificationRepository.deleteAll();
-        inquiryRepository.deleteAll();
-        
-        // 2. Clear all users except admin
-        userRepository.findAll().stream()
-            .filter(u -> !"ADMIN".equals(u.getRole()))
-            .forEach(u -> {
-                u.getEnrolledCourses().clear();
-                u.getWishlistCourses().clear();
-                userRepository.save(u);
-                userRepository.delete(u);
-            });
+        // SYSTEM RESET: Removed destructive data clearing to persist registered users.
+        System.out.println("Checking system state...");
+
+        // 4. Seed Official Programs (Synchronized with Menu)
+        if (courseRepository.count() == 0) {
+            System.out.println("Seeding official institute programs...");
             
-        // 3. Clear all courses (only if they are from the dummy set or unnamed)
-        courseRepository.findAll().forEach(c -> {
-            if (c.getInstructorName() == null || "The Fashion Institute".equals(c.getInstructorName()) || "System".equals(c.getInstructorName())) {
-                courseRepository.delete(c);
-            }
-        });
+            com.example.model.Course c1 = new com.example.model.Course();
+            c1.setTitle("Advanced Fashion Designing");
+            c1.setCategory("Fashion Designing");
+            c1.setDuration("1 Year");
+            c1.setPrice(150000.0);
+            c1.setInstructorName("The Fashion Institute");
+            c1.setImageUrl("/images/about_1.png");
+            c1.setDescription("Master the art of professional fashion design and garment construction.");
+            courseRepository.save(c1);
+
+            com.example.model.Course c2 = new com.example.model.Course();
+            c2.setTitle("Fine Jewellery Artistry");
+            c2.setCategory("Jewellery Designing");
+            c2.setDuration("6 Months");
+            c2.setPrice(85000.0);
+            c2.setInstructorName("The Fashion Institute");
+            c2.setImageUrl("/images/about_2.png");
+            c2.setDescription("Learn precision craftsmanship and working with precious metals and stones.");
+            courseRepository.save(c2);
+
+            com.example.model.Course c3 = new com.example.model.Course();
+            c3.setTitle("Diploma in Fashion Designing");
+            c3.setCategory("Diploma in Fashion Designing");
+            c3.setDuration("2 Years");
+            c3.setPrice(250000.0);
+            c3.setInstructorName("The Fashion Institute");
+            c3.setImageUrl("/images/about_1.png");
+            c3.setDescription("A comprehensive diploma program covering all aspects of the fashion industry.");
+            courseRepository.save(c3);
+
+            com.example.model.Course c4 = new com.example.model.Course();
+            c4.setTitle("Bachelor of Fashion Design");
+            c4.setCategory("Bachelor of Fashion Design");
+            c4.setDuration("3 Years");
+            c4.setPrice(450000.0);
+            c4.setInstructorName("The Fashion Institute");
+            c4.setImageUrl("/images/about_1.png");
+            c4.setDescription("Our flagship degree program for aspiring international fashion designers.");
+            courseRepository.save(c4);
+        }
         
-        System.out.println("System Reset Complete.");
+        System.out.println("System Reset and Seeding Complete.");
     }
 }
