@@ -18,10 +18,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         java.util.List<com.example.model.Course> allCourses = courseService.getAllCourses();
-        java.util.List<com.example.model.Course> filteredCourses = allCourses.stream()
-                .filter(c -> c.getImageUrl() != null && c.getImageUrl().startsWith("/uploads/"))
-                .collect(java.util.stream.Collectors.toList());
-        model.addAttribute("courses", filteredCourses);
+        model.addAttribute("courses", allCourses);
         java.util.List<com.example.model.GalleryImage> images = galleryService.getAllImages();
         java.util.Collections.shuffle(images);
         model.addAttribute("images", images);

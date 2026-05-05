@@ -75,7 +75,7 @@
                     <div class="elite-course-card">
                         <div class="course-img-wrapper">
                             <span class="course-tag">GEMS</span>
-                            <img th:src="${course.imageUrl != null ? course.imageUrl : '/images/f4.jpeg'}" alt="Course">
+                            <img th:src="@{${course.imageUrl != null ? course.imageUrl : '/images/f4.jpeg'}}" alt="Course">
                         </div>
                         <div class="course-info p-4">
                             <h5 class="fw-bold mb-3" th:text="${course.title}">Course Title</h5>
