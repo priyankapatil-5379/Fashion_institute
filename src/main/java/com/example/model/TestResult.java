@@ -18,6 +18,8 @@ public class TestResult {
     private Integer score;
     private Integer maxScore;
     private String status;
+    private String grade;
+    private String feedback;
 
     public TestResult() {}
 
@@ -35,4 +37,8 @@ public class TestResult {
     public void setMaxScore(Integer maxScore) { this.maxScore = maxScore; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public String getGrade() { return grade; }
+    public void setGrade(String grade) { this.grade = grade; }
+    public String getFeedback() { return feedback; }
+    public void setFeedback(String feedback) { this.feedback = feedback; }
 }

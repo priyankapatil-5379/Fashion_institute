@@ -15,8 +15,9 @@ public class Assessment {
     private Course course;
 
     private String title;
-    private String grade;
-    private String feedback;
+
+    @OneToMany(mappedBy = "assessment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Question> questions = new java.util.ArrayList<>();
 
     public Assessment() {}
 
@@ -28,8 +29,6 @@ public class Assessment {
     public void setCourse(Course course) { this.course = course; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
-    public String getGrade() { return grade; }
-    public void setGrade(String grade) { this.grade = grade; }
-    public String getFeedback() { return feedback; }
-    public void setFeedback(String feedback) { this.feedback = feedback; }
+    public java.util.List<Question> getQuestions() { return questions; }
+    public void setQuestions(java.util.List<Question> questions) { this.questions = questions; }
 }

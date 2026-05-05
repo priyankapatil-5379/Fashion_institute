@@ -37,6 +37,15 @@ public class UserController {
     @Autowired
     private com.example.repository.CertificationRepository certificationRepository;
 
+    @Autowired
+    private com.example.repository.SubmittedAssessmentRepository submittedAssessmentRepository;
+
+    @Autowired
+    private com.example.repository.SubmittedAnswerRepository submittedAnswerRepository;
+
+    @Autowired
+    private com.example.repository.QuestionRepository questionRepository;
+
     @Value("${razorpay.key.id}")
     private String razorpayKeyId;
 
@@ -109,10 +118,55 @@ public class UserController {
     public String assessments(Model model, Principal principal) {
         if (principal != null) {
             Optional<User> user = userRepository.findByUsername(principal.getName());
-            user.ifPresent(u -> model.addAttribute("assessments", assessmentRepository.findByStudent(u)));
+            if (user.isPresent()) {
+                User u = user.get();
+                List<com.example.model.Assessment> allAssessments = assessmentRepository.findByStudent(u);
+                List<com.example.model.SubmittedAssessment> submitted = submittedAssessmentRepository.findByStudent(u);
+                
+                // Filter out assessments that have already been submitted
+                List<Long> submittedIds = submitted.stream().map(s -> s.getAssessment().getId()).collect(Collectors.toList());
+                List<com.example.model.Assessment> pending = allAssessments.stream()
+                    .filter(a -> !submittedIds.contains(a.getId()))
+                    .collect(Collectors.toList());
+                
+                model.addAttribute("assessments", pending);
+                model.addAttribute("submittedAssessments", submitted);
+            }
         }
         model.addAttribute("view", "assessments");
         return "user/dashboard";
+    }
+
+    @PostMapping("/submit-assessment")
+    public String submitAssessment(@RequestParam Long assessmentId, jakarta.servlet.http.HttpServletRequest request, Principal principal) {
+        if (principal == null) return "redirect:/login";
+        
+        User student = userRepository.findByUsername(principal.getName()).orElse(null);
+        com.example.model.Assessment assessment = assessmentRepository.findById(assessmentId).orElse(null);
+        
+        if (student != null && assessment != null) {
+            com.example.model.SubmittedAssessment submission = new com.example.model.SubmittedAssessment();
+            submission.setStudent(student);
+            submission.setAssessment(assessment);
+            submission.setStatus("PENDING");
+            submission.setSubmittedAt(java.time.LocalDateTime.now());
+            
+            // Collect answers from request parameters (q_{id})
+            java.util.Map<String, String[]> params = request.getParameterMap();
+            for (com.example.model.Question q : assessment.getQuestions()) {
+                String answer = request.getParameter("q_" + q.getId());
+                if (answer != null) {
+                    com.example.model.SubmittedAnswer resp = new com.example.model.SubmittedAnswer();
+                    resp.setQuestion(q);
+                    resp.setSelectedOption(answer);
+                    resp.setSubmittedAssessment(submission);
+                    submission.getAnswers().add(resp);
+                }
+            }
+            submittedAssessmentRepository.save(submission);
+        }
+        
+        return "redirect:/user/assessments";
     }
 
     @GetMapping("/tests")

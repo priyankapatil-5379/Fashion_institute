@@ -2,6 +2,7 @@
 package com.example.controller.college;
  
 import com.example.model.Course;
+import com.example.model.User;
 import com.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,6 +44,9 @@ public class CollegeController {
 
     @Autowired
     private com.example.repository.CertificationRepository certificationRepository;
+
+    @Autowired
+    private com.example.repository.SubmittedAssessmentRepository submittedAssessmentRepository;
  
     private static final String UPLOAD_DIR = "uploads/";
  
@@ -294,7 +298,15 @@ public class CollegeController {
  
     @GetMapping("/student-progress/{id}")
     public String studentProgress(@org.springframework.web.bind.annotation.PathVariable Long id, Model model) {
-        model.addAttribute("student", userRepository.findById(id).orElse(null));
+        User user = userRepository.findById(id).orElse(null);
+        model.addAttribute("student", user);
+        if (user != null) {
+            model.addAttribute("attendance", attendanceRepository.findByStudent(user));
+            model.addAttribute("assessments", assessmentRepository.findByStudent(user));
+            model.addAttribute("testResults", testResultRepository.findByStudent(user));
+            model.addAttribute("certifications", certificationRepository.findByStudent(user));
+            model.addAttribute("submittedAssessments", submittedAssessmentRepository.findByStudent(user));
+        }
         return "college/student-progress";
     }
 
@@ -310,19 +322,37 @@ public class CollegeController {
     }
 
     @PostMapping("/save-assessment")
-    public String saveAssessment(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam String title, @RequestParam String grade, @RequestParam String feedback) {
+    public String saveAssessment(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam String title, 
+                                 @RequestParam("question[]") String[] questions, 
+                                 @RequestParam("optionA[]") String[] optionAs, 
+                                 @RequestParam("optionB[]") String[] optionBs, 
+                                 @RequestParam("optionC[]") String[] optionCs, 
+                                 @RequestParam("optionD[]") String[] optionDs) {
+        
         com.example.model.Assessment assessment = new com.example.model.Assessment();
         assessment.setStudent(userRepository.findById(studentId).orElse(null));
         assessment.setCourse(courseService.getCourseById(courseId));
         assessment.setTitle(title);
-        assessment.setGrade(grade);
-        assessment.setFeedback(feedback);
+        
+        for (int i = 0; i < questions.length; i++) {
+            if (questions[i] == null || questions[i].trim().isEmpty()) continue;
+            
+            com.example.model.Question q = new com.example.model.Question();
+            q.setContent(questions[i]);
+            q.setOptionA(optionAs[i]);
+            q.setOptionB(optionBs[i]);
+            q.setOptionC(optionCs[i]);
+            q.setOptionD(optionDs[i]);
+            q.setAssessment(assessment);
+            assessment.getQuestions().add(q);
+        }
+        
         assessmentRepository.save(assessment);
         return "redirect:/college/student-progress/" + studentId;
     }
 
     @PostMapping("/save-test")
-    public String saveTest(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam String testName, @RequestParam Integer score, @RequestParam Integer maxScore) {
+    public String saveTest(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam String testName, @RequestParam Integer score, @RequestParam Integer maxScore, @RequestParam String grade, @RequestParam String feedback) {
         com.example.model.TestResult test = new com.example.model.TestResult();
         test.setStudent(userRepository.findById(studentId).orElse(null));
         test.setCourse(courseService.getCourseById(courseId));
@@ -330,7 +360,19 @@ public class CollegeController {
         test.setScore(score);
         test.setMaxScore(maxScore);
         test.setStatus(score >= (maxScore * 0.4) ? "Passed" : "Failed");
+        test.setGrade(grade);
+        test.setFeedback(feedback);
         testResultRepository.save(test);
+
+        // Mark any pending submission for this assessment as GRADED
+        List<com.example.model.SubmittedAssessment> submissions = submittedAssessmentRepository.findByStudent(test.getStudent());
+        for (com.example.model.SubmittedAssessment sub : submissions) {
+            if (sub.getAssessment().getCourse().getId().equals(courseId) && "PENDING".equals(sub.getStatus())) {
+                sub.setStatus("GRADED");
+                submittedAssessmentRepository.save(sub);
+            }
+        }
+
         return "redirect:/college/student-progress/" + studentId;
     }
 

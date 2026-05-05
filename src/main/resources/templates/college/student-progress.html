@@ -64,7 +64,7 @@
                 <div class="col-md-6">
                     <div class="stat-card">
                         <h5 class="fw-bold mb-4"><i class="fa-solid fa-file-signature me-2 text-theme"></i> Add Assessment</h5>
-                        <form th:action="@{/college/save-assessment}" method="post">
+                        <form th:action="@{/college/save-assessment}" method="post" id="assessmentForm">
                             <input type="hidden" name="studentId" th:value="${student.id}">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Course</label>
@@ -72,24 +72,79 @@
                                     <option th:each="c : ${student.enrolledCourses}" th:value="${c.id}" th:text="${c.title}"></option>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 border-bottom pb-3">
                                 <label class="form-label small fw-bold">Assessment Title</label>
-                                <input type="text" name="title" class="form-control" placeholder="e.g. Mid-term Project" required>
+                                <input type="text" name="title" class="form-control" placeholder="e.g. Weekly Fashion Quiz" required>
                             </div>
-                            <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label class="form-label small fw-bold">Grade</label>
-                                    <select name="grade" class="form-select">
-                                        <option>A+</option><option>A</option><option>B+</option><option>B</option><option>C</option>
-                                    </select>
+
+                            <!-- Questions Container -->
+                            <div id="questionsContainer">
+                                <div class="question-block mb-4 p-3 border rounded-4 bg-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label small fw-bold text-theme">Question 1</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea name="question[]" class="form-control" rows="2" placeholder="Enter the question here..." required></textarea>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6 mb-2">
+                                            <input type="text" name="optionA[]" class="form-control form-control-sm" placeholder="Option A" required>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <input type="text" name="optionB[]" class="form-control form-control-sm" placeholder="Option B" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" name="optionC[]" class="form-control form-control-sm" placeholder="Option C" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" name="optionD[]" class="form-control form-control-sm" placeholder="Option D" required>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="mb-4">
-                                <label class="form-label small fw-bold">Feedback</label>
-                                <textarea name="feedback" class="form-control" rows="2"></textarea>
+
+                            <div class="text-center mb-4">
+                                <button type="button" class="btn btn-outline-theme btn-sm rounded-pill px-4" onclick="addQuestion()">
+                                    <i class="fa-solid fa-plus me-2"></i> Add Another Question
+                                </button>
                             </div>
+
                             <button type="submit" class="btn btn-gradient-dash w-100">Save Assessment</button>
                         </form>
+
+                        <script>
+                            let questionCount = 1;
+                            function addQuestion() {
+                                questionCount++;
+                                const container = document.getElementById('questionsContainer');
+                                const div = document.createElement('div');
+                                div.className = 'question-block mb-4 p-3 border rounded-4 bg-light';
+                                div.innerHTML = `
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label small fw-bold text-theme">Question ${questionCount}</label>
+                                        <button type="button" class="btn btn-link btn-sm text-danger p-0" onclick="this.parentElement.parentElement.remove()">Remove</button>
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea name="question[]" class="form-control" rows="2" placeholder="Enter the question here..." required></textarea>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6 mb-2">
+                                            <input type="text" name="optionA[]" class="form-control form-control-sm" placeholder="Option A" required>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <input type="text" name="optionB[]" class="form-control form-control-sm" placeholder="Option B" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" name="optionC[]" class="form-control form-control-sm" placeholder="Option C" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" name="optionD[]" class="form-control form-control-sm" placeholder="Option D" required>
+                                        </div>
+                                    </div>
+                                `;
+                                container.appendChild(div);
+                            }
+                        </script>
                     </div>
                 </div>
 
@@ -109,7 +164,7 @@
                                 <label class="form-label small fw-bold">Test Name</label>
                                 <input type="text" name="testName" class="form-control" required>
                             </div>
-                            <div class="row g-2 mb-4">
+                            <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <label class="form-label small fw-bold">Score</label>
                                     <input type="number" name="score" class="form-control" required>
@@ -118,6 +173,16 @@
                                     <label class="form-label small fw-bold">Max Score</label>
                                     <input type="number" name="maxScore" class="form-control" value="100" required>
                                 </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Grade</label>
+                                <select name="grade" class="form-select">
+                                    <option>A+</option><option>A</option><option>B+</option><option>B</option><option>C</option><option>D</option><option>F</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold">Feedback</label>
+                                <textarea name="feedback" class="form-control" rows="2" placeholder="Teacher's feedback..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-gradient-dash w-100">Publish Score</button>
                         </form>
@@ -138,14 +203,60 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Certificate Name</label>
-                                <input type="text" name="certificateName" class="form-control" placeholder="Certificate of Excellence" required>
+                                <select name="certificateName" class="form-select" required>
+                                    <option value="Course Completion Certification">Course Completion Certification</option>
+                                    <option value="Certificate of Excellence">Certificate of Excellence</option>
+                                    <option value="Merit Certificate">Merit Certificate</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-gradient-dash w-100">Award Certificate</button>
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</body>
+                <!-- Submitted Assessments Review -->
+                <div class="col-12" th:if="${submittedAssessments != null and !submittedAssessments.empty}">
+                    <div class="table-premium">
+                        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0">Review Submitted Assessments</h5>
+                            <span class="badge bg-theme" th:text="${#lists.size(submittedAssessments)}">0</span>
+                        </div>
+                        <div class="p-4">
+                            <div th:each="sub : ${submittedAssessments}" class="mb-4 p-3 border rounded-4 bg-light shadow-sm">
+                                <div class="d-flex justify-content-between mb-3 align-items-center">
+                                    <h6 class="fw-bold mb-0 text-theme" th:text="${sub.assessment.title}">Assessment Title</h6>
+                                    <span class="badge" th:classappend="${sub.status == 'PENDING' ? 'bg-warning' : 'bg-success'}" th:text="${sub.status}">PENDING</span>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12" th:each="ans : ${sub.answers}">
+                                        <div class="p-3 bg-white border rounded-3 small">
+                                            <p class="fw-bold mb-2" th:text="${ans.question.content}">Question?</p>
+                                            <div class="d-flex gap-4">
+                                                <div class="text-muted">Student Selected: <span class="fw-bold text-theme" th:text="${ans.selectedOption}">A</span></div>
+                                                <div class="text-muted">Options: 
+                                                    <span class="ms-2" th:text="'A: ' + ${ans.question.optionA}"></span>
+                                                    <span class="ms-2" th:text="'B: ' + ${ans.question.optionB}"></span>
+                                                    <span class="ms-2" th:text="'C: ' + ${ans.question.optionC}"></span>
+                                                    <span class="ms-2" th:text="'D: ' + ${ans.question.optionD}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-end" th:if="${sub.status == 'PENDING'}">
+                                    <button class="btn btn-sm btn-gradient-dash" onclick="scrollToPostScore()">Grade this Assessment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function scrollToPostScore() {
+                        document.querySelector('input[name="testName"]').focus();
+                        window.scrollTo({
+                            top: document.querySelector('input[name="testName"]').offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                </script>
 </html>

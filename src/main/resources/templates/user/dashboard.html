@@ -184,18 +184,94 @@
                 <div class="row g-4" th:if="${view == 'assessments'}">
                     <div class="col-lg-12">
                         <div class="stat-card">
-                            <h5 class="fw-bold mb-4">Instructor Feedback & Grades</h5>
+                            <h5 class="fw-bold mb-4">Pending & Completed Assessments</h5>
                             <div class="activity-list">
-                                <div class="p-3 border rounded-4 mb-3" th:each="asmt : ${assessments}">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="fw-bold" th:text="${asmt.title}">Project Title</h6>
-                                        <span class="badge bg-success" th:text="${'Grade: ' + asmt.grade}">Grade: A</span>
-                                    </div>
-                                    <p class="small text-muted mb-0" th:text="${asmt.feedback}">"Feedback text"</p>
-                                    <small class="text-theme" th:text="${asmt.course.title}">Course Name</small>
+                                <div class="p-4 border rounded-4 mb-4 bg-white shadow-sm" th:each="asmt : ${assessments}">
+                                    <form th:action="@{/user/submit-assessment}" method="post">
+                                        <input type="hidden" name="assessmentId" th:value="${asmt.id}">
+                                        
+                                        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                                            <div>
+                                                <h5 class="fw-bold mb-1 text-theme" th:text="${asmt.title}">Assessment Title</h5>
+                                                <span class="badge bg-theme-subtle text-theme px-3 py-1 rounded-pill small" th:text="${asmt.course.title}">Course Name</span>
+                                            </div>
+                                            <div class="text-end">
+                                                <span class="d-block small text-muted">Questions</span>
+                                                <span class="fw-bold h5 mb-0" th:text="${#lists.size(asmt.questions)}">0</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="questions-wrapper">
+                                            <div class="assessment-question-box bg-light p-4 rounded-4 border-start border-4 border-theme mb-4" th:each="q, iter : ${asmt.questions}">
+                                                <p class="fw-bold text-dark mb-3">
+                                                    <span class="text-theme me-2" th:text="${iter.count + '.'}">1.</span>
+                                                    <span th:text="${q.content}">Question content?</span>
+                                                </p>
+                                                
+                                                <div class="row g-3">
+                                                    <!-- Option A -->
+                                                    <div class="col-md-6" th:if="${q.optionA != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="A" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">A)</span> <span th:text="${q.optionA}">Option A</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Option B -->
+                                                    <div class="col-md-6" th:if="${q.optionB != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="B" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">B)</span> <span th:text="${q.optionB}">Option B</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Option C -->
+                                                    <div class="col-md-6" th:if="${q.optionC != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="C" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">C)</span> <span th:text="${q.optionC}">Option C</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Option D -->
+                                                    <div class="col-md-6" th:if="${q.optionD != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="D" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">D)</span> <span th:text="${q.optionD}">Option D</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-gradient-dash rounded-pill px-5">Submit Assessment</button>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div th:if="${assessments == null or assessments.empty}" class="text-center py-4 text-muted">
-                                    No assessments found.
+                                    No pending assessments found.
+                                </div>
+                            </div>
+
+                            <div th:if="${submittedAssessments != null and !submittedAssessments.empty}" class="mt-5 pt-4 border-top">
+                                <h5 class="fw-bold mb-4">Completed Submissions</h5>
+                                <div class="p-4 border rounded-4 mb-4 bg-light shadow-sm" th:each="sub : ${submittedAssessments}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="fw-bold mb-1" th:text="${sub.assessment.title}">Assessment Title</h6>
+                                            <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill small" th:text="${sub.assessment.course.title}">Course Name</span>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge" th:classappend="${sub.status == 'PENDING' ? 'bg-warning' : 'bg-success'}" th:text="${sub.status == 'PENDING' ? 'AWAITING REVIEW' : 'GRADED'}">PENDING REVIEW</span>
+                                            <small class="d-block mt-1 text-muted" th:text="${#temporals.format(sub.submittedAt, 'dd MMM yyyy')}">Date</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -208,16 +284,18 @@
                         <div class="table-premium">
                             <div class="p-4 border-bottom"><h5 class="fw-bold mb-0">Recent Test Scores</h5></div>
                             <table class="table">
-                                <thead><tr><th>Test Name</th><th>Course</th><th>Score</th><th>Status</th></tr></thead>
+                                <thead><tr><th>Test Name</th><th>Course</th><th>Score</th><th>Grade</th><th>Status</th><th>Feedback</th></tr></thead>
                                 <tbody>
                                     <tr th:each="test : ${testResults}">
                                         <td th:text="${test.testName}">Test Name</td>
                                         <td th:text="${test.course.title}">Course</td>
-                                        <td th:text="${test.score + '/' + test.maxScore}">Score</td>
+                                        <td class="fw-bold" th:text="${test.score + '/' + test.maxScore}">Score</td>
+                                        <td><span class="badge bg-primary-subtle text-primary" th:text="${test.grade}">A+</span></td>
                                         <td><span class="badge" th:classappend="${test.status == 'Passed' ? 'bg-success' : 'bg-danger'}" th:text="${test.status}">Passed</span></td>
+                                        <td><small class="text-muted italic" th:text="${test.feedback}">Good effort!</small></td>
                                     </tr>
                                     <tr th:if="${testResults == null or testResults.empty}">
-                                        <td colspan="4" class="text-center py-4 text-muted">No test results found.</td>
+                                        <td colspan="6" class="text-center py-4 text-muted">No test results found.</td>
                                     </tr>
                                 </tbody>
                             </table>
