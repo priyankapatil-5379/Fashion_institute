@@ -105,6 +105,20 @@ public class DataInitializer implements CommandLineRunner {
             courseRepository.save(c4);
         }
         
+        // Force update images for existing courses to fix broken images
+        courseRepository.findAll().forEach(c -> {
+            if (c.getTitle().contains("Fashion") && !"/images/about_1.png".equals(c.getImageUrl())) {
+                c.setImageUrl("/images/about_1.png");
+                courseRepository.save(c);
+            } else if (c.getTitle().contains("Jewel") && !"/images/about_2.png".equals(c.getImageUrl())) {
+                c.setImageUrl("/images/about_2.png");
+                courseRepository.save(c);
+            } else if (c.getImageUrl() == null) {
+                c.setImageUrl("/images/f1.jpeg");
+                courseRepository.save(c);
+            }
+        });
+        
         System.out.println("System Reset and Seeding Complete.");
     }
 }
