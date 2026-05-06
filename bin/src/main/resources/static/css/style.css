@@ -356,8 +356,10 @@ nav {
 }
 
 .carousel-img {
-    height: 700px;
+    width: 100%;
+    height: calc(100vh - 70px);
     object-fit: cover;
+    object-position: center;
     filter: brightness(0.65);
 }
 
