@@ -21,6 +21,10 @@
                 <li class="mb-4"><a th:href="@{/}" class="btn btn-light btn-sm w-100 justify-content-start py-2 px-3 shadow-sm" style="border-radius: 10px; color: var(--secondary);"><i class="fa-solid fa-arrow-left me-2"></i> <span>Back to Home</span></a></li>
                 <li><a th:href="@{/user/dashboard}" th:classappend="${view == 'dashboard' ? 'active' : ''}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
                 <li><a th:href="@{/user/my-learning}" th:classappend="${view == 'learning' ? 'active' : ''}"><i class="fa-solid fa-graduation-cap"></i> <span>My Learning</span></a></li>
+                <li><a th:href="@{/user/attendance}" th:classappend="${view == 'attendance' ? 'active' : ''}"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+                <li><a th:href="@{/user/assessments}" th:classappend="${view == 'assessments' ? 'active' : ''}"><i class="fa-solid fa-file-pen"></i> <span>Assessments</span></a></li>
+                <li><a th:href="@{/user/tests}" th:classappend="${view == 'tests' ? 'active' : ''}"><i class="fa-solid fa-vial"></i> <span>Tests</span></a></li>
+                <li><a th:href="@{/user/certifications}" th:classappend="${view == 'certifications' ? 'active' : ''}"><i class="fa-solid fa-certificate"></i> <span>Certifications</span></a></li>
                 <li><a th:href="@{/user/wishlist}" th:classappend="${view == 'wishlist' ? 'active' : ''}"><i class="fa-solid fa-heart"></i> <span>Wishlist</span></a></li>
                 <li><a th:href="@{/user/messages}" th:classappend="${view == 'messages' ? 'active' : ''}">
                     <i class="fa-solid fa-message"></i> <span>Messages</span> 
@@ -40,8 +44,8 @@
         <div class="dashboard-content">
             <div class="dashboard-header">
                 <div>
-                    <h2 class="fw-bold mb-1" th:text="${view == 'dashboard' ? 'Explore New Trends' : (view == 'learning' ? 'My Learning' : (view == 'messages' ? 'Messages' : 'My Wishlist'))}">Explore New Trends</h2>
-                    <p class="text-muted small" th:text="${view == 'dashboard' ? 'Pick a new course and start your creative journey today.' : (view == 'learning' ? 'Continue your fashion education journey.' : (view == 'messages' ? 'Direct communication with your instructors.' : 'Your curated list of desired fashion programs.'))}">Pick a new course and start your creative journey today.</p>
+                    <h2 class="fw-bold mb-1" th:text="${view == 'dashboard' ? 'Explore New Trends' : (view == 'learning' ? 'My Learning' : (view == 'attendance' ? 'Attendance' : (view == 'assessments' ? 'Assessments' : (view == 'tests' ? 'Test Results' : (view == 'certifications' ? 'My Certifications' : (view == 'messages' ? 'Messages' : 'My Wishlist'))))))}">Explore New Trends</h2>
+                    <p class="text-muted small" th:text="${view == 'dashboard' ? 'Pick a new course and start your creative journey today.' : (view == 'learning' ? 'Continue your fashion education journey.' : (view == 'attendance' ? 'Track your presence in classes.' : (view == 'assessments' ? 'Review your grades and instructor feedback.' : (view == 'tests' ? 'View your scores from recent assessments.' : (view == 'certifications' ? 'Your hard-earned professional credentials.' : (view == 'messages' ? 'Direct communication with your instructors.' : 'Your curated list of desired fashion programs.'))))))}">Pick a new course and start your creative journey today.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <div class="search-box position-relative d-none d-lg-block">
@@ -55,17 +59,42 @@
 
             <!-- Dashboard Sections -->
             <div class="mb-5">
-                <!-- Available Courses (Dashboard) -->
+                <!-- My Enrolled Courses (Priority) -->
+                <div th:if="${view == 'dashboard' and enrolledCourses != null and !#lists.isEmpty(enrolledCourses)}">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0">My Enrolled Programs</h4>
+                    </div>
+                    <div class="row g-4 mb-5">
+                        <div class="col-lg-4 col-md-6" th:each="course : ${enrolledCourses}">
+                            <div class="elite-course-card enrolled-border">
+                                <div class="course-img-wrapper">
+                                    <span class="course-tag bg-success text-white" th:text="${course.category}">FASHION</span>
+                                    <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
+                                    <div class="course-duration">Active</div>
+                                </div>
+                                <div class="course-info p-4">
+                                    <h5 class="fw-bold mb-3" th:text="${course.title}">Course Title</h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Enrolled</span>
+                                        <a th:href="@{/user/course/{id}(id=${course.id})}" class="btn btn-gradient-dash btn-sm px-4 rounded-pill">View Course</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Available Courses (Explore) -->
                 <div th:if="${view == 'dashboard'}">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="fw-bold mb-0">Available Courses</h4>
+                        <h4 class="fw-bold mb-0">Explore More Programs</h4>
                     </div>
                     <div class="row g-4 mb-5">
                         <div class="col-lg-4 col-md-6" th:each="course : ${courses}">
                             <div class="elite-course-card">
                                 <div class="course-img-wrapper">
                                     <span class="course-tag" th:text="${course.category != null ? course.category : 'FASHION'}">FASHION</span>
-                                    <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                    <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                     <div class="course-duration" th:text="${course.duration != null ? course.duration : 'Short Term'}">6 Months</div>
                                 </div>
                                 <div class="course-info p-4">
@@ -101,7 +130,7 @@
                                 <div class="elite-course-card" style="border: 1px dashed var(--theme-main);">
                                     <div class="course-img-wrapper">
                                         <span class="course-tag" th:text="${course.category}">FASHION</span>
-                                        <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                        <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                     </div>
                                     <div class="course-info p-4">
                                         <h6 class="fw-bold mb-1 text-truncate" th:text="${course.title}">Course Title</h6>
@@ -116,13 +145,187 @@
                     </div>
                 </div>
 
+                <!-- Attendance View -->
+                <div class="row g-4" th:if="${view == 'attendance'}">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h6 class="fw-bold text-muted mb-3">OVERALL ATTENDANCE</h6>
+                            <h2 class="fw-bold mb-0" th:text="${(attendancePercentage != null ? attendancePercentage : '0') + '%'}">85%</h2>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-success" th:style="${'width: ' + (attendancePercentage != null ? attendancePercentage : '0') + '%' }"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-premium">
+                            <div class="p-4 border-bottom"><h5 class="fw-bold mb-0">Record Details</h5></div>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead><tr><th>Date</th><th>Course</th><th>Status</th></tr></thead>
+                                    <tbody>
+                                        <tr th:each="record : ${attendanceRecords}">
+                                            <td th:text="${record.date}">Date</td>
+                                            <td th:text="${record.course.title}">Course</td>
+                                            <td>
+                                                <span class="badge" th:classappend="${record.present ? 'bg-success' : 'bg-danger'}" th:text="${record.present ? 'Present' : 'Absent'}">Present</span>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${attendanceRecords == null or attendanceRecords.empty}">
+                                            <td colspan="3" class="text-center py-4 text-muted">No attendance records found.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assessments View -->
+                <div class="row g-4" th:if="${view == 'assessments'}">
+                    <div class="col-lg-12">
+                        <div class="stat-card">
+                            <h5 class="fw-bold mb-4">Pending & Completed Assessments</h5>
+                            <div class="activity-list">
+                                <div class="p-4 border rounded-4 mb-4 bg-white shadow-sm" th:each="asmt : ${assessments}">
+                                    <form th:action="@{/user/submit-assessment}" method="post">
+                                        <input type="hidden" name="assessmentId" th:value="${asmt.id}">
+                                        
+                                        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                                            <div>
+                                                <h5 class="fw-bold mb-1 text-theme" th:text="${asmt.title}">Assessment Title</h5>
+                                                <span class="badge bg-theme-subtle text-theme px-3 py-1 rounded-pill small" th:text="${asmt.course.title}">Course Name</span>
+                                            </div>
+                                            <div class="text-end">
+                                                <span class="d-block small text-muted">Questions</span>
+                                                <span class="fw-bold h5 mb-0" th:text="${#lists.size(asmt.questions)}">0</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="questions-wrapper">
+                                            <div class="assessment-question-box bg-light p-4 rounded-4 border-start border-4 border-theme mb-4" th:each="q, iter : ${asmt.questions}">
+                                                <p class="fw-bold text-dark mb-3">
+                                                    <span class="text-theme me-2" th:text="${iter.count + '.'}">1.</span>
+                                                    <span th:text="${q.content}">Question content?</span>
+                                                </p>
+                                                
+                                                <div class="row g-3">
+                                                    <!-- Option A -->
+                                                    <div class="col-md-6" th:if="${q.optionA != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="A" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">A)</span> <span th:text="${q.optionA}">Option A</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Option B -->
+                                                    <div class="col-md-6" th:if="${q.optionB != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="B" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">B)</span> <span th:text="${q.optionB}">Option B</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Option C -->
+                                                    <div class="col-md-6" th:if="${q.optionC != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="C" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">C)</span> <span th:text="${q.optionC}">Option C</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Option D -->
+                                                    <div class="col-md-6" th:if="${q.optionD != null}">
+                                                        <label class="option-container w-100">
+                                                            <input type="radio" th:name="'q_' + ${q.id}" value="D" required>
+                                                            <div class="option-item p-3 border rounded-3 bg-white small d-flex gap-2">
+                                                                <span class="fw-bold text-theme">D)</span> <span th:text="${q.optionD}">Option D</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-gradient-dash rounded-pill px-5">Submit Assessment</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div th:if="${assessments == null or assessments.empty}" class="text-center py-4 text-muted">
+                                    No pending assessments found.
+                                </div>
+                            </div>
+
+                            <div th:if="${submittedAssessments != null and !submittedAssessments.empty}" class="mt-5 pt-4 border-top">
+                                <h5 class="fw-bold mb-4">Completed Submissions</h5>
+                                <div class="p-4 border rounded-4 mb-4 bg-light shadow-sm" th:each="sub : ${submittedAssessments}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="fw-bold mb-1" th:text="${sub.assessment.title}">Assessment Title</h6>
+                                            <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill small" th:text="${sub.assessment.course.title}">Course Name</span>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge" th:classappend="${sub.status == 'PENDING' ? 'bg-warning' : 'bg-success'}" th:text="${sub.status == 'PENDING' ? 'AWAITING REVIEW' : 'GRADED'}">PENDING REVIEW</span>
+                                            <small class="d-block mt-1 text-muted" th:text="${#temporals.format(sub.submittedAt, 'dd MMM yyyy')}">Date</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tests View -->
+                <div class="row g-4" th:if="${view == 'tests'}">
+                    <div class="col-12">
+                        <div class="table-premium">
+                            <div class="p-4 border-bottom"><h5 class="fw-bold mb-0">Recent Test Scores</h5></div>
+                            <table class="table">
+                                <thead><tr><th>Test Name</th><th>Course</th><th>Score</th><th>Grade</th><th>Status</th><th>Feedback</th></tr></thead>
+                                <tbody>
+                                    <tr th:each="test : ${testResults}">
+                                        <td th:text="${test.testName}">Test Name</td>
+                                        <td th:text="${test.course.title}">Course</td>
+                                        <td class="fw-bold" th:text="${test.score + '/' + test.maxScore}">Score</td>
+                                        <td><span class="badge bg-primary-subtle text-primary" th:text="${test.grade}">A+</span></td>
+                                        <td><span class="badge" th:classappend="${test.status == 'Passed' ? 'bg-success' : 'bg-danger'}" th:text="${test.status}">Passed</span></td>
+                                        <td><small class="text-muted italic" th:text="${test.feedback}">Good effort!</small></td>
+                                    </tr>
+                                    <tr th:if="${testResults == null or testResults.empty}">
+                                        <td colspan="6" class="text-center py-4 text-muted">No test results found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications View -->
+                <div class="row g-4" th:if="${view == 'certifications'}">
+                    <div class="col-lg-4 col-md-6" th:each="cert : ${certifications}">
+                        <div class="stat-card text-center">
+                            <i class="fa-solid fa-certificate fa-3x text-theme mb-3"></i>
+                            <h6 class="fw-bold" th:text="${cert.certificateName}">Certificate Name</h6>
+                            <p class="small text-muted" th:text="${'Completed: ' + cert.issueDate}">Completed: Dec 2025</p>
+                            <small class="d-block mb-3 text-muted" th:text="${cert.course.title}">Course Name</small>
+                            <button class="btn btn-gradient-dash btn-sm rounded-pill w-100">Download <i class="fa-solid fa-download ms-1"></i></button>
+                        </div>
+                    </div>
+                    <div th:if="${certifications == null or certifications.empty}" class="col-12 text-center py-5 text-muted">
+                        No certifications awarded yet.
+                    </div>
+                </div>
+
                 <!-- Learning / Wishlist Dedicated Views -->
                 <div class="row g-4" th:if="${view == 'learning' || view == 'wishlist'}">
                     <div class="col-lg-4 col-md-6" th:each="course : ${courses}">
                         <div class="elite-course-card">
                             <div class="course-img-wrapper">
                                 <span class="course-tag" th:text="${course.category}">FASHION</span>
-                                <img th:src="${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}" alt="Course">
+                                <img th:src="@{${course.imageUrl != null ? course.imageUrl : 'https://images.unsplash.com/photo-1539109132314-34a9c69d67d0?auto=format&fit=crop&q=80&w=800'}}" alt="Course">
                                 <div class="course-duration" th:text="${course.duration}">6 Months</div>
                             </div>
                             <div class="course-info p-4">

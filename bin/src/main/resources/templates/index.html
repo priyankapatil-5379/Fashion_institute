@@ -137,57 +137,34 @@
                 <li class="has-dropdown" id="programsDropdown">
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-1" onclick="toggleDropdown(event)">Programs <i class="fa-solid fa-chevron-down small" style="font-size: 0.6rem;"></i></a>
                     <ul class="dropdown-menu-custom">
+                        <!-- 1. Courses Offered -->
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Courses Offered <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
-                                <li><a th:href="@{/programs/fashion-designing}" class="submenu-item">Fashion Designing</a></li>
-                                <li><a th:href="@{/programs/jewellery-designing}" class="submenu-item">Jewellery Designing</a></li>
-                                <li><a th:href="@{/programs/interior-designing}" class="submenu-item">Interior Designing</a></li>
-                                <li><a th:href="@{/programs/photography}" class="submenu-item">Photography</a></li>
-                                <li><a th:href="@{/programs/shoe-designing}" class="submenu-item">Shoe Designing</a></li>
-                                <li><a th:href="@{/programs/beauty-and-grooming}" class="submenu-item">Beauty and Grooming</a></li>
+                                <li><a href="/#courses" class="submenu-item">Fashion Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Jewellery Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Interior Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Photography</a></li>
                             </ul>
                         </li>
+                        <!-- 2. Diploma Programs -->
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Diploma Programs <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
-                                <li><a th:href="@{/programs/diploma-in-fashion-designing}" class="submenu-item">Diploma in Fashion Designing</a></li>
-                                <li><a th:href="@{/programs/diploma-in-nail-technology}" class="submenu-item">Diploma in Nail Designing</a></li>
-                                <li><a th:href="@{/programs/diploma-in-apparel-technology}" class="submenu-item">Diploma in Apparel Technology</a></li>
-                                <li><a th:href="@{/programs/diploma-in-hair-styling}" class="submenu-item">Diploma in Hair Styling</a></li>
-                                <li><a th:href="@{/programs/diploma-in-textile-designing}" class="submenu-item">Diploma in Textile Designing</a></li>
-                                <li><a th:href="@{/programs/diploma-in-jewellery-designing}" class="submenu-item">Diploma in Jewellery Designing</a></li>
-                                <li><a th:href="@{/programs/diploma-in-boutique-management}" class="submenu-item">Diploma in Boutique Management</a></li>
-                                <li><a th:href="@{/programs/diploma-in-gemology}" class="submenu-item">Diploma in Gemology</a></li>
-
-                                <li><a th:href="@{/programs/diploma-in-fashion-photography}" class="submenu-item">Diploma in Fashion Photography</a></li>
-                                <li><a th:href="@{/programs/diploma-in-professional-makeup-artistry}" class="submenu-item">Diploma in Professional Makeup Artistry</a></li>
-                                <li><a th:href="@{/programs/diploma-in-shoe-designing}" class="submenu-item">Diploma in Shoe Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Diploma in Fashion Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Diploma in Jewellery Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Diploma in Interior Designing</a></li>
+                                <li><a href="/#courses" class="submenu-item">Diploma in Photography</a></li>
                             </ul>
                         </li>
+                        <!-- 3. Undergraduate (UG) -->
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Undergraduate (UG) <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
-                                <li><a th:href="@{/programs/bachelor-of-fashion-design}" class="submenu-item">Bachelor of Fashion Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-hair-makeup-prosthetics}" class="submenu-item">Bachelor of Hair, Makeup & Prosthetics</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-textile-design}" class="submenu-item">Bachelor of Textile Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-jewellery-design}" class="submenu-item">Bachelor of Jewellery Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-apparel-design-production}" class="submenu-item">Bachelor of Apparel Design & Production</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-accessory-design}" class="submenu-item">Bachelor of Accessory Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-fashion-technology}" class="submenu-item">Bachelor of Fashion Technology</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-footwear-design}" class="submenu-item">Bachelor of Footwear Design</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-cosmetology}" class="submenu-item">Bachelor of Cosmetology</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-sustainable-fashion}" class="submenu-item">Bachelor of Sustainable Fashion</a></li>
-                                <li><a th:href="@{/programs/bachelor-of-beauty-wellness}" class="submenu-item">Bachelor of Beauty & Wellness</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-submenu">
-                            <a class="dropdown-item-custom">Short Term Courses <i class="fa-solid fa-chevron-right"></i></a>
-                            <ul class="submenu-custom">
-                                <li><a th:href="@{/programs/embroidery-designing}" class="submenu-item">Embroidery Designing</a></li>
-                                <li><a th:href="@{/programs/crochet-designing}" class="submenu-item">Crochet Designing</a></li>
-                                <li><a th:href="@{/programs/nail-art-courses}" class="submenu-item">Nail Art Courses</a></li>
-                                <li><a th:href="@{/programs/fabric-painting}" class="submenu-item">Fabric Painting</a></li>
+                                <li><a href="/#courses" class="submenu-item">Bachelor of Fashion Design</a></li>
+                                <li><a href="/#courses" class="submenu-item">Bachelor of Jewellery Design</a></li>
+                                <li><a href="/#courses" class="submenu-item">Bachelor of Interior Design</a></li>
+                                <li><a href="/#courses" class="submenu-item">Bachelor of Photography</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -306,54 +283,53 @@
             <div class="carousel-inner">
                 <!-- Slide 1: Fashion -->
                 <div class="carousel-item active">
-                    <img th:src="@{/images/f1.jpeg}" class="d-block w-100 carousel-img" alt="Fashion Design">
+                    <img th:src="@{/images/hero_fashion_luxury.png}" class="d-block w-100 carousel-img" alt="Fashion Design">
                     <div class="carousel-caption d-md-block text-start">
-                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">THE SCHOOL OF
-                            COUTURE</span>
-                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Sculpting the<br><span class="text-glow">Future of
-                                Style</span></h1>
-                        <p class="lead mb-4 slide-up-3">Master the art of couture and avant-garde design from the
-                            industry's finest.</p>
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">FASHION DESIGN</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Design Your Future<br><span class="text-glow">in Fashion</span></h1>
+                        <p class="lead mb-4 slide-up-3">Learn how to design beautiful and stylish clothes from expert teachers.</p>
                     </div>
                 </div>
-
+ 
                 <!-- Slide 2: Jewellery -->
                 <div class="carousel-item">
-                    <img th:src="@{/images/f4.jpeg}" class="d-block w-100 carousel-img"
+                    <img th:src="@{/images/hero_jewellery_wide.png}" class="d-block w-100 carousel-img"
                         alt="Jewellery Design">
                     <div class="carousel-caption d-md-block text-start">
-                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">GEMOLOGICAL
-                            EXCELLENCE</span>
-                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Elegance in<br><span class="text-glow">Every
-                                Detail</span></h1>
-                        <p class="lead mb-4 slide-up-3">Design the next iconic gem. Learn precision craftsmanship and
-                            stone artistry.</p>
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">JEWELLERY DESIGN</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Create Beautiful<br><span class="text-glow">Jewellery</span></h1>
+                        <p class="lead mb-4 slide-up-3">Learn the secrets of making high-quality jewellery and working with gems.</p>
+                    </div>
+                </div>
+ 
+                <!-- Slide 3: Interior Designing -->
+                <div class="carousel-item">
+                    <img th:src="@{/images/hero_interior_modern_wide.png}" class="d-block w-100 carousel-img" alt="Interior Design">
+                    <div class="carousel-caption d-md-block text-start">
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">INTERIOR DESIGNING</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Transform Your<br><span class="text-glow">Living Spaces</span></h1>
+                        <p class="lead mb-4 slide-up-3">Learn to create beautiful, functional interiors from world-class designers.</p>
+                    </div>
+                </div>
+ 
+                <!-- Slide 4: Photography -->
+                <div class="carousel-item">
+                    <img th:src="@{/images/hero_photography_v2_wide.png}" class="d-block w-100 carousel-img" alt="Photography">
+                    <div class="carousel-caption d-md-block text-start">
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">PHOTOGRAPHY</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Capture Your Vision<br><span class="text-glow">in Every Frame</span></h1>
+                        <p class="lead mb-4 slide-up-3">Master the art of professional photography and visual storytelling from industry experts.</p>
                     </div>
                 </div>
 
-                <!-- Slide 3: Shoe Design -->
+ 
+                <!-- Slide 4: Fashion Designing -->
                 <div class="carousel-item">
-                    <img th:src="@{/images/f3.jpeg}" class="d-block w-100 carousel-img" alt="Shoe Design">
+                    <img th:src="@{/images/hero_fashion_luxury.png}" class="d-block w-100 carousel-img" alt="Fashion Design">
                     <div class="carousel-caption d-md-block text-start">
-                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">FOOTWEAR
-                            ATELIER</span>
-                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Crafting Luxury<br><span class="text-glow">From
-                                the Ground Up</span></h1>
-                        <p class="lead mb-4 slide-up-3">From sketch to runway. Step into the spotlight with expert shoe
-                            architecture.</p>
-                    </div>
-                </div>
-
-                <!-- Slide 4: Beauty & Grooming -->
-                <div class="carousel-item">
-                    <img th:src="@{/images/f2.jpeg}" class="d-block w-100 carousel-img" alt="Beauty">
-                    <div class="carousel-caption d-md-block text-start">
-                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">BEAUTY &
-                            GROOMING</span>
-                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Artistry in<br><span class="text-glow">Every
-                                Stroke</span></h1>
-                        <p class="lead mb-4 slide-up-3">Redefine beauty with expert grooming. The pinnacle of aesthetic
-                            training.</p>
+                        <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">FASHION DESIGNING</span>
+                        <h1 class="display-3 fw-bold mb-3 slide-up-2">Master the Art<br><span class="text-glow">of Fashion</span></h1>
+                        <p class="lead mb-4 slide-up-3">Unleash your creativity and learn the technical skills to become a professional fashion designer.</p>
                     </div>
                 </div>
             </div>
@@ -367,46 +343,178 @@
             </button>
         </div>
     </section>
+    
+    <!-- 1.4 Creative Transition Spacer (New) -->
+    <section class="creative-spacer py-4" style="background: #fff;">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-around align-items-center flex-wrap gap-4">
+                <span class="fw-black text-uppercase letter-spacing-2" style="color: #ff6b35; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(255,107,53,0.2));"><i class="fa-solid fa-sparkles me-2"></i> Innovation</span>
+                <span class="fw-black text-uppercase letter-spacing-2" style="color: #ed1275; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(237,18,117,0.2));"><i class="fa-solid fa-wand-magic-sparkles me-2"></i> Creativity</span>
+                <span class="fw-black text-uppercase letter-spacing-2" style="color: #2b1b10; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"><i class="fa-solid fa-gem me-2"></i> Luxury Style</span>
+                <span class="fw-black text-uppercase letter-spacing-2" style="color: #ff6b35; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(255,107,53,0.2));"><i class="fa-solid fa-palette me-2"></i> Artistry</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1.5 Video Showcase Section (Full Width & Colorful) -->
+    <section class="video-section-full-clean py-0 overflow-hidden" style="background: linear-gradient(45deg, #ff6b35, #ed1275, #2b1b10); padding: 8px !important;">
+        <div class="container-fluid p-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="video-clean-wrapper position-relative" style="aspect-ratio: 21/9; background: #000; width: 100%;">
+                
+                <!-- Overlay that disappears on hover/click to allow play -->
+                <div class="video-blocker" onclick="this.style.display='none'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.2)); transition: all 0.5s ease;">
+                    <div class="video-text-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
+                        <div class="play-btn-pulse mb-4" style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: #ff6b35; font-size: 2rem; box-shadow: 0 0 30px rgba(255,255,255,0.5);"><i class="fa-solid fa-play ms-1"></i></div>
+                        <h2 class="display-4 fw-bold mb-2" style="font-family: 'Playfair Display', serif; text-shadow: 0 5px 25px rgba(0,0,0,0.8);">Experience Our Vision</h2>
+                        <p class="lead" style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Click to witness the creative heart of our academy</p>
+                    </div>
+                </div>
+                
+                <!-- Cropped Iframe to hide top and bottom Drive bars -->
+                <div class="iframe-zoom-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 140%;">
+                    <iframe src="https://drive.google.com/file/d/10zq1H7BkKTYLe4z5CkvYDNUyfFUYGYqC/preview" 
+                            width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" style="border: none; filter: brightness(1) contrast(1.1);"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1.7 About Section (Enlarged & Detailed) -->
+    <section id="about-home" class="py-5 overflow-hidden bg-white">
+        <div class="container py-5">
+            <!-- Row 1: The Story -->
+            <div class="row align-items-center g-5 mb-5 pb-5">
+                <div class="col-lg-6">
+                    <div class="about-content pe-lg-5">
+                        <span class="badge mb-3 px-3 py-2 rounded-pill" style="background: rgba(255, 107, 53, 0.1); color: #ff6b35; font-weight: 700;">OUR STORY</span>
+                        <h2 class="display-4 fw-black mb-4" style="font-family: 'Playfair Display', serif;">A Century of <br><span class="text-theme">Fashion Excellence</span></h2>
+                        <p class="lead mb-4" style="color: #444; font-weight: 500;">Since 1923, The Fashion Institute has been the heart of creative education. We don't just teach design; we inspire visionaries.</p>
+                        <p class="mb-5 text-muted">Our academy provides a world-class environment where students learn from the masters. Whether it's fashion design, fine jewellery, or luxury styling, we provide the tools and mentorship to turn your talent into a global career.</p>
+                        
+                        <div class="row g-4 mb-5">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="icon-circle bg-light-theme text-theme" style="width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;"><i class="fa-solid fa-users-viewfinder"></i></div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">10k+</h6>
+                                        <small class="text-muted">Graduates</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="icon-circle bg-light-theme text-theme" style="width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;"><i class="fa-solid fa-earth-americas"></i></div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">50+</h6>
+                                        <small class="text-muted">Global Partners</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-image-collage position-relative">
+                        <div class="image-box-main shadow-lg rounded-4 overflow-hidden mb-4" style="border: 5px solid white;">
+                            <img th:src="@{/images/about_1.png}" class="w-100" alt="Fashion Studio">
+                        </div>
+                        <div class="image-box-sub shadow-lg rounded-4 overflow-hidden position-absolute d-none d-md-block" style="bottom: -30px; left: -50px; width: 300px; border: 10px solid white; z-index: 2;">
+                            <img th:src="@{/images/about_2.png}" class="w-100" alt="Jewellery Workshop">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Mission & Vision -->
+            <div class="row align-items-center g-5 pt-5">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="about-content ps-lg-5">
+                        <span class="badge mb-3 px-3 py-2 rounded-pill" style="background: rgba(237, 18, 117, 0.1); color: #ed1275; font-weight: 700;">OUR MISSION</span>
+                        <h2 class="display-4 fw-black mb-4" style="font-family: 'Playfair Display', serif;">Shaping the <br><span style="color: #ed1275;">Creative Future</span></h2>
+                        <p class="mb-4 text-muted">We believe that every student has a unique creative voice. Our mission is to amplify that voice through technical precision, industry exposure, and creative freedom.</p>
+                        
+                        <div class="feature-list-custom mb-5">
+                            <div class="d-flex align-items-start gap-3 mb-4">
+                                <div class="text-theme fs-4"><i class="fa-solid fa-circle-check"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Industry Integration</h6>
+                                    <p class="small text-muted mb-0">Work on live projects with top international brands.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3 mb-4">
+                                <div class="text-theme fs-4"><i class="fa-solid fa-circle-check"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Master Mentorship</h6>
+                                    <p class="small text-muted mb-0">One-on-one sessions with world-renowned designers.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="text-theme fs-4"><i class="fa-solid fa-circle-check"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Global Showcase</h6>
+                                    <p class="small text-muted mb-0">Showcase your work at our annual international fashion week.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a th:href="@{/about}" class="btn btn-gradient-dash px-5 py-3 rounded-pill fw-bold">Explore Our Programs</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="about-image-collage position-relative text-end">
+                        <div class="image-box-main shadow-lg rounded-4 overflow-hidden mb-4 ms-auto" style="border: 5px solid white; width: 90%;">
+                            <img th:src="@{/images/about_3.png}" class="w-100" alt="Interior Design">
+                        </div>
+                        <div class="image-box-sub shadow-lg rounded-4 overflow-hidden position-absolute d-none d-md-block" style="top: -30px; right: -50px; width: 300px; border: 10px solid white; z-index: 2;">
+                            <img th:src="@{/images/about_4.png}" class="w-100" alt="Photography Studio">
+                        </div>
+                        <!-- Decorative element -->
+                        <div class="floating-accent d-none d-lg-block" style="position: absolute; bottom: -20px; left: -20px; width: 150px; height: 150px; background: linear-gradient(135deg, #ed1275, #ff6b35); opacity: 0.15; border-radius: 50%; z-index: -1;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- 2. Features Section (Premium Redesign) -->
     <section class="features-section-premium">
         <div class="mesh-gradient-bg"></div>
         <div class="container text-center pt-4 position-relative">
-            <h2 class="fw-bold mb-2 section-title">Our Global Excellence</h2>
-            <p class="text-muted mb-5">Why aspiring fashion leaders choose The Fashion Institute</p>
+            <h2 class="fw-bold mb-2 section-title">Why Students Choose Us</h2>
+            <p class="text-muted mb-5">Learn from the best and start your fashion career today.</p>
 
             <div class="row g-4 mt-2">
                 <div class="col-md-3">
                     <div class="feature-card-new">
                         <span class="feature-number">01</span>
                         <div class="icon-box-feat"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <h5 class="fw-bold">Expert Trainers</h5>
-                        <p class="small text-muted">Learn from world-renowned industry veterans and designers.</p>
+                        <h5 class="fw-bold">Expert Teachers</h5>
+                        <p class="small text-muted">Learn from professional designers with years of experience.</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="feature-card-new">
                         <span class="feature-number">02</span>
                         <div class="icon-box-feat"><i class="fa-solid fa-medal"></i></div>
-                        <h5 class="fw-bold">Certified Courses</h5>
-                        <p class="small text-muted">Globally recognized accreditation to boost your career.</p>
+                        <h5 class="fw-bold">Certificates</h5>
+                        <p class="small text-muted">Get a certificate that is recognized all over the world.</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="feature-card-new">
                         <span class="feature-number">03</span>
                         <div class="icon-box-feat"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <h5 class="fw-bold">Practical Training</h5>
-                        <p class="small text-muted">Intensive hands-on experience in real-world ateliers.</p>
+                        <h5 class="fw-bold">Real Practice</h5>
+                        <p class="small text-muted">Get hands-on training to learn by doing.</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="feature-card-new">
                         <span class="feature-number">04</span>
                         <div class="icon-box-feat"><i class="fa-solid fa-briefcase"></i></div>
-                        <h5 class="fw-bold">Placement Support</h5>
-                        <p class="small text-muted">Direct connections to international luxury fashion houses.</p>
+                        <h5 class="fw-bold">Job Support</h5>
+                        <p class="small text-muted">We help you find great jobs in the fashion industry.</p>
                     </div>
                 </div>
             </div>
@@ -416,30 +524,64 @@
     <!-- 3. Courses Section (Redesigned) -->
     <section id="courses" class="py-5 bg-light-pink pt-5 mt-4">
         <div class="container py-4">
-            <h2 class="text-center fw-bold mb-2 section-title">Elite Programs</h2>
-            <p class="text-center text-muted mb-5">Professional accreditation for your creative journey</p>
+            <h2 class="text-center fw-bold mb-2 section-title">Our Best Programs</h2>
+            <p class="text-center text-muted mb-5">Professional courses to help you follow your passion</p>
 
-            <div class="row g-4">
-                <!-- Dynamic Course Cards -->
-                <div class="col-lg-3 col-md-6" th:each="course : ${courses}">
+            <div class="row g-4" id="initialCourses">
+                <!-- Dynamic Course Cards (First 4) -->
+                <div class="col-lg-3 col-md-6" th:each="course, iterStat : ${courses}" th:if="${iterStat.index < 4}">
                     <div class="elite-course-card">
                         <div class="course-img-wrapper">
                             <span class="course-tag" th:text="${course.category}">CATEGORY</span>
-                            <img th:src="${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}" th:alt="${course.title}">
+                            <img th:src="@{${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}}" th:alt="${course.title}">
                             <div class="course-duration" th:text="${course.duration}">Duration</div>
                         </div>
                         <div class="course-info p-4 text-center">
-                            <h5 class="fw-bold mb-2" th:text="${course.title}">Course Title</h5>
+                            <h5 class="fw-bold mb-2" th:text="${course.title}" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : '#2b1b10') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Course Title</h5>
                             <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 100)}">Short description of the program.</p>
                             <div class="d-flex flex-column align-items-center">
-                                <span class="price-hint mb-2">Enrolling Now</span>
                                 <a th:href="@{/user/course/{id}(id=${course.id})}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Message if no courses -->
-                <div class="col-12 text-center py-5" th:if="${courses.empty}">
+            </div>
+
+            <!-- Hidden Courses Section -->
+            <div class="row g-4 mt-2 d-none" id="allCourses">
+                <div class="col-lg-3 col-md-6" th:each="course, iterStat : ${courses}" th:if="${iterStat.index >= 4}">
+                    <div class="elite-course-card">
+                        <div class="course-img-wrapper">
+                            <span class="course-tag" th:text="${course.category}">CATEGORY</span>
+                            <img th:src="@{${course.imageUrl != null ? course.imageUrl : '/images/makeup_bridal.png'}}" th:alt="${course.title}">
+                            <div class="course-duration" th:text="${course.duration}">Duration</div>
+                        </div>
+                        <div class="course-info p-4 text-center">
+                            <h5 class="fw-bold mb-2" th:text="${course.title}" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : '#2b1b10') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Course Title</h5>
+                            <p class="small text-muted mb-4" th:text="${#strings.abbreviate(course.description, 100)}">Short description of the program.</p>
+                            <div class="d-flex flex-column align-items-center">
+                                <a th:href="@{/user/course/{id}(id=${course.id})}" class="course-link-arrow"><i class="fa-solid fa-circle-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Button -->
+            <div class="text-center mt-5" th:if="${#lists.size(courses) > 4}" id="viewAllContainer">
+                <button class="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold" onclick="showAllCourses()">View All Courses</button>
+            </div>
+
+            <script>
+                function showAllCourses() {
+                    document.getElementById('allCourses').classList.remove('d-none');
+                    document.getElementById('viewAllContainer').classList.add('d-none');
+                }
+            </script>
+
+            <!-- Message if no courses -->
+            <div class="row" th:if="${courses.empty}">
+                <div class="col-12 text-center py-5">
                     <p class="text-muted">No programs available at the moment. Please check back later!</p>
                 </div>
             </div>
@@ -449,56 +591,23 @@
     <!-- 4. Couture Gallery (Redesigned) -->
     <section id="gallery" class="py-5 bg-peach">
         <div class="container py-4">
-            <h2 class="text-center fw-bold mb-2 section-title">Institute Atelier Gallery</h2>
-            <p class="text-center text-muted mb-5">A glimpse into our world of high-fashion and artistry</p>
+            <h2 class="text-center fw-bold mb-2 section-title">Student Gallery</h2>
+            <p class="text-center text-muted mb-5">Take a look at the beautiful things our students create</p>
 
-            <div class="row g-3">
-                <!-- Large Feature -->
-                <div class="col-md-6">
-                    <div class="gallery-card-premium tall">
-                        <img th:src="@{/images/f.jpeg}" alt="Feature Gown">
+            <div class="row g-4">
+                <!-- Dynamic Gallery Items -->
+                <div class="col-lg-3 col-md-6" th:each="img, iterStat : ${images}" th:if="${iterStat.index < 4}">
+                    <div class="gallery-card-premium sm" style="height: 300px;">
+                        <img th:src="${img.imageUrl}" th:alt="${img.title}" style="height: 100%; object-fit: cover;">
                         <div class="gallery-info-overlay">
-                            <span class="gallery-cat">HAUTE COUTURE</span>
-                            <h4 class="fw-bold">The Lotus Gala</h4>
-                            <a th:href="@{/gallery}" class="gallery-btn">View Collection</a>
+                            <span class="gallery-cat" th:text="${img.category}">CATEGORY</span>
+                            <a th:href="@{/gallery}" class="gallery-btn small">View Gallery</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- 2x2 Grid for the rest -->
-                <div class="col-md-6">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <div class="gallery-card-premium sm">
-                                <img th:src="@{/images/makeup.png}" alt="Makeup">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">ARTISTRY</span>
-                                    <h6 class="fw-bold">Editorial Beauty</h6>
-                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="gallery-card-premium sm">
-                                <img th:src="@{/images/fashion.png}" alt="Fashion">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">STYLING</span>
-                                    <h6 class="fw-bold">Backstage Mood</h6>
-                                    <a th:href="@{/gallery}" class="gallery-btn small">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="gallery-card-premium wide">
-                                <img th:src="@{/images/catwalk.png}" alt="Catwalk">
-                                <div class="gallery-info-overlay">
-                                    <span class="gallery-cat">RUNWAY</span>
-                                    <h4 class="fw-bold">Spring Showcase</h4>
-                                    <a th:href="@{/gallery}" class="gallery-btn">Watch Show</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Fallback if no images -->
+                <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(images)}">
+                    <p class="text-muted">New gallery collections coming soon!</p>
                 </div>
             </div>
         </div>
@@ -507,8 +616,8 @@
     <!-- 5. Student Stories (Infinite Slider) -->
     <section id="testimonials" class="reviews-slider-container">
         <div class="container mb-5">
-            <h2 class="text-center fw-bold mb-2 section-title">Student Stories</h2>
-            <p class="text-center text-muted">Real journeys of our creative icons in the making</p>
+            <h2 class="text-center fw-bold mb-2 section-title">What Our Students Say</h2>
+            <p class="text-center text-muted">Read about the experiences of our talented students</p>
         </div>
         
         <div class="reviews-track">
@@ -654,7 +763,7 @@
                 <div class="col-lg-7 bg-white p-5">
                     <div class="ps-lg-4 text-center">
                         <span class="text-theme fw-bold letter-spacing-1 small d-block mb-2">CONTACT US</span>
-                        <h2 class="fw-bold mb-4">Start Your Creative Journey</h2>
+                        <h2 class="fw-bold mb-4">Ready to Join Us?</h2>
                         <form action="javascript:void(0);" onsubmit="submitContactForm(event)" class="row g-3" id="contactForm">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold text-muted">Full Name</label>
@@ -666,15 +775,17 @@
                                     required>
                             </div>
                             <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">Phone Number</label>
+                                <input type="tel" class="form-control custom-input-v2" placeholder="+91 98765 43210" required>
+                            </div>
+                            <div class="col-12">
                                 <label class="form-label small fw-bold text-muted">Course of Interest</label>
-                                <select class="form-select custom-input-v2" required>
+                                <select class="form-select custom-input-v2" name="courseOfInterest" required>
                                     <option value="" selected disabled>Choose a program...</option>
-                                    <option>Fashion Designing</option>
-                                    <option>Jewellery Designing</option>
-                                    <option>Interior Designing</option>
-                                    <option>Photography</option>
-                                    <option>Shoe Designing</option>
-                                    <option>Beauty and Grooming</option>
+                                    <option value="Fashion Designing">Fashion Designing</option>
+                                    <option value="Jewellery Designing">Jewellery Designing</option>
+                                    <option value="Interior Designing">Interior Designing</option>
+                                    <option value="Photography">Photography</option>
                                 </select>
                             </div>
                             <div class="col-12">
@@ -705,8 +816,9 @@
                                 const formData = {
                                     name: event.target.elements[0].value,
                                     email: event.target.elements[1].value,
-                                    courseOfInterest: event.target.elements[2].value,
-                                    message: event.target.elements[3].value
+                                    phone: event.target.elements[2].value,
+                                    courseOfInterest: event.target.elements[3].value,
+                                    message: event.target.elements[4].value
                                 };
 
                                 try {
@@ -816,7 +928,7 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                     <div class="portal-links small">
-                        <a th:href="@{/login}" class="me-3">Student Portal</a>
+                        <a th:href="@{/student-login}" class="me-3">Student Login</a>
                         <a th:href="@{/login}">College Portal</a>
                     </div>
                 </div>

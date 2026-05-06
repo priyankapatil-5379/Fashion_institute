@@ -17,6 +17,12 @@
             <div class="sidebar-brand">
                 <i class="fa-solid fa-feather-pointed"></i> <span>F.INSTITUTE</span>
             </div>
+            
+            <div class="mb-4 px-2">
+                <a th:href="@{/}" class="btn btn-light w-100 rounded-pill shadow-sm small fw-bold text-muted">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Back to Home
+                </a>
+            </div>
             <ul class="sidebar-nav">
                 <li><a th:href="@{/college/dashboard}"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
                 <li><a th:href="@{/college/courses}"><i class="fa-solid fa-book-open"></i> <span>My Courses</span></a></li>
@@ -37,11 +43,14 @@
  
         <!-- Main Content -->
         <div class="dashboard-content">
-            <div class="dashboard-header">
+            <div class="dashboard-header d-flex justify-content-between align-items-center">
                 <div>
                     <h2 class="fw-bold mb-1">Student Inquiries</h2>
                     <p class="text-muted small">Manage and review student course inquiries.</p>
                 </div>
+                <a th:href="@{/college/clear-inquiries}" class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="return confirm('Are you sure you want to delete all inquiries?')">
+                    <i class="fa-solid fa-trash-can me-2"></i> Clear All Inquiries
+                </a>
             </div>
 
             <!-- Registration Error Alert -->
@@ -66,6 +75,7 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Student Name</th>
+                                <th>Phone</th>
                                 <th>Email</th>
                                 <th>Course of Interest</th>
                                 <th>Payment Method</th>
@@ -80,6 +90,7 @@
                             <tr th:each="inq : ${applications}" th:id="'inquiry-' + ${inq.id}">
                                 <td th:text="${#temporals.format(inq.createdAt, 'MMM dd, yyyy')}">May 01, 2026</td>
                                 <td class="fw-bold" th:text="${inq.name}">Jane Doe</td>
+                                <td th:text="${inq.phone}">+91 0000000000</td>
                                 <td th:text="${inq.email}">jane@example.com</td>
                                 <td><span class="badge rounded-pill bg-secondary text-white" th:text="${inq.courseOfInterest}">Course</span></td>
                                 <td>
