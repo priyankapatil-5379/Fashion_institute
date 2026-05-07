@@ -189,11 +189,33 @@ public class UserController {
         return "user/dashboard";
     }
 
+    @GetMapping("/certifications/view/{id}")
+    public String viewCertificate(@PathVariable Long id, Model model, Principal principal) {
+        if (principal != null) {
+            Optional<com.example.model.Certification> cert = certificationRepository.findById(id);
+            if (cert.isPresent() && cert.get().getStudent().getUsername().equals(principal.getName())) {
+                model.addAttribute("cert", cert.get());
+                return "user/certificate";
+            }
+        }
+        return "redirect:/user/certifications";
+    }
+
     @GetMapping("/messages")
     public String messages(Model model, Principal principal) {
         model.addAttribute("view", "messages");
         model.addAttribute("courses", new ArrayList<>()); // Fix for Thymeleaf null check
-        model.addAttribute("vendorContact", "Fashion Guru");
+        
+        String vendorContact = "admin"; // Default fallback
+        if (principal != null) {
+            Optional<User> user = userRepository.findByUsername(principal.getName());
+            if (user.isPresent() && !user.get().getEnrolledCourses().isEmpty()) {
+                // Get the instructor of the first enrolled course as the primary contact
+                vendorContact = user.get().getEnrolledCourses().get(0).getInstructorName();
+            }
+        }
+        
+        model.addAttribute("vendorContact", vendorContact);
         return "user/dashboard";
     }
 

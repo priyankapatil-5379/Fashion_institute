@@ -17,8 +17,8 @@
             position: fixed !important;
             width: 60px !important;
             height: 60px !important;
-            bottom: 115px !important;
-            right: 40px !important;
+            bottom: 30px !important;
+            right: 30px !important;
             background-color: #ff6b35 !important;
             color: #fff !important;
             border-radius: 50% !important;
@@ -32,8 +32,8 @@
         }
         .chat-window {
             position: fixed !important;
-            bottom: 185px !important;
-            right: 40px !important;
+            bottom: 100px !important;
+            right: 30px !important;
             width: 350px !important;
             height: 450px !important;
             background: white !important;
@@ -762,25 +762,25 @@
 
                 <!-- Right: Contact Form -->
                 <div class="col-lg-7 bg-white p-5">
-                    <div class="ps-lg-4 text-center">
+                    <div class="ps-lg-4">
                         <span class="text-theme fw-bold letter-spacing-1 small d-block mb-2">CONTACT US</span>
                         <h2 class="fw-bold mb-4">Ready to Join Us?</h2>
-                        <form action="javascript:void(0);" onsubmit="submitContactForm(event)" class="row g-3" id="contactForm">
+                        
+                        <form action="javascript:void(0);" onsubmit="submitContactForm(event)" class="row g-4" id="contactForm">
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-muted">Full Name</label>
+                                <label class="form-label small fw-bold text-dark">Full Name</label>
                                 <input type="text" class="form-control custom-input-v2" placeholder="Jane Doe" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-muted">Email Address</label>
-                                <input type="email" class="form-control custom-input-v2" placeholder="jane@example.com"
-                                    required>
+                                <label class="form-label small fw-bold text-dark">Email Address</label>
+                                <input type="email" class="form-control custom-input-v2" placeholder="jane@example.com" required>
                             </div>
-                            <div class="col-12">
-                                <label class="form-label small fw-bold text-muted">Phone Number</label>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Phone Number</label>
                                 <input type="tel" class="form-control custom-input-v2" placeholder="+91 98765 43210" required>
                             </div>
-                            <div class="col-12">
-                                <label class="form-label small fw-bold text-muted">Course of Interest</label>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Course of Interest</label>
                                 <select class="form-select custom-input-v2" name="courseOfInterest" required>
                                     <option value="" selected disabled>Choose a program...</option>
                                     <option value="Fashion Designing">Fashion Designing</option>
@@ -790,13 +790,15 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label small fw-bold text-muted">A Message For Us</label>
-                                <textarea class="form-control custom-input-v2" rows="4"
-                                    placeholder="How can we help?" required></textarea>
+                                <label class="form-label small fw-bold text-dark">A Message For Us</label>
+                                <textarea class="form-control custom-input-v2" rows="4" placeholder="How can we help you on your creative journey?" required></textarea>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-theme-solid w-100 py-3 rounded-pill fw-bold text-uppercase letter-spacing-1">Send Inquiry</button>
                             </div>
                             <div class="col-12 mt-3" id="contactSuccessMessage" style="display: none;">
-                                <div class="alert alert-success border-0 rounded-4">
-                                    <i class="fa-solid fa-circle-check me-2"></i> Your inquiry has been sent. We'll contact you soon!
+                                <div class="alert alert-success border-0 rounded-4 shadow-sm">
+                                    <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your inquiry has been sent to our admissions team.
                                 </div>
                             </div>
                         </form>
@@ -826,11 +828,6 @@
             });
         });
     </script>
-                                <div class="alert alert-success border-0 rounded-3 small">
-                                    <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your inquiry has been sent to our College Admissions team.
-                                </div>
-                            </div>
-                        </form>
                         
                         <script>
                             async function submitContactForm(event) {
@@ -910,20 +907,17 @@
                         <li><a th:href="@{/about}">Our Story</a></li>
                         <li><a href="/#courses">Academy Campus</a></li>
                         <li><a th:href="@{/gallery}">Workshops</a></li>
-                        <li><a href="/#contact">Career Portal</a></li>
-                        <li><a href="/#contact">Admissions</a></li>
                     </ul>
                 </div>
 
                 <!-- Column 3: Ateliers -->
                 <div class="col-lg-3 col-md-6 text-center text-md-start">
-                    <h5 class="fw-bold mb-4 text-center text-md-start">Elite Ateliers</h5>
+                    <h5 class="fw-bold mb-4 text-center text-md-start">Our Programs</h5>
                     <ul class="list-unstyled footer-links">
-                        <li><a href="#">Makeup Artistry</a></li>
-                        <li><a href="#">Fashion Styling</a></li>
-                        <li><a href="#">Beauty Training</a></li>
-                        <li><a href="#">Hair Styling</a></li>
-                        <li><a href="#">Shoe Training</a></li>
+                        <li><a href="/#courses">Fashion Designing</a></li>
+                        <li><a href="/#courses">Jewellery Designing</a></li>
+                        <li><a href="/#courses">Interior Designing</a></li>
+                        <li><a href="/#courses">Photography</a></li>
                     </ul>
                 </div>
 
@@ -1061,19 +1055,35 @@
             input.value = '';
             body.scrollTop = body.scrollHeight;
 
-            // Simulated College Response
+            // Intelligent Simulated Response
             setTimeout(() => {
                 const CollegeMsg = document.createElement('div');
                 CollegeMsg.className = 'message msg-College';
                 
-                if (text.includes('enroll') || text.includes('admission')) {
-                    CollegeMsg.innerText = "Admissions are currently open! You can apply directly through the 'Apply Now' button or chat with a specific mentor here.";
-                } else if (text.includes('price') || text.includes('fee')) {
-                    CollegeMsg.innerText = "Our courses offer premium value with flexible payment plans. Which program are you interested in?";
+                let response = "";
+                if (text.includes('enroll') || text.includes('admission') || text.includes('apply') || text.includes('join')) {
+                    response = "Admissions for the 2026 session are now open! You can apply online through our 'Apply Now' portal or visit our campus for a walk-in counseling session.";
+                } else if (text.includes('price') || text.includes('fee') || text.includes('cost') || text.includes('scholarship')) {
+                    response = "Our course fees are competitive and we offer flexible installment plans. We also have merit-based scholarships available for up to 50% of the tuition fee.";
+                } else if (text.includes('fashion') || text.includes('designing') || text.includes('styling')) {
+                    response = "Our Fashion Designing program is world-class, covering everything from textile science to haute couture and luxury brand management. Would you like to see the curriculum?";
+                } else if (text.includes('jewellery') || text.includes('jewelry')) {
+                    response = "The Jewellery Design course focuses on gemology, 3D CAD modeling, and traditional metal smithing. It's a 1-year intensive diploma program.";
+                } else if (text.includes('interior')) {
+                    response = "Our Interior Design course merges architectural principles with aesthetic styling. We focus on sustainable design and commercial space planning.";
+                } else if (text.includes('photography')) {
+                    response = "The Photography program covers fashion photography, product shoots, and digital post-production using professional studio equipment.";
+                } else if (text.includes('duration') || text.includes('time') || text.includes('long')) {
+                    response = "We offer various durations: Diploma programs are 1 year, while our Bachelor's degrees are 3-4 years. We also have 6-month certificate fast-track courses.";
+                } else if (text.includes('location') || text.includes('address') || text.includes('where')) {
+                    response = "We are located in the heart of the Design District at 123 Fashion Ave. Our campus features state-of-the-art ateliers and studios.";
+                } else if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
+                    response = "Hello! I'm your digital guide to The Fashion Institute. What can I tell you about our creative programs today?";
                 } else {
-                    CollegeMsg.innerText = "Thank you for reaching out! A representative from our College atelier will be with you shortly.";
+                    response = "That's an interesting question! To give you the most accurate details about our " + (text.split(' ').pop() || 'programs') + ", I'll have one of our academic counselors contact you shortly.";
                 }
                 
+                CollegeMsg.innerText = response;
                 body.appendChild(CollegeMsg);
                 body.scrollTop = body.scrollHeight;
             }, 1000);

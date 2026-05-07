@@ -30,7 +30,7 @@
                 <li><a th:href="@{/college/students}"><i class="fa-solid fa-users"></i> <span>Students</span></a></li>
                 <li><a th:href="@{/college/applications}"><i class="fa-solid fa-file-signature"></i> <span>Student Inquiries</span></a></li>
                 <li><a th:href="@{/college/messages}"><i class="fa-solid fa-comments"></i> <span>Messages</span></a></li>
-                <li><a th:href="@{/college/analytics}"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
+
                 <li><a th:href="@{/college/settings}"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
                 <li class="mt-5">
                     <form th:action="@{/logout}" method="post" id="logoutForm">
@@ -246,7 +246,7 @@
             new Chart(catCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Fashion', 'Jewellery', 'Interior', 'Short Term'],
+                    labels: ['Fashion', 'Jewellery', 'Interior', 'Photography'],
                     datasets: [{
                         data: [45, 25, 20, 10],
                         backgroundColor: ['#ff6b35', '#ff9f1c', '#2ec4b6', '#e71d36'],
