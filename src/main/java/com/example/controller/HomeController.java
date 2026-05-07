@@ -15,6 +15,9 @@ public class HomeController {
     @Autowired
     private com.example.service.GalleryService galleryService;
 
+    @Autowired
+    private com.example.service.ReviewService reviewService;
+
     @GetMapping("/")
     public String home(Model model) {
         java.util.List<com.example.model.Course> allCourses = courseService.getAllCourses();
@@ -22,7 +25,15 @@ public class HomeController {
         java.util.List<com.example.model.GalleryImage> images = galleryService.getAllImages();
         java.util.Collections.shuffle(images);
         model.addAttribute("images", images);
+        model.addAttribute("reviews", reviewService.getAllReviews());
+        model.addAttribute("newReview", new com.example.model.Review());
         return "index";
+    }
+
+    @org.springframework.web.bind.annotation.PostMapping("/post-review")
+    public String postReview(@org.springframework.web.bind.annotation.ModelAttribute com.example.model.Review review) {
+        reviewService.saveReview(review);
+        return "redirect:/#testimonials";
     }
 
     @GetMapping("/about")

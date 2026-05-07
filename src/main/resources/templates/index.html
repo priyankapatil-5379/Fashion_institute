@@ -19,9 +19,6 @@
             height: 60px !important;
             bottom: 115px !important;
             right: 40px !important;
-            background-color: #ff6b35 !important;
-            color: #fff !important;
-            border-radius: 50% !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -142,21 +139,12 @@
                 <li class="has-dropdown" id="programsDropdown">
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-1" onclick="toggleDropdown(event)">Programs <i class="fa-solid fa-chevron-down small" style="font-size: 0.6rem;"></i></a>
                     <ul class="dropdown-menu-custom">
-                        <!-- 1. Courses Offered -->
-                        <li class="has-submenu">
-                            <a class="dropdown-item-custom">Courses Offered <i class="fa-solid fa-chevron-right"></i></a>
-                            <ul class="submenu-custom">
-                                <li><a href="/#courses" class="submenu-item">Fashion Designing</a></li>
-                                <li><a href="/#courses" class="submenu-item">Jewellery Designing</a></li>
-                                <li><a href="/#courses" class="submenu-item">Interior Designing</a></li>
-                                <li><a href="/#courses" class="submenu-item">Photography</a></li>
-                            </ul>
-                        </li>
+
                         <!-- 2. Diploma Programs -->
                         <li class="has-submenu">
                             <a class="dropdown-item-custom">Diploma Programs <i class="fa-solid fa-chevron-right"></i></a>
                             <ul class="submenu-custom">
-                                <li><a href="/#courses" class="submenu-item">Diploma in Fashion Designing</a></li>
+                                <li><a th:href="@{/user/course/1}" class="submenu-item">Diploma in Fashion Designing</a></li>
                                 <li><a href="/#courses" class="submenu-item">Diploma in Jewellery Designing</a></li>
                                 <li><a href="/#courses" class="submenu-item">Diploma in Interior Designing</a></li>
                                 <li><a href="/#courses" class="submenu-item">Diploma in Photography</a></li>
@@ -191,9 +179,9 @@
             </ul>
         </div>
         <div class="nav-right">
-            <!-- User Login Trigger (Only shown if NOT logged in) -->
-            <a href="javascript:void(0)" style="color: var(--theme-dark);" data-bs-toggle="modal" data-bs-target="#loginModal" sec:authorize="!isAuthenticated()">
-                <i class="fa-regular fa-circle-user fa-xl"></i>
+            <!-- Apply Now Button (Only shown if NOT logged in) -->
+            <a th:href="@{/student-login}" class="btn-apply-nav" sec:authorize="!isAuthenticated()">
+                Apply Now
             </a>
             <!-- Logout Link (Only shown if logged in) -->
             <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="d-inline">
@@ -207,53 +195,7 @@
         </div>
     </nav>
 
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content auth-modal">
-                <div class="modal-header border-0 pb-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-5 pt-2">
-                    <!-- Success Alert -->
-                    <div th:if="${param.registrationSuccess}" class="alert alert-success border-0 rounded-4 mb-4 small">
-                        <i class="fa-solid fa-circle-check me-2"></i> Registration successful! Please login.
-                    </div>
 
-                    <!-- Error Alert -->
-                    <div th:if="${param.error}" class="alert alert-danger border-0 rounded-4 mb-4 small">
-                        <i class="fa-solid fa-circle-exclamation me-2"></i> Invalid username or password.
-                    </div>
-                    
-                    <div class="text-center mb-5">
-                        <h2 class="fw-black mb-2" style="font-family: 'Playfair Display', serif; font-weight: 900;">Welcome Back</h2>
-                        <p class="text-muted small">Access your fashion institute portal</p>
-                    </div>
-                    <form th:action="@{/login}" method="post">
-                        <div class="mb-4">
-                            <label class="form-label small fw-bold">Username or Email</label>
-                            <input type="text" name="username" class="form-control auth-input" placeholder="Enter username or email" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label small fw-bold">Password</label>
-                            <input type="password" name="password" class="form-control auth-input" placeholder="••••••••" required>
-                        </div>
-                        <div class="d-flex justify-content-between mb-4 small">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="modalRemember">
-                                <label class="form-check-label" for="modalRemember">Remember me</label>
-                            </div>
-                            <a th:href="@{/forgot-password}" class="text-theme">Forgot Password?</a>
-                        </div>
-                        <button type="submit" class="btn-auth w-100 py-3 mb-4">SIGN IN</button>
-                    </form>
-                    <div class="text-center small">
-                        Don't have an account? <a th:href="@{/register}" class="text-theme fw-bold">Register Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Mobile Menu Drawer -->
     <div class="mobile-menu-drawer" id="mobileMenu">
@@ -269,14 +211,14 @@
                 <li><a href="#contact" onclick="toggleMobileMenu()">Contact</a></li>
             </ul>
             <div class="drawer-footer">
-                <a href="#" class="btn-solid w-100 d-block text-center">Apply Now</a>
+                <a th:href="@{/student-login}" class="btn-solid w-100 d-block text-center">Apply Now</a>
             </div>
         </div>
     </div>
 
     <!-- 1. Redesigned Hero Carousel -->
     <section id="home" class="hero-carousel-section">
-        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="2000">
             <!-- Indicators -->
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
@@ -287,7 +229,7 @@
 
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img th:src="@{/images/hero_fashion_v5.jpg}" class="d-block w-100 carousel-img" alt="Fashion Design">
+                    <img th:src="@{/images/hero_fashion_v5.png}" class="d-block w-100 carousel-img" alt="Fashion Design">
                     <div class="carousel-caption d-md-block text-start">
                         <span class="badge mb-3 slide-up-1" style="background: rgb(237, 18, 117);">FASHION & STYLING</span>
                         <h1 class="display-3 fw-bold mb-3 slide-up-2">Unleash Your Style<br><span class="text-glow">Learn. Create. Inspire.</span></h1>
@@ -326,35 +268,31 @@
 
             </div>
 
-            <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
-        </div>
-    </section>
-    
-    <!-- 1.4 Creative Transition Spacer (New) -->
-    <section class="creative-spacer py-4" style="background: #fff;">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-around align-items-center flex-wrap gap-4">
-                <span class="fw-black text-uppercase letter-spacing-2" style="color: #ff6b35; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(255,107,53,0.2));"><i class="fa-solid fa-sparkles me-2"></i> Innovation</span>
-                <span class="fw-black text-uppercase letter-spacing-2" style="color: #ed1275; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(237,18,117,0.2));"><i class="fa-solid fa-wand-magic-sparkles me-2"></i> Creativity</span>
-                <span class="fw-black text-uppercase letter-spacing-2" style="color: #2b1b10; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"><i class="fa-solid fa-gem me-2"></i> Luxury Style</span>
-                <span class="fw-black text-uppercase letter-spacing-2" style="color: #ff6b35; font-size: 1.2rem; filter: drop-shadow(0 2px 4px rgba(255,107,53,0.2));"><i class="fa-solid fa-palette me-2"></i> Artistry</span>
-            </div>
+
         </div>
     </section>
 
+    <!-- Dynamic Facts Ticker Section -->
+    <section class="fact-ticker-wrapper">
+        <div class="fact-ticker">
+            <div class="ticker-content">
+                <span class="ticker-item"><i class="fa-solid fa-wand-magic-sparkles text-theme-pink me-2"></i> Fashion design is the art of turning imagination into wearable elegance</span>
+                <span class="ticker-item"><i class="fa-solid fa-couch text-theme-pink me-2"></i> Interior design is the art of shaping spaces into experiences</span>
+                <span class="ticker-item"><i class="fa-solid fa-camera-retro text-theme-pink me-2"></i> Photography freezes time, turning fleeting moments into eternal stories</span>
+                <span class="ticker-item"><i class="fa-solid fa-gem text-theme-pink me-2"></i> Jewellery design transforms raw beauty into wearable masterpieces</span>
+                </div>
+        </div>
+    </section>
+    
+
+
     <!-- 1.5 Video Showcase Section (Full Width & Colorful) -->
-    <section class="video-section-full-clean py-0 overflow-hidden" style="background: linear-gradient(45deg, #ff6b35, #ed1275, #2b1b10); padding: 8px !important;">
+    <section class="video-section-full-clean my-5 overflow-hidden reveal" style="background: linear-gradient(45deg, #ff6b35, #ed1275, #2b1b10); padding: 8px !important;">
         <div class="container-fluid p-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
             <div class="video-clean-wrapper position-relative" style="aspect-ratio: 21/9; background: #000; width: 100%;">
                 
                 <!-- Overlay that disappears on hover/click to allow play -->
-                <div class="video-blocker" onclick="this.style.display='none'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.2)); transition: all 0.5s ease;">
+                <div class="video-blocker" onclick="playShowcaseVideo(this)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.2)); transition: all 0.5s ease;">
                     <div class="video-text-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
                         <div class="play-btn-pulse mb-4" style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: #ff6b35; font-size: 2rem; box-shadow: 0 0 30px rgba(255,255,255,0.5);"><i class="fa-solid fa-play ms-1"></i></div>
                         <h2 class="display-4 fw-bold mb-2" style="font-family: 'Playfair Display', serif; text-shadow: 0 5px 25px rgba(0,0,0,0.8);">Experience Our Vision</h2>
@@ -362,14 +300,28 @@
                     </div>
                 </div>
                 
-                <!-- Cropped Iframe to hide top and bottom Drive bars -->
-                <div class="iframe-zoom-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 140%;">
-                    <iframe src="https://drive.google.com/file/d/10zq1H7BkKTYLe4z5CkvYDNUyfFUYGYqC/preview" 
-                            width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" style="border: none; filter: brightness(1) contrast(1.1);"></iframe>
-                </div>
+                <!-- Local Video Tag -->
+                <video id="showcaseVideo" style="width: 100%; height: 100%; object-fit: cover; background: #000;" loop muted playsinline autoplay preload="auto">
+                    <source th:src="@{/video/fashion.mp4}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
         </div>
     </section>
+
+    <script>
+        function playShowcaseVideo(blocker) {
+            const video = document.getElementById('showcaseVideo');
+            if (video) {
+                video.muted = false; // Unmute on click
+                video.play();
+                blocker.style.opacity = '0';
+                setTimeout(() => {
+                    blocker.style.display = 'none';
+                }, 500);
+            }
+        }
+    </script>
 
     <!-- 1.7 About Section (Enlarged & Detailed) -->
     <section id="about-home" class="py-5 overflow-hidden bg-white section-reveal">
@@ -470,7 +422,7 @@
 
 
     <!-- 2. Features Section (Premium Redesign) -->
-    <section class="features-section-premium section-reveal">
+    <section class="features-section-premium section-reveal reveal">
         <div class="mesh-gradient-bg"></div>
         <div class="container text-center pt-4 position-relative">
             <h2 class="fw-bold mb-2 section-title">Why Students Choose Us</h2>
@@ -514,7 +466,7 @@
     </section>
 
     <!-- 3. Courses Section (Redesigned) -->
-    <section id="courses" class="py-5 bg-light-pink pt-5 mt-4 section-reveal">
+    <section id="courses" class="py-5 bg-light-pink pt-5 mt-4 section-reveal reveal">
         <div class="container py-4">
             <h2 class="text-center fw-bold mb-2 section-title">Our Best Programs</h2>
             <p class="text-center text-muted mb-5">Professional courses to help you follow your passion</p>
@@ -606,131 +558,50 @@
     </section>
 
     <!-- 5. Student Stories (Infinite Slider) -->
-    <section id="testimonials" class="reviews-slider-container section-reveal">
+    <section id="testimonials" class="reviews-slider-container section-reveal reveal">
         <div class="container mb-5">
             <h2 class="text-center fw-bold mb-2 section-title">What Our Students Say</h2>
             <p class="text-center text-muted">Read about the experiences of our talented students</p>
         </div>
         
         <div class="reviews-track">
-            <!-- Story 1 -->
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
+            <!-- Dynamic Reviews Loop (Twice for seamless scroll) -->
+            <div th:each="rev : ${reviews}" class="review-card-premium">
+                <div class="stars">
+                    <i th:each="i : ${#numbers.sequence(1, rev.rating)}" class="fa-solid fa-star"></i>
+                </div>
+                <p class="review-text" th:text="${'&#34;' + rev.comment + '&#34;'}">"Review comment"</p>
                 <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Sophia+E&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
+                    <img th:src="${rev.avatarUrl}" class="reviewer-img" alt="Student">
                     <div>
-                        <span class="reviewer-name">Sophia Evans</span>
-                        <span class="reviewer-role">Makeup Artistry Alumna</span>
+                        <span class="reviewer-name" th:text="${rev.studentName}">Name</span>
+                        <span class="reviewer-role" th:text="${rev.studentRole}">Role</span>
                     </div>
                 </div>
             </div>
-            <!-- Story 2 -->
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Marcus+C&background=2d3436&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">Marcus Chen</span>
-                        <span class="reviewer-role">Fashion Styling Graduate</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Story 3 -->
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">Elena Rodriguez</span>
-                        <span class="reviewer-role">Catwalk & Stage Presence</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Story 4 -->
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=David+K&background=2d3436&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">David Kim</span>
-                        <span class="reviewer-role">Advanced Hair Artistry</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Story 5 -->
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Amina+J&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">Amina Jalloh</span>
-                        <span class="reviewer-role">Haute Couture Apprentice</span>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Duplicates for seamless loop -->
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"The most professional faculty I've ever seen. My career in makeup started right here with hands-on training that gave me the edge I needed."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Sophia+E&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">Sophia Evans</span>
-                        <span class="reviewer-role">Makeup Artistry Alumna</span>
-                    </div>
+            <div th:each="rev : ${reviews}" class="review-card-premium">
+                <div class="stars">
+                    <i th:each="i : ${#numbers.sequence(1, rev.rating)}" class="fa-solid fa-star"></i>
                 </div>
-            </div>
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"Excellent placement support. I landed my first fashion show styling gig within a month of graduating. The network here is truly global."</p>
+                <p class="review-text" th:text="${'&#34;' + rev.comment + '&#34;'}">"Review comment"</p>
                 <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Marcus+C&background=2d3436&color=fff" class="reviewer-img" alt="Student">
+                    <img th:src="${rev.avatarUrl}" class="reviewer-img" alt="Student">
                     <div>
-                        <span class="reviewer-name">Marcus Chen</span>
-                        <span class="reviewer-role">Fashion Styling Graduate</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"The Catwalk training transformed my confidence. I went from a shy beginner to walking for major designers. This institute builds icons."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">Elena Rodriguez</span>
-                        <span class="reviewer-role">Catwalk & Stage Presence</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"The Hair Styling atelier is world-class. The precision and architectural creativity I learned here are unmatched in any other academy."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=David+K&background=2d3436&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">David Kim</span>
-                        <span class="reviewer-role">Advanced Hair Artistry</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card-premium">
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"Being part of the Couture Archives was the highlight of my life. The personalized mentorship from industry legends is invaluable."</p>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Amina+J&background=ff6b35&color=fff" class="reviewer-img" alt="Student">
-                    <div>
-                        <span class="reviewer-name">Amina Jalloh</span>
-                        <span class="reviewer-role">Haute Couture Apprentice</span>
+                        <span class="reviewer-name" th:text="${rev.studentName}">Name</span>
+                        <span class="reviewer-role" th:text="${rev.studentRole}">Role</span>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Add Review Action -->
+        <div class="text-center mt-5">
+            <button class="btn btn-gradient-feat px-5 py-3 rounded-pill shadow-lg animate-bounce" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                <i class="fa-solid fa-pen-nib me-2"></i> Share Your Success Story
+            </button>
+        </div>
+
     </section>
 
     <!-- 6. Get In Touch (Enhanced) -->
@@ -744,7 +615,7 @@
                         <div class="contact-img-overlay position-absolute bottom-0 start-0 w-100 p-5"
                             style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
                             <div class="text-white">
-                                <h3 class="fw-bold mb-0">Visit Our Atelier</h3>
+                                <h3 class="fw-bold mb-0">Visit Our Designer</h3>
                                 <p class="small mb-0 opacity-75">Connect with our admissions team today.</p>
                             </div>
                         </div>
@@ -790,20 +661,18 @@
                                     <i class="fa-solid fa-circle-check me-2"></i> Your inquiry has been sent. We'll contact you soon!
                                 </div>
                             </div>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-gradient-dash w-100 py-3 rounded-pill shadow">Send Inquiry <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                            </div>
                         </form>
                     </div>
-                </div>
             </div>
         </div>
     </section>
-
-    <!-- Scroll Reveal Script -->
+      <!-- Scroll Reveal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const observerOptions = {
-                threshold: 0.1
-            };
-
+            const observerOptions = { threshold: 0.1 };
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -817,63 +686,50 @@
             });
         });
     </script>
-                                <div class="alert alert-success border-0 rounded-3 small">
-                                    <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your inquiry has been sent to our College Admissions team.
-                                </div>
-                            </div>
-                        </form>
-                        
-                        <script>
-                            async function submitContactForm(event) {
-                                event.preventDefault(); // Stop the default POST request
-                                const btn = event.target.querySelector('button[type="submit"]');
-                                const originalText = btn.innerHTML;
-                                
-                                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-                                btn.disabled = true;
-                                
-                                const formData = {
-                                    name: event.target.elements[0].value,
-                                    email: event.target.elements[1].value,
-                                    phone: event.target.elements[2].value,
-                                    courseOfInterest: event.target.elements[3].value,
-                                    message: event.target.elements[4].value
-                                };
 
-                                try {
-                                    const response = await fetch('/api/inquiries', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(formData)
-                                    });
+    <script>
+        async function submitContactForm(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            
+            const formData = {
+                name: event.target.elements[0].value,
+                email: event.target.elements[1].value,
+                phone: event.target.elements[2].value,
+                courseOfInterest: event.target.elements[3].value,
+                message: event.target.elements[4].value
+            };
 
-                                    if (response.ok) {
-                                        document.getElementById('contactSuccessMessage').style.display = 'block';
-                                        event.target.reset(); // Clear the form
-                                        
-                                        // Hide the message after 5 seconds
-                                        setTimeout(() => {
-                                            document.getElementById('contactSuccessMessage').style.display = 'none';
-                                        }, 5000);
-                                    } else {
-                                        alert('There was a problem sending your inquiry. Please try again.');
-                                    }
-                                } catch (error) {
-                                    console.error('Error submitting form:', error);
-                                    alert('Network error. Please try again later.');
-                                } finally {
-                                    btn.innerHTML = originalText;
-                                    btn.disabled = false;
-                                }
-                            }
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+            try {
+                const response = await fetch('/api/inquiries', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    document.getElementById('contactSuccessMessage').style.display = 'block';
+                    event.target.reset();
+                    setTimeout(() => {
+                        document.getElementById('contactSuccessMessage').style.display = 'none';
+                    }, 5000);
+                } else {
+                    alert('There was a problem sending your inquiry. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Network error. Please try again later.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+
 
     <!-- 7. Professional Footer -->
     <footer class="footer-area pt-5 pb-3">
@@ -888,7 +744,7 @@
                         <div class="footer-social mt-4">
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+
                             <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                         </div>
                     </div>
@@ -914,7 +770,7 @@
                         <li><a href="#">Fashion Styling</a></li>
                         <li><a href="#">Beauty Training</a></li>
                         <li><a href="#">Hair Styling</a></li>
-                        <li><a href="#">Shoe Training</a></li>
+                        <li><a href="#">Photography Training</a></li>
                     </ul>
                 </div>
 
@@ -996,14 +852,7 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         }
 
-        // Auto-open login modal if 'login=true', 'registrationSuccess=true', or 'error' is in URL
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('login') === 'true' || urlParams.get('registrationSuccess') === 'true' || urlParams.get('error') !== null) {
-                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-                loginModal.show();
-            }
-        });
+
     </script>
     <!-- Floating Chatbot Button -->
     <div class="chatbot-float" onclick="toggleChat()" style="background-color: #ff6b35;">
@@ -1073,9 +922,87 @@
         document.getElementById('chatInput')?.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') sendMessage();
         });
+
+        // Dynamic Reviews Scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const track = document.querySelector('.reviews-track');
+            if (track) {
+                const cards = track.querySelectorAll('.review-card-premium');
+                if (cards.length > 0) {
+                    const cardCount = cards.length / 2;
+                    const cardWidth = 380; // 350px width + 30px gap
+                    const totalWidth = cardCount * cardWidth;
+                    track.style.setProperty('--scroll-dist', `-${totalWidth}px`);
+                }
+            }
+        });
     </script>
 
 
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden shadow-2xl">
+                <div class="modal-header border-0 bg-dark text-white p-4">
+                    <h5 class="modal-title fw-bold" id="reviewModalLabel">Submit Your Review</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/post-review}" th:object="${newReview}" method="post">
+                    <div class="modal-body p-4 bg-light">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label small fw-bold">Full Name</label>
+                                <input type="text" class="form-control custom-input-v2" th:field="*{studentName}" required placeholder="Jane Doe">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold">Program / Industry Role</label>
+                                <input type="text" class="form-control custom-input-v2" th:field="*{studentRole}" required placeholder="e.g. Fashion Styling Alumna">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold">Rating</label>
+                                <select class="form-select custom-input-v2" th:field="*{rating}">
+                                    <option value="5">⭐⭐⭐⭐⭐ (Highly Recommended)</option>
+                                    <option value="4">⭐⭐⭐⭐ (Great Experience)</option>
+                                    <option value="3">⭐⭐⭐ (Good)</option>
+                                    <option value="2">⭐⭐ (Fair)</option>
+                                    <option value="1">⭐ (Poor)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold">Your Testimonial</label>
+                                <textarea class="form-control custom-input-v2" th:field="*{comment}" rows="4" required placeholder="Describe your journey with us..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 bg-light pb-4 px-4">
+                        <button type="submit" class="btn btn-gradient-dash w-100 py-3 rounded-pill shadow">Post Testimonial <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+ 
+        // Scroll Reveal Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Run once on load
+        window.addEventListener("load", reveal);
+    </script>
 </body>
 
 </html>

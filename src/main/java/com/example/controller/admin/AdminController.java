@@ -117,8 +117,14 @@ public class AdminController {
     }
 
     @PostMapping("/gallery/save")
-    public String saveGalleryImage(GalleryImage galleryImage, @RequestParam("file") MultipartFile file) throws java.io.IOException {
-        galleryService.saveImage(galleryImage, file);
+    public String saveGalleryImages(@RequestParam("category") String category, @RequestParam("files") MultipartFile[] files) throws java.io.IOException {
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                GalleryImage galleryImage = new GalleryImage();
+                galleryImage.setCategory(category);
+                galleryService.saveImage(galleryImage, file);
+            }
+        }
         return "redirect:/admin/gallery";
     }
 
