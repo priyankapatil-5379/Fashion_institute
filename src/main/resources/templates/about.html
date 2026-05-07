@@ -49,6 +49,7 @@
             </ul>
         </div>
         <div class="nav-right">
+
             <!-- User Login Trigger (Only shown if NOT logged in) -->
             <a th:href="@{/student-login}" style="color: #fff;" sec:authorize="!isAuthenticated()">
                 <i class="fa-regular fa-circle-user fa-xl"></i>
@@ -59,6 +60,7 @@
                     <i class="fa-solid fa-right-from-bracket fa-xl"></i>
                 </button>
             </form>
+
             <button class="mobile-toggle" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
@@ -79,7 +81,6 @@
                 <li><a href="/#contact" onclick="toggleMobileMenu()">Contact</a></li>
             </ul>
             <div class="drawer-footer">
-                <a href="#" class="btn-solid w-100 d-block text-center">Apply Now</a>
             </div>
         </div>
     </div>

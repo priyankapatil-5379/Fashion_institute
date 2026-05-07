@@ -27,12 +27,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
+
                         .requestMatchers("/", "/login", "/student-login", "/register", "/post-review", "/forgot-password", "/css/**", "/images/**", "/js/**", "/video/**", "/user/course/**", "/user/payment/**", "/uploads/**", "/api/inquiries/**", "/gallery", "/about", "/scholarship", "/faq", "/faculty", "/programs/**").permitAll()
+
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/college/**").hasAnyRole("VENDOR", "COLLEGE", "INSTRUCTOR", "College")
                         .requestMatchers("/user/**").hasAnyRole("STUDENT", "ADMIN", "USER")
                         .anyRequest().authenticated()
-
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")

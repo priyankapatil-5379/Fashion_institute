@@ -112,6 +112,7 @@
             </div>
         </div>
 
+
         <!-- Right Side: Form -->
         <div class="login-form-side">
             <div class="auth-card">
@@ -190,8 +191,41 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
+    <script>
+        (() => {
+            'use strict'
+            
+            // Set max date for DOB to today
+            const dobField = document.getElementById('dobField');
+            if (dobField) {
+                const today = new Date().toISOString().split('T')[0];
+                dobField.setAttribute('max', today);
+            }
+
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    const password = document.getElementById('regPassword');
+                    const confirm = document.getElementById('regConfirmPassword');
+                    
+                    if (password && confirm && password.value !== confirm.value) {
+                        confirm.setCustomValidity('Passwords do not match');
+                    } else if (confirm) {
+                        confirm.setCustomValidity('');
+                    }
+
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 </body>
 </html>
 </body>
