@@ -69,35 +69,50 @@
             <h2 class="mb-2">Create Account</h2>
             <p class="text-muted">Join the elite fashion community</p>
         </div>
-        <form th:action="@{/register}" method="post">
+        
+        <!-- Error Alert -->
+        <div th:if="${param.error}" class="alert alert-danger border-0 rounded-4 mb-4 small text-start">
+            <i class="fa-solid fa-circle-exclamation me-2"></i> 
+            <span th:text="${errorMsg != null ? errorMsg : 'Invalid registration details. Please try again.'}">All fields are required. Please try again.</span>
+        </div>
+        <form th:action="@{/register}" method="post" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label class="form-label small fw-bold">Full Name</label>
-                <input type="text" name="fullName" class="form-control" placeholder="Enter your full name" required>
+                <input type="text" name="fullName" class="form-control" placeholder="Enter your full name" required 
+                       minlength="3" pattern="[a-zA-Z\s]+" title="Only letters and spaces allowed, min 3 characters">
+                <div class="invalid-feedback">Full name is required (min 3 letters, no numbers).</div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label small fw-bold">Username</label>
-                    <input type="text" name="username" class="form-control" placeholder="Choose username" required>
+                    <input type="text" name="username" class="form-control" placeholder="Choose username" required
+                           pattern="^\S+$" title="No spaces allowed">
+                    <div class="invalid-feedback">Username is required and cannot contain spaces.</div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label small fw-bold">Email Address</label>
                     <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label small fw-bold">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="regPassword" name="password" class="form-control" placeholder="••••••••" required
+                           minlength="6" pattern="^(?=.*[A-Za-z])(?=.*\d).{6,}$" title="Min 6 characters, must include letters and numbers">
+                    <div class="invalid-feedback">Password must be at least 6 characters and include letters & numbers.</div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label small fw-bold">Confirm Password</label>
-                    <input type="password" name="confirmPassword" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="regConfirmPassword" name="confirmPassword" class="form-control" placeholder="••••••••" required>
+                    <div class="invalid-feedback" id="confirmFeedback">Passwords must match.</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label small fw-bold">Date of Birth</label>
-                    <input type="date" name="dob" class="form-control" required>
+                    <input type="date" id="dobField" name="dob" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid date of birth.</div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label small fw-bold">Gender</label>
@@ -107,6 +122,7 @@
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
+                    <div class="invalid-feedback">Please select a gender.</div>
                 </div>
             </div>
             <div class="row">
@@ -121,13 +137,16 @@
                     <label class="form-label small fw-bold">Phone Number</label>
                     <div class="input-group">
                         <span class="input-group-text bg-transparent">+91</span>
-                        <input type="tel" name="phone" class="form-control" placeholder="9876543210" required>
+                        <input type="tel" name="phone" class="form-control" placeholder="9876543210" required
+                               pattern="[0-9]{10}" maxlength="10" title="Exactly 10 digits">
+                        <div class="invalid-feedback">Please enter exactly 10 digits.</div>
                     </div>
                 </div>
             </div>
             <div class="mb-4 form-check">
                 <input type="checkbox" class="form-check-input" id="terms" required>
                 <label class="form-check-label small text-muted" for="terms">I agree to the <a href="#" class="text-theme">Terms & Conditions</a></label>
+                <div class="invalid-feedback">You must agree before submitting.</div>
             </div>
             <button type="submit" class="btn-auth mb-4">REGISTER NOW</button>
         </form>
@@ -135,5 +154,37 @@
             Already have an account? <a th:href="@{/?login=true}">Login Here</a>
         </div>
     </div>
+    <script>
+        (() => {
+            'use strict'
+            
+            // Set max date for DOB to today
+            const dobField = document.getElementById('dobField');
+            if (dobField) {
+                const today = new Date().toISOString().split('T')[0];
+                dobField.setAttribute('max', today);
+            }
+
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    const password = document.getElementById('regPassword');
+                    const confirm = document.getElementById('regConfirmPassword');
+                    
+                    if (password && confirm && password.value !== confirm.value) {
+                        confirm.setCustomValidity('Passwords do not match');
+                    } else if (confirm) {
+                        confirm.setCustomValidity('');
+                    }
+
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 </body>
 </html>
