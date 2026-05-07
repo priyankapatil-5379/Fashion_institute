@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -67,29 +67,36 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            padding: 0 15px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 10px;
         }
 
         @media (max-width: 768px) {
-            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-hero { height: 30vh !important; }
+            .gallery-hero h1 { font-size: 2.2rem !important; }
+            .filter-container { padding: 1rem; margin-bottom: 2rem; }
+            .filter-btn { padding: 8px 15px; font-size: 0.75rem; }
         }
 
         .gallery-item {
             position: relative;
             border-radius: 24px;
             overflow: hidden;
-            aspect-ratio: 4/3; /* Controls the image length */
+            background: #fdfdfd;
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
             transition: all 0.5s ease;
-            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 450px; /* Consistent height for grid alignment */
         }
 
         .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             transition: transform 0.8s ease;
         }
 
@@ -146,6 +153,13 @@
 
         .modal-header { border: none; padding: 1.5rem; }
         .btn-close { opacity: 1; }
+        #modalImage {
+            max-height: 70vh;
+            object-fit: contain;
+            width: auto !important;
+            margin: 0 auto;
+            display: block;
+        }
     </style>
 </head>
 
@@ -168,12 +182,22 @@
                 <li><a th:href="@{/gallery}" class="active-link" style="color: black;">Gallery</a></li>
                 <li><a href="/#testimonials">Reviews</a></li>
                 <li><a href="/#contact">Contact</a></li>
+                <!-- Dynamic Dashboard Links -->
+                <li sec:authorize="hasRole('College')"><a th:href="@{/college/dashboard}" class="fw-bold text-theme">College Dashboard</a></li>
+                <li sec:authorize="hasRole('STUDENT')"><a th:href="@{/user/dashboard}" class="fw-bold text-theme">My Dashboard</a></li>
             </ul>
         </div>
         <div class="nav-right">
-            <a href="#" class="btn-outline">Admissions</a>
-            <a href="#" class="btn-solid">Apply Now</a>
-            <a href="#" style="color: #fff;"><i class="fa-regular fa-circle-user fa-xl"></i></a>
+            <!-- Apply Now Button (Only shown if NOT logged in) -->
+            <a th:href="@{/student-login}" class="btn-apply-nav" sec:authorize="!isAuthenticated()">
+                Apply Now
+            </a>
+            <!-- Logout Link (Only shown if logged in) -->
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="d-inline">
+                <button type="submit" style="background: none; border: none; color: #fff; padding: 0;">
+                    <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+                </button>
+            </form>
             <button class="mobile-toggle" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
@@ -194,7 +218,7 @@
                 <li><a href="/#contact" onclick="toggleMobileMenu()">Contact</a></li>
             </ul>
             <div class="drawer-footer">
-                <a href="#" class="btn-solid w-100 d-block text-center">Apply Now</a>
+                <a th:href="@{/student-login}" class="btn-solid w-100 d-block text-center">Apply Now</a>
             </div>
         </div>
     </div>
@@ -216,14 +240,14 @@
                 <button class="filter-btn active" onclick="filterGallery('all')">All Works</button>
                 <button class="filter-btn" onclick="filterGallery('fashion')">Fashion Designing</button>
                 <button class="filter-btn" onclick="filterGallery('interior')">Interior Designing</button>
-                <button class="filter-btn" onclick="filterGallery('shoe')">Shoe Designing</button>
+                <button class="filter-btn" onclick="filterGallery('photography')">Photography</button>
                 <button class="filter-btn" onclick="filterGallery('jewellery')">Jewellery Designing</button>
             </div>
 
             <div class="gallery-grid" id="gallery-grid">
                 <!-- Dynamic Gallery Items -->
                 <div th:each="img : ${images}" 
-                     th:class="${'gallery-item ' + (img.category == 'Fashion Designing' ? 'fashion' : (img.category == 'Interior Designing' ? 'interior' : (img.category == 'Shoe Designing' ? 'shoe' : 'jewellery')))}">
+                     th:class="${'gallery-item ' + (img.category == 'Fashion Designing' ? 'fashion' : (img.category == 'Interior Designing' ? 'interior' : (img.category == 'Photography' ? 'photography' : 'jewellery')))}">
                     <img th:src="${img.imageUrl}" th:alt="${img.title}">
                     <div class="gallery-overlay" data-bs-toggle="modal" data-bs-target="#imageModal" th:attr="data-bs-img=${img.imageUrl}">
                         <i class="fa-solid fa-expand-arrows-alt"></i>
@@ -239,7 +263,7 @@
 
     <!-- Modal for Lightbox -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -264,7 +288,7 @@
                         <div class="footer-social mt-4">
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+
                             <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                         </div>
                     </div>
@@ -284,10 +308,13 @@
                 <div class="col-lg-3 col-md-6">
                     <h5 class="fw-bold mb-4">Our Programs</h5>
                     <ul class="list-unstyled footer-links">
+
                         <li><a href="/#courses">Fashion Designing</a></li>
                         <li><a href="/#courses">Jewellery Designing</a></li>
                         <li><a href="/#courses">Interior Designing</a></li>
                         <li><a href="/#courses">Photography</a></li>
+
+                        
                     </ul>
                 </div>
 

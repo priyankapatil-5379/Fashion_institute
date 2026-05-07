@@ -33,6 +33,16 @@
         .syllabus-col-content { flex-grow: 1; padding: 15px 25px; color: #555; }
         .fw-600 { font-weight: 600; }
         .text-theme { color: var(--theme-orange); }
+
+        @media (max-width: 992px) {
+            .details-header { padding: 40px 0 !important; text-align: center; }
+            .details-header h1 { font-size: 2.2rem !important; }
+            .sidebar-card { position: static !important; margin-top: 30px; }
+            .navbar-brand { font-size: 1.2rem !important; }
+        }
+        @media (max-width: 768px) {
+            .video-container { aspect-ratio: 16/9 !important; height: auto !important; }
+        }
     </style>
 </head>
 <body th:style="${'--theme-line-color: ' + (course.headingColor != null ? course.headingColor : '#ff6b35') + ';'}">
@@ -100,7 +110,7 @@
                 <div class="content-block" th:if="${course.learningOutcomes != null and !course.learningOutcomes.isEmpty()}">
                     <h3 class="section-title fw-bold" th:style="${'color: ' + (course.headingColor != null ? course.headingColor : 'var(--theme-orange)') + '; font-family: ' + (course.fontFamily != null ? course.fontFamily : 'Playfair Display, serif') + ';'}">Learning Outcomes</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2 d-flex align-items-start" th:each="outcome : ${course.learningOutcomes.split('\\R')}">
+                        <li class="mb-2 d-flex align-items-start" th:each="outcome : ${course.learningOutcomes != null ? course.learningOutcomes.split('[\r\n]+') : {}}">
                             <i class="fa-solid fa-circle-check text-success me-3 mt-1"></i>
                             <span th:text="${outcome}">Outcome point</span>
                         </li>
@@ -120,7 +130,7 @@
                         <div class="syllabus-header">
                             SYLLABUS
                         </div>
-                        <div class="syllabus-row" th:each="item, iter : ${course.courseStructure.split('\\R')}">
+                        <div class="syllabus-row" th:each="item, iter : ${course.courseStructure != null ? course.courseStructure.split('[\r\n]+') : {}}">
                             <div class="syllabus-col-index" th:text="${iter.count}">1</div>
                             <div class="syllabus-col-content" th:text="${item}">Module Content</div>
                         </div>

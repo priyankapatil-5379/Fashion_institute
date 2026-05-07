@@ -120,25 +120,25 @@
 
         <!-- Upload Form -->
         <div class="panel">
-            <h2 style="margin-bottom: 1.5rem;">Add New Photo</h2>
-            <form th:action="@{/admin/gallery/save}" method="post" enctype="multipart/form-data" th:object="${newImage}">
+            <h2 style="margin-bottom: 1.5rem;">Add New Photos</h2>
+            <form th:action="@{/admin/gallery/save}" method="post" enctype="multipart/form-data">
                 <div class="row" style="display: flex; gap: 1rem; align-items: flex-end;">
                     <div class="form-group" style="flex: 1;">
                         <label>Category</label>
-                        <select th:field="*{category}" required>
+                        <select name="category" required>
                             <option value="Fashion Designing">Fashion Designing</option>
                             <option value="Interior Designing">Interior Designing</option>
-                            <option value="Shoe Designing">Shoe Designing</option>
+                            <option value="Photography">Photography</option>
                             <option value="Jewellery Designing">Jewellery Designing</option>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
-                        <label>Select Photo</label>
-                        <input type="file" name="file" accept="image/*" required />
+                        <label>Select Photos (Hold Ctrl to select multiple)</label>
+                        <input type="file" name="files" accept="image/*" multiple required />
                     </div>
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <button type="submit" style="padding: 0.8rem 2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">
-                            <i class="fas fa-upload"></i> Upload Photo
+                            <i class="fas fa-upload"></i> Upload Photos
                         </button>
                     </div>
                 </div>

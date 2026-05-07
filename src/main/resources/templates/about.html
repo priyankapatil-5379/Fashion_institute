@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+    <style>
+        @media (max-width: 992px) {
+            .video-portrait-wrapper { width: 100% !important; height: 500px !important; }
+            .display-3 { font-size: 2.5rem !important; }
+            .lead { font-size: 1rem !important; }
+        }
+    </style>
 </head>
 
 <body>
@@ -36,10 +43,24 @@
                 <li><a th:href="@{/gallery}">Gallery</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <!-- Dynamic Dashboard Links -->
+                <li sec:authorize="hasRole('College')"><a th:href="@{/college/dashboard}" class="fw-bold text-theme">College Dashboard</a></li>
+                <li sec:authorize="hasRole('STUDENT')"><a th:href="@{/user/dashboard}" class="fw-bold text-theme">My Dashboard</a></li>
             </ul>
         </div>
         <div class="nav-right">
-            <a href="#" style="color: #fff;"><i class="fa-regular fa-circle-user fa-xl"></i></a>
+
+            <!-- User Login Trigger (Only shown if NOT logged in) -->
+            <a th:href="@{/student-login}" style="color: #fff;" sec:authorize="!isAuthenticated()">
+                <i class="fa-regular fa-circle-user fa-xl"></i>
+            </a>
+            <!-- Logout Link (Only shown if logged in) -->
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="d-inline">
+                <button type="submit" style="background: none; border: none; color: #fff; padding: 0;">
+                    <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+                </button>
+            </form>
+
             <button class="mobile-toggle" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
@@ -230,7 +251,7 @@
                         <div class="footer-social mt-4">
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+
                             <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                         </div>
                     </div>

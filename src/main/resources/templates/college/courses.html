@@ -172,32 +172,17 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label small fw-bold">Category</label>
                                 <select class="form-select custom-input" th:field="*{category}">
-                                    <optgroup label="Courses Offered">
-                                        <option value="Fashion Designing">Fashion Designing</option>
-                                        <option value="Jewellery Designing">Jewellery Designing</option>
-                                        <option value="Interior Designing">Interior Designing</option>
-                                        <option value="Photography">Photography</option>
-                                    </optgroup>
-                                    <optgroup label="Diploma Programs">
-                                        <option value="Diploma in Fashion Designing">Diploma in Fashion Designing</option>
-                                        <option value="Diploma in Jewellery Designing">Diploma in Jewellery Designing</option>
-                                        <option value="Diploma in Boutique Management">Diploma in Boutique Management</option>
-                                        <option value="Diploma in Gemology">Diploma in Gemology</option>
-                                        <option value="Diploma in Fashion Photography">Diploma in Fashion Photography</option>
-                                    </optgroup>
-                                    <optgroup label="Undergraduate (UG)">
-                                        <option value="Bachelor of Fashion Design">Bachelor of Fashion Design</option>
-                                        <option value="Bachelor of Jewellery Design">Bachelor of Jewellery Design</option>
-                                    </optgroup>
+                                    <option value="Fashion Designing">Fashion Designing</option>
+                                    <option value="Interior Designing">Interior Designing</option>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Jewellery Designing">Jewellery Designing</option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label class="form-label small fw-bold">Program Level</label>
                                 <select class="form-select custom-input" th:field="*{programLevel}">
-                                    <option value="Undergraduate (UG)">Undergraduate (UG)</option>
-                                    <option value="Postgraduate (PG)">Postgraduate (PG)</option>
                                     <option value="Diploma">Diploma</option>
-                                    <option value="Certification">Certification</option>
+                                    <option value="Undergraduate (UG)">Undergraduate (UG)</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -235,7 +220,14 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label small fw-bold">Learning Outcomes</label>
-                                <textarea class="form-control custom-input" th:field="*{learningOutcomes}" rows="4" placeholder="What will students achieve? (One point per line)"></textarea>
+                                <div id="outcomesContainer" class="p-3 border rounded-4 bg-white mb-2" style="min-height: 100px;">
+                                    <div class="small text-muted mb-2"><i class="fa-solid fa-circle-info me-1"></i> Add each outcome as a separate point. No need to add numbers.</div>
+                                    <div id="outcomesList"></div>
+                                    <button type="button" class="btn btn-sm btn-outline-theme rounded-pill mt-2" onclick="addPoint('outcomesList', 'outcome-input', 'hiddenOutcomes')">
+                                        <i class="fa-solid fa-plus me-1"></i> Add Outcome
+                                    </button>
+                                </div>
+                                <textarea class="d-none" th:field="*{learningOutcomes}" id="hiddenOutcomes"></textarea>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label small fw-bold">Career Opportunities</label>
@@ -243,7 +235,14 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label small fw-bold">Course Structure (Syllabus)</label>
-                                <textarea class="form-control custom-input" th:field="*{courseStructure}" rows="4" placeholder="Year-wise or Phase-wise breakdown..."></textarea>
+                                <div id="syllabusContainer" class="p-3 border rounded-4 bg-white mb-2" style="min-height: 100px;">
+                                    <div class="small text-muted mb-2"><i class="fa-solid fa-circle-info me-1"></i> Add each module or syllabus item as a separate point.</div>
+                                    <div id="syllabusList"></div>
+                                    <button type="button" class="btn btn-sm btn-outline-theme rounded-pill mt-2" onclick="addPoint('syllabusList', 'syllabus-input', 'hiddenSyllabus')">
+                                        <i class="fa-solid fa-plus me-1"></i> Add Module/Point
+                                    </button>
+                                </div>
+                                <textarea class="d-none" th:field="*{courseStructure}" id="hiddenSyllabus"></textarea>
                             </div>
                         </div>
 
@@ -258,6 +257,44 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function addPoint(listId, inputClass, hiddenId, value = '') {
+            const list = document.getElementById(listId);
+            const item = document.createElement('div');
+            item.className = 'd-flex gap-2 mb-2 align-items-center animate-fade-in';
+            item.innerHTML = `
+                <div class="text-theme small"><i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i></div>
+                <input type="text" class="form-control custom-input py-2 ${inputClass}" value="${value.replace(/"/g, '&quot;')}" placeholder="Enter point..." oninput="syncPoints('${inputClass}', '${hiddenId}')">
+                <button type="button" class="btn btn-link text-danger p-0 border-0" onclick="this.parentElement.remove(); syncPoints('${inputClass}', '${hiddenId}')">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            `;
+            list.appendChild(item);
+        }
+
+        function syncPoints(inputClass, hiddenId) {
+            const inputs = document.querySelectorAll('.' + inputClass);
+            const values = Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
+            document.getElementById(hiddenId).value = values.join('\r\n');
+        }
+
+        // Initialize points from hidden textareas
+        window.addEventListener('DOMContentLoaded', () => {
+            const outcomesData = document.getElementById('hiddenOutcomes').value;
+            if (outcomesData) {
+                outcomesData.split(/\r?\n/).forEach(p => { if(p.trim()) addPoint('outcomesList', 'outcome-input', 'hiddenOutcomes', p.trim()); });
+            } else {
+                addPoint('outcomesList', 'outcome-input', 'hiddenOutcomes');
+            }
+
+            const syllabusData = document.getElementById('hiddenSyllabus').value;
+            if (syllabusData) {
+                syllabusData.split(/\r?\n/).forEach(p => { if(p.trim()) addPoint('syllabusList', 'syllabus-input', 'hiddenSyllabus', p.trim()); });
+            } else {
+                addPoint('syllabusList', 'syllabus-input', 'hiddenSyllabus');
+            }
+        });
+    </script>
 </body>
 
 </html>
